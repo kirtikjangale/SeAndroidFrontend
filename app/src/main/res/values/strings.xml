@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SeAndroidProject</string>
+    <string name="mobile_number_10_digits">Mobile Number (10 digits)</string>
+    <string name="login">Login</string>
+</resources>
