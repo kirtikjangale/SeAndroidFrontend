@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.example.seandroidproject.R
 
 class LoginActivity : AppCompatActivity() {
@@ -36,5 +37,29 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
+        btnLogin.setOnClickListener {
+            if(checkMobile(etMobileNumber.text.toString()) && checkPassword(etPasssword.text.toString())){
+
+            }
+        }
+
+    }
+
+    private fun checkMobile(number:String) : Boolean{
+        val ans = number.length == 10
+        if(!ans){
+            Toast.makeText(this@LoginActivity,"Invalid Mobile Number", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    private fun checkPassword(password:String) : Boolean{
+        val ans = password.length >= 4
+        if(!ans){
+            Toast.makeText(this@LoginActivity,"Invalid Password", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
     }
 }
