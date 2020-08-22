@@ -7,22 +7,15 @@
     tools:context=".activity.RegisterActivity"
     android:background="#1E1132">
 
-    <ImageView
-        android:id="@+id/imgUserPhoto"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/addphoto"
-        android:layout_marginTop="30dp"
-        />
+<!-- -->
 
     <EditText
         android:id="@+id/etUserName"
-        android:layout_below="@id/imgUserPhoto"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
         android:padding="10dp"
