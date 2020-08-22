@@ -1,13 +1,17 @@
 package com.example.seandroidproject.activity
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.example.seandroidproject.R
+import com.kirtik.foodrunner.util.ConnectionManager
 
 class LoginActivity : AppCompatActivity() {
 
@@ -39,6 +43,25 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener {
             if(checkMobile(etMobileNumber.text.toString()) && checkPassword(etPasssword.text.toString())){
+
+                if(ConnectionManager().checkConnectivity(this@LoginActivity)){
+
+                }
+                else{
+                    val dialog = AlertDialog.Builder(this@LoginActivity)
+                    dialog.setTitle("Error")
+                    dialog.setMessage("Internet Connection Not Found")
+                    dialog.setPositiveButton("Open Settings"){_,_->
+                        val settingsIntent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                        startActivity(settingsIntent)
+                        finish()
+                    }
+                    dialog.setNegativeButton("Cancel"){ _,_->
+                        ActivityCompat.finishAffinity(this@LoginActivity)
+                    }
+                    dialog.create()
+                    dialog.show()
+                }
 
             }
         }
