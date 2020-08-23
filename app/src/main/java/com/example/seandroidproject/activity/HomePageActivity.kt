@@ -96,6 +96,15 @@ class HomePageActivity : AppCompatActivity() {
                     supportActionBar?.title = "My Profile"
                 }
 
+                R.id.listings ->{
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.frame,
+                        MyListingsFragment()
+                    ).commit()
+                    drawerLayout.closeDrawers()
+                    supportActionBar?.title = "My Listings"
+                }
+
                 R.id.logout ->{
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frame,

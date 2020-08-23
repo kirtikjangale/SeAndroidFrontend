@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="#ffffff"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="4dp">
+
+
+
+    <LinearLayout
+        android:id="@+id/llContent"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:background="#ffffff"
+        android:weightSum="6">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:padding="5dp"
+            app:cardCornerRadius="4dp"
+            android:layout_margin="5dp">
+
+            <ImageView
+                android:id="@+id/imgResImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+
+        <RelativeLayout
+            android:layout_weight="3.3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txtProductName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Product Name"
+                android:padding="2dp"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtSellerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtProductName"
+                android:text="Seller Name"
+                android:padding="2dp"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/txtSellerEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtSellerName"
+                android:text="Seller Email"
+                android:padding="2dp"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/txtSellerNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtSellerEmail"
+                android:text="Seller Number"
+                android:padding="2dp"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2">
+
+<!--            <com.github.ivbaranov.mfb.MaterialFavoriteButton-->
+<!--                android:id="@+id/btnFavourite"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:mfb_animate_favorite="true"-->
+<!--                app:mfb_animate_unfavorite="false"-->
+<!--                app:mfb_bounce_duration="200"-->
+<!--                app:mfb_color="black"-->
+<!--                app:mfb_padding="12"-->
+<!--                app:mfb_rotation_angle="0"-->
+<!--                app:mfb_rotation_duration="200"-->
+<!--                app:mfb_size="48"-->
+<!--                app:mfb_state="false"-->
+<!--                app:mfb_type="heart"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_marginTop="20dp"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/txtItemPrice"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/btnFavourite"-->
+<!--                android:text="Price"-->
+<!--                android:drawableLeft="@drawable/rupees"-->
+<!--                android:padding="2dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:textSize="16sp"/>-->
+
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
