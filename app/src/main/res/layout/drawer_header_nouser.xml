@@ -11,11 +11,11 @@
         android:src="@drawable/addphoto"/>
 
     <TextView
-        android:id="@+id/txtName"
+        android:id="@+id/pincode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:text="Anonymous User"
+        android:text="Pin Code"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 

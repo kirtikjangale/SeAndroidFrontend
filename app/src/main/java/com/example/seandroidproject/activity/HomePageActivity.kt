@@ -30,7 +30,7 @@ class HomePageActivity : AppCompatActivity() {
     var previousMenuItem : MenuItem? = null
 
     // just for testing ==> to be connected with backend
-    var isLoggedIn = false
+    var isLoggedIn = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
