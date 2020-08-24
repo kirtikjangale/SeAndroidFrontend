@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.seandroidproject.R
 import com.example.seandroidproject.fragment.*
@@ -42,11 +43,14 @@ class HomePageActivity : AppCompatActivity() {
         navigationView = findViewById(R.id.navigationView)
         drawerLayout = findViewById(R.id.drawerLayout)
 
+
         sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
         isLoggedIn = sharedPreferences.getBoolean("isLoggedIn",false)
 
+
         val navigationView = findViewById<NavigationView>(R.id.navigationView)
         val headerView = navigationView.getHeaderView(0)
+
         val navUsername = headerView.findViewById<View>(R.id.txtName) as TextView
         val navMobileNumber = headerView.findViewById<View>(R.id.txtNumber) as TextView
 
@@ -76,6 +80,9 @@ class HomePageActivity : AppCompatActivity() {
             menu.findItem(R.id.sell).isVisible = false
             menu.findItem(R.id.listings).isVisible = false
             menu.findItem(R.id.profile).isVisible = false
+
+            navUsername.visibility=View.GONE
+            navMobileNumber.visibility = View.GONE
         }
 
         navigationView.setNavigationItemSelectedListener {
