@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:text="Name of the person"
+        android:text="Anonymous User"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
@@ -26,28 +26,21 @@
         android:layout_marginTop="10dp"
         >
 
-        <TextView
-            android:id="@+id/txtNumber"
+        <Button
+            android:id="@+id/drawer_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="Mobile Number"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:layout_weight="1"
+            android:text="Log In" />
 
         <Button
-            android:id="@+id/drawer_logout"
+            android:id="@+id/drawer_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:text="Log Out" />
+            android:text="Sign Up" />
 
 
     </LinearLayout>
-
-
-
-
 
 </LinearLayout>

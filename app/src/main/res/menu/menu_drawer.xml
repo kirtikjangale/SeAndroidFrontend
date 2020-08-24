@@ -28,11 +28,6 @@
             android:title="Profile"
             android:icon="@drawable/ic_profile"/>
 
-        <item
-            android:id="@+id/logout"
-            android:title="Logout"
-            android:icon="@drawable/ic_logout"/>
-
 
     </group>
 
