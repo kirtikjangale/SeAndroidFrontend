@@ -1,7 +1,9 @@
 package com.example.seandroidproject.activity
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
@@ -10,8 +12,14 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.seandroidproject.R
 import com.kirtik.foodrunner.util.ConnectionManager
+import org.json.JSONObject
+import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
 
@@ -20,6 +28,8 @@ class LoginActivity : AppCompatActivity() {
     lateinit var btnLogin : Button
     lateinit var txtforgotPassword : TextView
     lateinit var txtRegister : TextView
+
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
         txtforgotPassword = findViewById(R.id.txtForgotPassword)
         txtRegister = findViewById(R.id.txtRegister)
 
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
 
         txtRegister.setOnClickListener{
             val intent = Intent(this@LoginActivity,RegisterActivity::class.java)
@@ -45,7 +56,55 @@ class LoginActivity : AppCompatActivity() {
             if(checkMobile(etMobileNumber.text.toString()) && checkPassword(etPasssword.text.toString())){
 
                 if(ConnectionManager().checkConnectivity(this@LoginActivity)){
+                    val queue = Volley.newRequestQueue(this@LoginActivity)
+                    val url = "https://se-course-app.herokuapp.com/users/login"
 
+                    val jsonParams = JSONObject()
+
+                    jsonParams.put("phone",etMobileNumber.text.toString())
+                    jsonParams.put("password",etPasssword.text.toString())
+
+                    val jsonRequest = object : JsonObjectRequest(Request.Method.POST,url,jsonParams,
+                        Response.Listener{
+                            //println(it)
+                            try {
+                                val userId = it.getJSONObject("user").getString("_id")
+                                val userName = it.getJSONObject("user").getString("name")
+                                val userEmail = it.getJSONObject("user").getString("email")
+                                val userPhone = it.getJSONObject("user").getString("phone")
+                                val userLocation = it.getJSONObject("user").getString("location")
+                                val userPinCode = it.getJSONObject("user").getString("pincode")
+
+                                val userToken = it.getString("token")
+
+                                //println("$userId \n $userName \n $userEmail \n $userPhone \n $userLocation \n $userPinCode \n $userToken")
+
+
+                                savePreferences(userId,userName,userEmail,userPhone,userLocation,userPinCode,userToken)
+
+                                val intent = Intent(this@LoginActivity,HomePageActivity::class.java)
+                                startActivity(intent)
+                                finish()
+
+                            }
+                            catch (e : Exception){
+                                println(e)
+                                Toast.makeText(this@LoginActivity,"Exception",Toast.LENGTH_SHORT).show()
+                            }
+
+                        },Response.ErrorListener {
+                            Toast.makeText(this@LoginActivity,"$it",Toast.LENGTH_SHORT).show()
+                        }){
+
+                        override fun getHeaders(): MutableMap<String, String> {
+                            val headers = HashMap<String,String>()
+                            headers["content-type"] = "application/json"
+                            return  headers
+                        }
+                    }
+
+
+                    queue.add(jsonRequest)
                 }
                 else{
                     val dialog = AlertDialog.Builder(this@LoginActivity)
@@ -84,5 +143,15 @@ class LoginActivity : AppCompatActivity() {
             return false
         }
         return true
+    }
+
+    fun savePreferences(userId:String,userName:String,userEmail:String,userPhone:String,userLocation:String,userPinCode : String,userToken:String){
+        sharedPreferences.edit().putBoolean("isLoggedIn",true).apply()
+        sharedPreferences.edit().putString("userName",userName).apply()
+        sharedPreferences.edit().putString("userEmail",userEmail).apply()
+        sharedPreferences.edit().putString("userPhone",userPhone).apply()
+        sharedPreferences.edit().putString("userLocation",userLocation).apply()
+        sharedPreferences.edit().putString("userPinCode",userPinCode).apply()
+        sharedPreferences.edit().putString("userToken",userToken).apply()
     }
 }
