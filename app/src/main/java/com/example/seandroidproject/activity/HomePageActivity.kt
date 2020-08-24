@@ -166,7 +166,7 @@ class HomePageActivity : AppCompatActivity() {
             AllItemsFragment()
         ).addToBackStack("Home").commit()
         drawerLayout.closeDrawers()
-        supportActionBar?.title = "All Restaurants"
+        supportActionBar?.title = "All Items"
         navigationView.setCheckedItem(R.id.home)
     }
 
