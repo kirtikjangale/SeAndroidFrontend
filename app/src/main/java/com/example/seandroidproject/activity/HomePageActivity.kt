@@ -1,6 +1,8 @@
 package com.example.seandroidproject.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.wifi.hotspot2.pps.HomeSp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,11 +31,16 @@ class HomePageActivity : AppCompatActivity() {
 
     var previousMenuItem : MenuItem? = null
 
-    // just for testing ==> to be connected with backend
+    lateinit var sharedPreferences: SharedPreferences
+
     var isLoggedIn = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
+
+        isLoggedIn = sharedPreferences.getBoolean("isLoggedIn",false)
 
         if (isLoggedIn) {
             setContentView(R.layout.activity_home_page)
@@ -44,8 +51,11 @@ class HomePageActivity : AppCompatActivity() {
             navigationView = findViewById(R.id.navigationView)
             drawerLayout = findViewById(R.id.drawerLayout)
 
+
+
             val navigationView = findViewById<NavigationView>(R.id.navigationView)
             val headerView = navigationView.getHeaderView(0)
+
 //        val navUsername = headerView.findViewById<View>(R.id.txtName) as TextView
 //        val navMobileNumber = headerView.findViewById<View>(R.id.txtNumber) as TextView
 
@@ -115,14 +125,7 @@ class HomePageActivity : AppCompatActivity() {
                         supportActionBar?.title = "My Listings"
                     }
 
-//                R.id.drawer_logout ->{
-//                    supportFragmentManager.beginTransaction().replace(
-//                        R.id.frame,
-//                        LogoutFragment()
-//                    ).commit()
-//                    drawerLayout.closeDrawers()
-//                    supportActionBar?.title = "Logout"
-//                }
+
                 }
 
                 return@setNavigationItemSelectedListener true
@@ -155,71 +158,7 @@ class HomePageActivity : AppCompatActivity() {
 
             openHome()
 
-            navigationView.setNavigationItemSelectedListener {
 
-                if(previousMenuItem != null){
-                    previousMenuItem?.isChecked = false
-                }
-                it.isCheckable = true
-                it.isChecked = true
-                previousMenuItem = it
-
-                when(it.itemId){
-//                    R.id.home ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            AllItemsFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "All Items"
-//                    }
-//                    R.id.wishList ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            WishlistFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "Wishlist"
-//                    }
-//                    R.id.sell ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            SellItemsFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "Post Item"
-//                    }
-//
-//                    R.id.profile ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            ProfileFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "My Profile"
-//                    }
-//
-//                    R.id.listings ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            MyListingsFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "My Listings"
-//                    }
-//
-//                    R.id.drawer_logout ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            LogoutFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "Logout"
-//                    }
-                }
-
-                return@setNavigationItemSelectedListener true
-            }
         }
 
 
