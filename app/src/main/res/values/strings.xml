@@ -8,4 +8,7 @@
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
 
+    //local file name
+    <string name="preference_file_name">ReuseNation Preferences</string>
+
 </resources>

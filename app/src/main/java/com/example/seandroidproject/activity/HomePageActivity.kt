@@ -1,18 +1,23 @@
 package com.example.seandroidproject.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.seandroidproject.R
 import com.example.seandroidproject.fragment.*
 import com.google.android.material.navigation.NavigationView
+
 
 class HomePageActivity : AppCompatActivity() {
 
@@ -23,6 +28,9 @@ class HomePageActivity : AppCompatActivity() {
     lateinit var navigationView : NavigationView
 
     var previousMenuItem : MenuItem? = null
+    var isLoggedIn : Boolean =false
+
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +42,9 @@ class HomePageActivity : AppCompatActivity() {
         navigationView = findViewById(R.id.navigationView)
         drawerLayout = findViewById(R.id.drawerLayout)
 
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
+        isLoggedIn = sharedPreferences.getBoolean("isLoggedIn",false)
+
         val navigationView = findViewById<NavigationView>(R.id.navigationView)
         val headerView = navigationView.getHeaderView(0)
         val navUsername = headerView.findViewById<View>(R.id.txtName) as TextView
@@ -41,7 +52,8 @@ class HomePageActivity : AppCompatActivity() {
 
         setUpToolbar()
 
-        val actionBarDrawerToggle = ActionBarDrawerToggle(this@HomePageActivity,drawerLayout,
+        val actionBarDrawerToggle = ActionBarDrawerToggle(
+            this@HomePageActivity, drawerLayout,
             R.string.open_drawer,
             R.string.close_drawer
         )
@@ -51,6 +63,20 @@ class HomePageActivity : AppCompatActivity() {
         actionBarDrawerToggle.syncState()
 
         openHome()
+
+
+        val menu: Menu = navigationView.menu
+
+
+        if(isLoggedIn){
+            menu.findItem(R.id.login).isVisible = false
+        }else{
+            menu.findItem(R.id.logout).isVisible = false
+            menu.findItem(R.id.wishList).isVisible = false
+            menu.findItem(R.id.sell).isVisible = false
+            menu.findItem(R.id.listings).isVisible = false
+            menu.findItem(R.id.profile).isVisible = false
+        }
 
         navigationView.setNavigationItemSelectedListener {
 
@@ -62,7 +88,7 @@ class HomePageActivity : AppCompatActivity() {
             previousMenuItem = it
 
             when(it.itemId){
-                R.id.home ->{
+                R.id.home -> {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frame,
                         AllItemsFragment()
@@ -70,7 +96,7 @@ class HomePageActivity : AppCompatActivity() {
                     drawerLayout.closeDrawers()
                     supportActionBar?.title = "All Items"
                 }
-                R.id.wishList ->{
+                R.id.wishList -> {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frame,
                         WishlistFragment()
@@ -78,7 +104,7 @@ class HomePageActivity : AppCompatActivity() {
                     drawerLayout.closeDrawers()
                     supportActionBar?.title = "Wishlist"
                 }
-                R.id.sell ->{
+                R.id.sell -> {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frame,
                         SellItemsFragment()
@@ -87,7 +113,7 @@ class HomePageActivity : AppCompatActivity() {
                     supportActionBar?.title = "Post Item"
                 }
 
-                R.id.profile ->{
+                R.id.profile -> {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frame,
                         ProfileFragment()
@@ -96,7 +122,7 @@ class HomePageActivity : AppCompatActivity() {
                     supportActionBar?.title = "My Profile"
                 }
 
-                R.id.listings ->{
+                R.id.listings -> {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frame,
                         MyListingsFragment()
@@ -105,13 +131,20 @@ class HomePageActivity : AppCompatActivity() {
                     supportActionBar?.title = "My Listings"
                 }
 
-                R.id.logout ->{
+                R.id.logout -> {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.frame,
                         LogoutFragment()
                     ).commit()
                     drawerLayout.closeDrawers()
                     supportActionBar?.title = "Logout"
+                }
+
+                R.id.login->{
+                    val intent = Intent(this@HomePageActivity,LoginActivity::class.java)
+                    startActivity(intent)
+                    drawerLayout.closeDrawers()
+                    finish()
                 }
             }
 
@@ -150,7 +183,7 @@ class HomePageActivity : AppCompatActivity() {
     override fun onBackPressed() {
 
         when(supportFragmentManager.findFragmentById(R.id.frame)){
-            !is AllItemsFragment ->openHome()
+            !is AllItemsFragment -> openHome()
             else->super.onBackPressed()
         }
 
