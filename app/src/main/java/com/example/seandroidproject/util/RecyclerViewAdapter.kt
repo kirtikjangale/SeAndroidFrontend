@@ -4,19 +4,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
 import kotlinx.android.synthetic.main.drawer_header.view.*
 import kotlinx.android.synthetic.main.recycler_allitems_row.view.*
 
-class RecyclerViewAdapter(val arrayList: ArrayList<ItemModel>, val context: Context):
-    RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun bindItems(model: ItemModel) {
-            itemView.txtName.text = model.name
-            itemView.txtSellerName.text = model.sellerName
-            itemView.txtPrice.text = model.price.toString()
-        }
+class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+
+
+    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+
+        val name : TextView = view.findViewById(R.id.txtProductName)
+        val sellerName : TextView = view.findViewById(R.id.txtSellerName)
+        val price : TextView = view.findViewById(R.id.txtPrice)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,10 +28,15 @@ class RecyclerViewAdapter(val arrayList: ArrayList<ItemModel>, val context: Cont
     }
 
     override fun getItemCount(): Int {
-        return arrayList.size
+        return items.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(arrayList[position])
+
+        val item = items[position]
+
+        holder.name.text = item.name
+        holder.sellerName.text = item.sellerName
+        holder.price.text = item.price.toString()
     }
 }

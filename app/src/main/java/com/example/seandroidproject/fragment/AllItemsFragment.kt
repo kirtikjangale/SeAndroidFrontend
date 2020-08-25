@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
 import com.example.seandroidproject.util.ItemModel
 import com.example.seandroidproject.util.RecyclerViewAdapter
@@ -15,10 +16,16 @@ import kotlinx.android.synthetic.main.fragment_all_items.*
 
 class AllItemsFragment : Fragment() {
 
+    lateinit var recyclerAllItems : RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val view = inflater.inflate(R.layout.fragment_all_items, container, false)
+
+        recyclerAllItems = view.findViewById(R.id.recycler_allitems)
 
         // dummy data
         val arrayList = ArrayList<ItemModel>()
@@ -31,12 +38,12 @@ class AllItemsFragment : Fragment() {
         arrayList.add(ItemModel("OnePlus 7", "Nikhil7", 39999.9, ""))
 
         val itemsListAdapter = RecyclerViewAdapter(arrayList, activity as Context)
-        recycler_allitems.layoutManager = LinearLayoutManager(activity)
-        recycler_allitems.adapter = itemsListAdapter
+        recyclerAllItems.layoutManager = LinearLayoutManager(activity)
+        recyclerAllItems.adapter = itemsListAdapter
 
         // Inflate the layout for this fragment
         // just some basic data to display
-        return inflater.inflate(R.layout.fragment_all_items, container, false)
+        return view
     }
 
 }
