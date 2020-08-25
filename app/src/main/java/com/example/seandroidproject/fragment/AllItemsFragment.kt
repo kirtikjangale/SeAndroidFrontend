@@ -31,7 +31,7 @@ class AllItemsFragment : Fragment() {
         arrayList.add(ItemModel("OnePlus 7", "Nikhil7", 39999.9, ""))
 
         val itemsListAdapter = RecyclerViewAdapter(arrayList, activity as Context)
-        recycler_allitems.layoutManager = LinearLayoutManager(activity as Context)
+        recycler_allitems.layoutManager = LinearLayoutManager(activity)
         recycler_allitems.adapter = itemsListAdapter
 
         // Inflate the layout for this fragment
