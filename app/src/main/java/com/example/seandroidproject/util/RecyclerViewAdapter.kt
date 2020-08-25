@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
-import kotlinx.android.synthetic.main.drawer_header.view.*
-import kotlinx.android.synthetic.main.recycler_allitems_row.view.*
 
 class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
