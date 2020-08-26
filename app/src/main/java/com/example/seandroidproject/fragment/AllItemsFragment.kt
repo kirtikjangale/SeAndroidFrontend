@@ -14,7 +14,6 @@ import com.example.seandroidproject.util.ItemModel
 import com.example.seandroidproject.util.RecyclerViewAdapter
 import com.google.gson.GsonBuilder
 import okhttp3.*
-import okhttp3.internal.wait
 import java.io.IOException
 
 

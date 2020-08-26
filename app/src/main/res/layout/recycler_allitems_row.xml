@@ -80,42 +80,19 @@
 
         </RelativeLayout>
 
-<!--        <RelativeLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1.2">-->
-
-<!--            <com.github.ivbaranov.mfb.MaterialFavoriteButton-->
-<!--                android:id="@+id/btnFavourite"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:mfb_animate_favorite="true"-->
-<!--                app:mfb_animate_unfavorite="false"-->
-<!--                app:mfb_bounce_duration="200"-->
-<!--                app:mfb_color="black"-->
-<!--                app:mfb_padding="12"-->
-<!--                app:mfb_rotation_angle="0"-->
-<!--                app:mfb_rotation_duration="200"-->
-<!--                app:mfb_size="48"-->
-<!--                app:mfb_state="false"-->
-<!--                app:mfb_type="heart"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginTop="20dp"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/txtItemPrice"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/btnFavourite"-->
-<!--                android:text="Price"-->
-<!--                android:drawableLeft="@drawable/rupees"-->
-<!--                android:padding="2dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:textSize="16sp"/>-->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2">
 
 
-
-<!--        </RelativeLayout>-->
+            <Button
+                android:id="@+id/btnFavorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fav"
+                />
+        </RelativeLayout>
 
 
     </LinearLayout>
