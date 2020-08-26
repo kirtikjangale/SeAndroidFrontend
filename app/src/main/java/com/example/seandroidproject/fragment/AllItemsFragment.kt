@@ -31,17 +31,8 @@ class AllItemsFragment : Fragment() {
 
         recyclerAllItems = view.findViewById(R.id.recycler_allitems)
 
-        // dummy data
-        fetchJson()
-//        arrayList.add(ItemModel("OnePlus 1", "Nikhil1", 3.9, ""))
-//        arrayList.add(ItemModel("OnePlus 2", "Nikhil2", 39.9, ""))
-//        arrayList.add(ItemModel("OnePlus 3", "Nikhil3", 399.9, ""))
-//        arrayList.add(ItemModel("OnePlus 4", "Nikhil4", 3999.9, ""))
-//        arrayList.add(ItemModel("OnePlus 5", "Nikhil5", 39999.9, ""))
-//        arrayList.add(ItemModel("OnePlus 6", "Nikhil6", 39999.9, ""))
-//        arrayList.add(ItemModel("OnePlus 7", "Nikhil7", 39999.9, ""))
-
         recyclerAllItems.layoutManager = LinearLayoutManager(activity)
+        fetchJson()
         // Inflate the layout for this fragment
         // just some basic data to display
 
