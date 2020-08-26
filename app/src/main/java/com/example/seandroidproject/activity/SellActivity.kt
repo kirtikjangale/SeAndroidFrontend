@@ -31,7 +31,7 @@ class SellActivity : AppCompatActivity() {
     lateinit var imageButton: Button
     lateinit var sendButton: Button
     var imageData: ByteArray? = null
-    lateinit var uri : Uri
+    var uri = arrayListOf<Uri>()
 
     lateinit var sharedPreferences : SharedPreferences
 
@@ -65,6 +65,8 @@ class SellActivity : AppCompatActivity() {
     private fun launchGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
@@ -78,14 +80,37 @@ class SellActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            uri = data?.data!!
-            imageView.setImageURI(uri)
-            createImageData(uri)
+//            val temp = data?.data!!
+//            //imageView.setImageURI(temp)
+//            createImageData(temp)
+//
+//            uri.add(temp)
+
+            if (data?.getClipData() != null) {
+                var count = data.clipData!!.itemCount
+
+                for (i in 0..count - 1) {
+                    var imageUri: Uri = data.clipData!!.getItemAt(i).uri
+                    //     iv_image.setImageURI(imageUri) Here you can assign your Image URI to the ImageViews
+                    uri.add(imageUri)
+                }
+
+            } else if (data?.getData() != null) {
+                // if single image is selected
+
+                var imageUri: Uri? = data.data
+                //   iv_image.setImageURI(imageUri) Here you can assign the picked image uri to your imageview
+                if (imageUri != null) {
+                    uri.add(imageUri)
+                }
+            }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun uploadFile(fileUri: Uri) {
+    private fun uploadFile(fileUri: List<Uri>) {
+
+        println(fileUri)
 
         val BASE_URL = "https://se-course-app.herokuapp.com/"
 
@@ -104,18 +129,26 @@ class SellActivity : AppCompatActivity() {
         val service: FileUploadService = retrofit.create(FileUploadService::class.java)
 
         // use the FileUtils to get the actual file by uri
-        val file = FileUtils.getFile(this, fileUri)
 
-        // create RequestBody instance from file
-        val requestFile = RequestBody.create(
-            MediaType.parse(contentResolver.getType(fileUri).toString()),
-            file
-        )
+        val gallery= arrayListOf<MultipartBody.Part> ()
+
+        for(uri in fileUri){
+            val file = FileUtils.getFile(this, uri)
+
+            // create RequestBody instance from file
+            val requestFile = RequestBody.create(
+                MediaType.parse(contentResolver.getType(uri).toString()),
+                file
+            )
+            gallery.add(MultipartBody.Part.createFormData("gallery", file.name, requestFile))
+        }
+
+
 
         // MultipartBody.Part is used to send also the actual file name
-        val gallery = MultipartBody.Part.createFormData("gallery", file.name, requestFile)
+       // val gallery = MultipartBody.Part.createFormData("gallery", file.name, requestFile)
 
-        val nameZ ="Physics"
+        val nameZ ="CSE"
         val priceZ = "45"
         val used_forZ="2 yrs"
         val specificationsZ ="4th edition"

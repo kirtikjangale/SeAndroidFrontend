@@ -21,7 +21,7 @@ interface FileUploadService {
         @Part("specifications") specifications: RequestBody?,
         @Part("pincode") pincode: RequestBody?,
         @Part("location") location: RequestBody?,
-        @Part gallery: MultipartBody.Part?
+        @Part gallery: List<MultipartBody.Part?>
 
     ): Call<ResponseBody?>?
 }
