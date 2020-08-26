@@ -40,6 +40,12 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.recyclerview:recyclerview-selection:1.0.0"
 
+    //okHTTP
+    implementation "com.squareup.okhttp3:okhttp:4.8.1"
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.6'
+
     //Favourite Button
     implementation 'com.github.ivbaranov:materialfavoritebutton:0.1.5'
 

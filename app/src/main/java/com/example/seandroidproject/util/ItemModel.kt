@@ -2,7 +2,9 @@ package com.example.seandroidproject.util
 
 data class ItemModel (
     var name: String = "Product Name",
-    var sellerName: String = "Seller Name",
     var price: Double? = 0.0,
-    var imgURL: String = ""
+    var _id: String = "",
+    var used_for: String = "1 day",
+    var pincode: Int = 0,
+    var img: String = ""
 ) {}

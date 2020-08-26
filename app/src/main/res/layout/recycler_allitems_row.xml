@@ -61,11 +61,11 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtSellerName"
+                android:id="@+id/txtUsedFor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtProductName"
-                android:text="Seller Name"
+                android:text="Used For"
                 android:padding="2dp"
                 android:textSize="14sp"/>
 
@@ -73,7 +73,7 @@
                 android:id="@+id/txtPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtSellerName"
+                android:layout_below="@id/txtUsedFor"
                 android:text="Price"
                 android:padding="2dp"
                 android:textSize="14sp"/>

@@ -14,7 +14,7 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         val name : TextView = view.findViewById(R.id.txtProductName)
-        val sellerName : TextView = view.findViewById(R.id.txtSellerName)
+        val usedFor : TextView = view.findViewById(R.id.txtUsedFor)
         val price : TextView = view.findViewById(R.id.txtPrice)
 
 
@@ -34,7 +34,8 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
         val item = items[position]
 
         holder.name.text = item.name
-        holder.sellerName.text = item.sellerName
+//        holder.sellerName.text = item.sellerName
         holder.price.text = item.price.toString()
+        holder.usedFor.text = item.used_for
     }
 }
