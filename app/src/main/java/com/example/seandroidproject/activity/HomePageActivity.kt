@@ -1,12 +1,15 @@
 package com.example.seandroidproject.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.wifi.hotspot2.pps.HomeSp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -29,11 +32,22 @@ class HomePageActivity : AppCompatActivity() {
 
     var previousMenuItem : MenuItem? = null
 
+
     // just for testing ==> to be connected with backend
-    var isLoggedIn = true
+//     var isLoggedIn = true
+
+    lateinit var sharedPreferences: SharedPreferences
+
+    lateinit var btnLogin : Button
+    lateinit var btnSignUp : Button
+    lateinit var btnLogout : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
+
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn",false)
 
         if (isLoggedIn) {
             setContentView(R.layout.activity_home_page)
@@ -46,8 +60,15 @@ class HomePageActivity : AppCompatActivity() {
 
             val navigationView = findViewById<NavigationView>(R.id.navigationView)
             val headerView = navigationView.getHeaderView(0)
-//        val navUsername = headerView.findViewById<View>(R.id.txtName) as TextView
-//        val navMobileNumber = headerView.findViewById<View>(R.id.txtNumber) as TextView
+
+
+            val navUsername = headerView.findViewById<View>(R.id.txtName) as TextView
+            val navMobileNumber = headerView.findViewById<View>(R.id.txtNumber) as TextView
+
+            navUsername.text = sharedPreferences.getString("userName","Name")
+            navMobileNumber.text = sharedPreferences.getString("userPhone","Mobile Number")
+
+            btnLogout = headerView.findViewById<View>(R.id.drawer_logout) as Button
 
             setUpToolbar()
 
@@ -61,6 +82,7 @@ class HomePageActivity : AppCompatActivity() {
             actionBarDrawerToggle.syncState()
 
             openHome()
+
 
             navigationView.setNavigationItemSelectedListener {
 
@@ -115,18 +137,19 @@ class HomePageActivity : AppCompatActivity() {
                         supportActionBar?.title = "My Listings"
                     }
 
-//                R.id.drawer_logout ->{
-//                    supportFragmentManager.beginTransaction().replace(
-//                        R.id.frame,
-//                        LogoutFragment()
-//                    ).commit()
-//                    drawerLayout.closeDrawers()
-//                    supportActionBar?.title = "Logout"
-//                }
                 }
 
                 return@setNavigationItemSelectedListener true
             }
+
+            btnLogout.setOnClickListener {
+                sharedPreferences.edit().clear().commit()
+                val intent = Intent(this@HomePageActivity,HomePageActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+
         }
         else {
             setContentView(R.layout.activity_home_page_nouser)
@@ -139,8 +162,13 @@ class HomePageActivity : AppCompatActivity() {
 
             val navigationView = findViewById<NavigationView>(R.id.navigationView)
             val headerView = navigationView.getHeaderView(0)
-    //        val navUsername = headerView.findViewById<View>(R.id.txtName) as TextView
-    //        val navMobileNumber = headerView.findViewById<View>(R.id.txtNumber) as TextView
+//            val navUsername = headerView.findViewById<View>(R.id.txtName) as TextView
+//            val navMobileNumber = headerView.findViewById<View>(R.id.txtNumber) as TextView
+
+            btnLogin = headerView.findViewById<View>(R.id.drawer_login) as Button
+            btnSignUp = headerView.findViewById<View>(R.id.drawer_signup) as Button
+
+
 
             setUpToolbar()
 
@@ -164,62 +192,25 @@ class HomePageActivity : AppCompatActivity() {
                 it.isChecked = true
                 previousMenuItem = it
 
-                when(it.itemId){
-//                    R.id.home ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            AllItemsFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "All Items"
-//                    }
-//                    R.id.wishList ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            WishlistFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "Wishlist"
-//                    }
-//                    R.id.sell ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            SellItemsFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "Post Item"
-//                    }
-//
-//                    R.id.profile ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            ProfileFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "My Profile"
-//                    }
-//
-//                    R.id.listings ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            MyListingsFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "My Listings"
-//                    }
-//
-//                    R.id.drawer_logout ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            LogoutFragment()
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "Logout"
-//                    }
-                }
+
 
                 return@setNavigationItemSelectedListener true
             }
+
+
+            btnLogin.setOnClickListener {
+                val intent = Intent(this@HomePageActivity,LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            btnSignUp.setOnClickListener {
+                val intent = Intent(this@HomePageActivity,RegisterActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+
         }
 
 
