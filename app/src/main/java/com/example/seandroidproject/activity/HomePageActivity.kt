@@ -3,16 +3,13 @@ package com.example.seandroidproject.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.wifi.hotspot2.pps.HomeSp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
@@ -20,7 +17,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.seandroidproject.R
 import com.example.seandroidproject.fragment.*
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.drawer_header_nouser.*
 
 class HomePageActivity : AppCompatActivity() {
 
@@ -108,12 +104,11 @@ class HomePageActivity : AppCompatActivity() {
                         supportActionBar?.title = "Wishlist"
                     }
                     R.id.sell ->{
-                        supportFragmentManager.beginTransaction().replace(
-                            R.id.frame,
-                            SellItemsFragment()
-                        ).commit()
+                       val intent = Intent(this@HomePageActivity,SellActivity::class.java)
+                        startActivity(intent)
+                        finish()
                         drawerLayout.closeDrawers()
-                        supportActionBar?.title = "Post Item"
+                        //supportActionBar?.title = "Post Item"
                     }
 
                     R.id.profile ->{
