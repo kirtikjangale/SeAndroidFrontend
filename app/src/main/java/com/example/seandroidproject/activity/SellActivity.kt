@@ -5,7 +5,9 @@ package com.example.seandroidproject.activity
 import com.example.seandroidproject.R
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +33,8 @@ class SellActivity : AppCompatActivity() {
     var imageData: ByteArray? = null
     lateinit var uri : Uri
 
+    lateinit var sharedPreferences : SharedPreferences
+
     companion object {
         private const val IMAGE_PICK_CODE = 999
     }
@@ -41,6 +45,8 @@ class SellActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sell)
 
         imageView = findViewById(R.id.imageView)
+
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
 
         imageButton = findViewById(R.id.imageButton)
         imageButton.setOnClickListener {
@@ -109,12 +115,12 @@ class SellActivity : AppCompatActivity() {
         // MultipartBody.Part is used to send also the actual file name
         val gallery = MultipartBody.Part.createFormData("gallery", file.name, requestFile)
 
-        val nameZ ="HC Verma"
+        val nameZ ="Physics"
         val priceZ = "45"
         val used_forZ="2 yrs"
         val specificationsZ ="4th edition"
-        val pincodeZ ="425201"
-        val locationZ = "bhusawal"
+        val pincodeZ ="482943"
+        val locationZ = "tirupati"
 
 
         val name = RequestBody.create(MultipartBody.FORM, nameZ)
@@ -125,16 +131,17 @@ class SellActivity : AppCompatActivity() {
         val location = RequestBody.create(MultipartBody.FORM, locationZ)
 
 
+        println("Bearer "+ sharedPreferences.getString("userToken","-1").toString())
 
         // finally, execute the request
-        val call = service.upload(name,price,used_for,specifications,pincode,location,gallery)
+        val call = service.upload("Bearer "+ sharedPreferences.getString("userToken","-1").toString(),name,price,used_for,specifications,pincode,location,gallery)
         call!!.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(
                 call: Call<ResponseBody?>,
                 response: Response<ResponseBody?>
             ) {
                 Toast.makeText(this@SellActivity,"Success",Toast.LENGTH_LONG).show()
-                println(response.body())
+                println(response.body().toString())
                 println(response)
             }
 

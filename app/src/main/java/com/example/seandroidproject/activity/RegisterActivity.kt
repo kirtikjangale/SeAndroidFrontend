@@ -118,7 +118,7 @@ class RegisterActivity : AppCompatActivity() {
                         override fun getHeaders(): MutableMap<String, String> {
                             val headers = HashMap<String,String>()
                             headers["content-type"] = "application/json"
-                            headers["Authorization"] = "Bearer "+ sharedPreferences.getString("userToken","-1")
+                            headers["Authorization"] = "Bearer "+ sharedPreferences.getString("userToken","-1").toString()
                             return  headers
                         }
                     }
