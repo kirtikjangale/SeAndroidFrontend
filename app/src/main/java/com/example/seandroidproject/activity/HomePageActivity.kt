@@ -140,7 +140,7 @@ class HomePageActivity : AppCompatActivity() {
 
             btnLogout.setOnClickListener {
                 sharedPreferences.edit().clear().commit()
-                val intent = Intent(this@HomePageActivity,HomePageActivity::class.java)
+                val intent = Intent(this@HomePageActivity, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -220,7 +220,7 @@ class HomePageActivity : AppCompatActivity() {
             AllItemsFragment("517619", "ewaste")
         ).addToBackStack("Home").commit()
         drawerLayout.closeDrawers()
-        supportActionBar?.title = "All Items"
+        supportActionBar?.title = "ReuseNation"
         navigationView.setCheckedItem(R.id.home)
     }
 
