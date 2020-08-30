@@ -332,7 +332,7 @@ class SellActivity : AppCompatActivity() {
         )
         val location = RequestBody.create(
             MultipartBody.FORM, sharedPreferences.getString(
-                "userPinCode",
+                "userLocation",
                 "Unspecified"
             ).toString()
         )
