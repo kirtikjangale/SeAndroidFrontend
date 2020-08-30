@@ -107,7 +107,7 @@ class HomePageActivity : AppCompatActivity() {
                        val intent = Intent(this@HomePageActivity,SellActivity::class.java)
                         startActivity(intent)
                         finish()
-                        drawerLayout.closeDrawers()
+                       // drawerLayout.closeDrawers()
                         //supportActionBar?.title = "Post Item"
                     }
 
