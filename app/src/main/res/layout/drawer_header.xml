@@ -27,11 +27,11 @@
         >
 
         <TextView
-            android:id="@+id/pincode"
+            android:id="@+id/txtNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="Pin Code"
+            android:text="Number"
             android:textColor="#ffffff"
             android:textSize="18sp" />
 

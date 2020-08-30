@@ -216,7 +216,8 @@ class HomePageActivity : AppCompatActivity() {
     private fun openHome(){
         supportFragmentManager.beginTransaction().replace(
             R.id.frame,
-            AllItemsFragment()
+            // hardcoded defaults
+            AllItemsFragment("517619", "ewaste")
         ).addToBackStack("Home").commit()
         drawerLayout.closeDrawers()
         supportActionBar?.title = "All Items"

@@ -20,6 +20,7 @@ import androidx.core.view.isVisible
 import com.example.seandroidproject.R
 import com.example.seandroidproject.util.FileUtils
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -300,7 +301,7 @@ class SellActivity : AppCompatActivity() {
 
             // create RequestBody instance from file
             val requestFile = RequestBody.create(
-                MediaType.parse(contentResolver.getType(uri).toString()),
+                contentResolver.getType(uri).toString().toMediaTypeOrNull(),
                 file
             )
             gallery.add(MultipartBody.Part.createFormData("gallery", file.name, requestFile))
@@ -308,7 +309,7 @@ class SellActivity : AppCompatActivity() {
 
         val file = FileUtils.getFile(this, dpImage)
         val requestFile = RequestBody.create(
-            MediaType.parse(contentResolver.getType(dpImage).toString()),
+            contentResolver.getType(dpImage).toString().toMediaTypeOrNull(),
             file
         )
         val thumbnail = MultipartBody.Part.createFormData("thumbnail", file.name, requestFile)
