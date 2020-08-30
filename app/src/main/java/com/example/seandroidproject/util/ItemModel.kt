@@ -6,5 +6,6 @@ data class ItemModel (
     var _id: String = "",
     var used_for: String = "1 day",
     var pincode: Int = 0,
-    var img: String = ""
+    var photos: Array<String>,
+    var thumbnail: String = ""
 ) {}

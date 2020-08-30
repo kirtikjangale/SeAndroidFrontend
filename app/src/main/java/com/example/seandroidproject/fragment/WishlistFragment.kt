@@ -1,6 +1,7 @@
 package com.example.seandroidproject.fragment
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,8 @@ class WishlistFragment : Fragment() {
 
     lateinit var recyclerAllItems : RecyclerView
 
+    lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,13 +39,16 @@ class WishlistFragment : Fragment() {
 
     fun fetchJson(){
         println("fetching JSON data from backend...")
+        sharedPreferences = this.activity!!.getSharedPreferences(getString(R.string.preference_file_name),Context.MODE_PRIVATE)
+
+        val token = sharedPreferences.getString("userToken", "-1").toString()
 
         val url = "https://se-course-app.herokuapp.com/users/wishlist/me"
 
         val client = OkHttpClient()
 
         // authentication is hardcoded
-        val request = Request.Builder().url(url).addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjRiYjc2Y2Q3YzQ3MDAwMTc2ZGUzMTUiLCJpYXQiOjE1OTg3OTgwMDQsImV4cCI6MTU5OTQ4OTIwNH0.V-yJS5TBzP2lm3EJWMBUbI7TStgxQWepHQYrfaXfFbs").build()
+        val request = Request.Builder().url(url).addHeader("Authorization", "Bearer $token").build()
 
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {

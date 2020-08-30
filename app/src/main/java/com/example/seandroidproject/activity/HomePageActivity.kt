@@ -214,10 +214,11 @@ class HomePageActivity : AppCompatActivity() {
     }
 
     private fun openHome(){
+        val pinCode = sharedPreferences.getString("userPinCode", "560105").toString()
+
         supportFragmentManager.beginTransaction().replace(
             R.id.frame,
-            // hardcoded defaults
-            AllItemsFragment("517619", "ewaste")
+            AllItemsFragment(pinCode, "ewaste")
         ).addToBackStack("Home").commit()
         drawerLayout.closeDrawers()
         supportActionBar?.title = "ReuseNation"

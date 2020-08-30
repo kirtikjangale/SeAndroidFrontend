@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.drawer_header.*
 import kotlinx.android.synthetic.main.fragment_all_items.*
 import okhttp3.*
 import java.io.IOException
+import android.content.SharedPreferences
 
 
 class AllItemsFragment(default_pincode: String, default_category: String) : Fragment() {
@@ -160,7 +161,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
                 val resBody = response?.body?.string()
-//                println(resBody)
+                println(resBody)
 
                 val gson = GsonBuilder().create()
                 val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
