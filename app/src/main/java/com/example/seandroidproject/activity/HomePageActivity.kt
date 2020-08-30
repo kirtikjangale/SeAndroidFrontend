@@ -214,7 +214,7 @@ class HomePageActivity : AppCompatActivity() {
     }
 
     private fun openHome(){
-        val pinCode = sharedPreferences.getString("userPinCode", "560105").toString()
+        val pinCode = sharedPreferences.getString("userPinCode", "517619").toString()
 
         supportFragmentManager.beginTransaction().replace(
             R.id.frame,
