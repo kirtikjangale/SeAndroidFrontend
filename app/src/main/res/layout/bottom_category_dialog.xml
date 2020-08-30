@@ -39,7 +39,7 @@
                     android:id="@+id/category_ewaste"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="EWaste"
+                    android:text="Electronics"
                     android:textSize="18dp"
                     />
 
@@ -47,13 +47,13 @@
                     android:id="@+id/category_textwaste"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextBooks"
+                    android:text="Text Books"
                     android:textSize="18dp" />
                 <RadioButton
                     android:id="@+id/category_notewaste"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NoteBooks"
+                    android:text="Note Books"
                     android:textSize="18dp"
                     />
             </RadioGroup>

@@ -26,7 +26,6 @@ class WishlistFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_wishlist, container, false)
 
         recyclerAllItems = view.findViewById(R.id.recycler_allitems)
-
         recyclerAllItems.layoutManager = LinearLayoutManager(activity)
         fetchJson()
         // Inflate the layout for this fragment
@@ -38,12 +37,12 @@ class WishlistFragment : Fragment() {
     fun fetchJson(){
         println("fetching JSON data from backend...")
 
-        val url = "https://se-course-app.herokuapp.com/users/wishlist"
+        val url = "https://se-course-app.herokuapp.com/users/wishlist/me"
 
         val client = OkHttpClient()
 
         // authentication is hardcoded
-        val request = Request.Builder().url(url).addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjQ1ZmYxYmU0YTdmNjAwMTcyNWQwZmUiLCJpYXQiOjE1OTg0NjU2MDMsImV4cCI6MTU5OTE1NjgwM30.n5HaZnLmVfTjXJrgAap4RDW331WNPcqow2KRyIxbl0w").build()
+        val request = Request.Builder().url(url).addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjRiYjc2Y2Q3YzQ3MDAwMTc2ZGUzMTUiLCJpYXQiOjE1OTg3OTgwMDQsImV4cCI6MTU5OTQ4OTIwNH0.V-yJS5TBzP2lm3EJWMBUbI7TStgxQWepHQYrfaXfFbs").build()
 
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {

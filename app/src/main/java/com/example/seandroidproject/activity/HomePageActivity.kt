@@ -65,13 +65,6 @@ class HomePageActivity : AppCompatActivity() {
 
                 when(it.itemId){
                     R.id.home ->{
-//                        supportFragmentManager.beginTransaction().replace(
-//                            R.id.frame,
-//                            // hardcoded defaults
-//                            AllItemsFragment("517619", "ewaste")
-//                        ).commit()
-//                        drawerLayout.closeDrawers()
-//                        supportActionBar?.title = "All Items"
                         openHome()
                     }
                     R.id.wishList ->{
@@ -131,7 +124,7 @@ class HomePageActivity : AppCompatActivity() {
             AllItemsFragment("517619", "ewaste")
         ).addToBackStack("Home").commit()
         drawerLayout.closeDrawers()
-        supportActionBar?.title = "All Items"
+        supportActionBar?.title = "ReuseNation"
         navigationView.setCheckedItem(R.id.home)
     }
 

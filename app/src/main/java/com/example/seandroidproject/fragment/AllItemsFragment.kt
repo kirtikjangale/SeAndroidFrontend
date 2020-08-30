@@ -78,7 +78,17 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
         // add event listener to filter category
         val btn_filter: TextView = view.findViewById(R.id.btn_filter)
-        btn_filter.text = category_root.toString().toUpperCase()
+        when (category_root) {
+            "ewaste" -> {
+                btn_filter.text = "E-Waste"
+            }
+            "textwaste" -> {
+                btn_filter.text = "Text Books"
+            }
+            "notewaste" -> {
+                btn_filter.text = "Note Books"
+            }
+        }
 
         btn_filter.setOnClickListener {
 //            println("pin_code clicked")
@@ -110,20 +120,22 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                 when (new_category_id) {
                     R.id.category_ewaste -> {
                         editCategoryView.check(R.id.category_ewaste)
+                        btn_filter.text = "E-Waste"
                         category_root = "ewaste"
                     }
                     R.id.category_textwaste -> {
                         editCategoryView.check(R.id.category_textwaste)
+                        btn_filter.text = "Text Books"
                         category_root = "textwaste"
                     }
                     R.id.category_notewaste -> {
                         editCategoryView.check(R.id.category_notewaste)
+                        btn_filter.text = "Note Books"
                         category_root = "notewaste"
                     }
                 }
 
                 dialog.dismiss()
-                btn_filter.text = category_root.toString().toUpperCase()
                 fetchJson(pincode_root, category_root)
             }
 
