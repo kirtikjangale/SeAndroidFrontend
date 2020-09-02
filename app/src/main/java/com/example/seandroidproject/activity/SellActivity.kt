@@ -1,8 +1,6 @@
 package com.example.seandroidproject.activity
 
 //import androidx.appcompat.app.AppCompatActivity
-//import android.os.Bundle
-
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -53,9 +51,9 @@ class SellActivity : AppCompatActivity() {
     lateinit var toolbar : Toolbar
     lateinit var progressBar : RelativeLayout
 
-     var flag : Boolean = false
-     var dpfilter = false
-     var proceed  = false
+    var flag : Boolean = false
+    var dpfilter = false
+    var proceed  = false
 
 
     var waste = "ewaste"
@@ -316,7 +314,7 @@ class SellActivity : AppCompatActivity() {
 
 
         // MultipartBody.Part is used to send also the actual file name
-       // val gallery = MultipartBody.Part.createFormData("gallery", file.name, requestFile)
+        // val gallery = MultipartBody.Part.createFormData("gallery", file.name, requestFile)
 
 
 
