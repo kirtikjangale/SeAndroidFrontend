@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SellActivity"
+    android:background="#ffffff">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
+
+    <ScrollView
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgDp"
+                android:layout_below="@id/toolbar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/defphoto"
+                android:scaleType="centerCrop"
+                />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgDp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"/>
+
+            <EditText
+                android:id="@+id/itemName"
+                android:layout_below="@id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Product name"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+            <EditText
+                android:id="@+id/itemPrice"
+                android:layout_below="@id/itemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Selling Price"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:inputType="number"/>
+
+            <EditText
+                android:id="@+id/itemAge"
+                android:layout_below="@id/itemPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Item used Since"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+
+            <EditText
+                android:id="@+id/itemSpecs"
+                android:layout_below="@id/itemAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Specifications"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+            <EditText
+                android:id="@+id/itemAuthor"
+                android:layout_below="@id/itemSpecs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Author"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+            <EditText
+                android:id="@+id/itemEdition"
+                android:layout_below="@id/itemAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Edition"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:inputType="number"/>
+
+
+
+
+
+            <Button
+                android:id="@+id/imageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@id/itemEdition"
+                android:layout_marginTop="20dp"
+                android:text="Choose Images"/>
+
+            <TextView
+                android:id="@+id/txtImgSelected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_below="@id/imageButton"
+                android:text="0 images selected"
+                android:gravity="center_horizontal"/>
+
+            <Button
+                android:id="@+id/sendButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/imageButton"
+                android:text="Sell"
+                android:layout_marginBottom="30dp"/>
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+
+    <RelativeLayout
+        android:id="@+id/indeterminateBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        >
+
+    <ProgressBar
+        android:id="@+id/bufferBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

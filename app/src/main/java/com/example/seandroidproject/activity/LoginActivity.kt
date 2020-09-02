@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.seandroidproject.R
 import com.kirtik.foodrunner.util.ConnectionManager
+import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var btnLogin : Button
     lateinit var txtforgotPassword : TextView
     lateinit var txtRegister : TextView
+    lateinit var txtContinueNoLogin: TextView
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -42,11 +44,18 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         txtforgotPassword = findViewById(R.id.txtForgotPassword)
         txtRegister = findViewById(R.id.txtRegister)
+        txtContinueNoLogin = findViewById(R.id.txtContinueNoLogin)
 
         sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
 
         txtRegister.setOnClickListener{
             val intent = Intent(this@LoginActivity,RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        txtContinueNoLogin.setOnClickListener{
+            val intent = Intent(this@LoginActivity,HomePageActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -99,6 +108,7 @@ class LoginActivity : AppCompatActivity() {
                         override fun getHeaders(): MutableMap<String, String> {
                             val headers = HashMap<String,String>()
                             headers["content-type"] = "application/json"
+                            headers["Authorization"] = "Bearer "+ sharedPreferences.getString("userToken","-1").toString()
                             return  headers
                         }
                     }

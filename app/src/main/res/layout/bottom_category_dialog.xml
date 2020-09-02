@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/txtChangeCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:text="Change Items Category"
+            >
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/txtRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtChangeCategory"
+            android:layout_centerInParent="true"
+            >
+
+            <RadioGroup
+                android:id="@+id/category_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                >
+                <RadioButton
+                    android:id="@+id/category_ewaste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Electronics"
+                    android:textSize="18dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <RadioButton
+                    android:id="@+id/category_textwaste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Text Books"
+                    android:textSize="18dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <RadioButton
+                    android:id="@+id/category_notewaste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Note Books"
+                    android:textSize="18dp"
+                    />
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtRadioGroup"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            >
+
+            <Button
+                android:id="@+id/btn_change_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="Change"></Button>
+
+            <Button
+                android:id="@+id/btn_cancel_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_change_pincode"
+                android:layout_marginLeft="20dp"
+                android:text="Cancel"></Button>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

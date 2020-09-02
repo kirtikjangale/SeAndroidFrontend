@@ -3,16 +3,13 @@ package com.example.seandroidproject.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.wifi.hotspot2.pps.HomeSp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
@@ -20,7 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.seandroidproject.R
 import com.example.seandroidproject.fragment.*
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.drawer_header_nouser.*
+
 
 class HomePageActivity : AppCompatActivity() {
 
@@ -92,12 +89,7 @@ class HomePageActivity : AppCompatActivity() {
 
                 when(it.itemId){
                     R.id.home ->{
-                        supportFragmentManager.beginTransaction().replace(
-                            R.id.frame,
-                            AllItemsFragment()
-                        ).commit()
-                        drawerLayout.closeDrawers()
-                        supportActionBar?.title = "All Items"
+                        openHome()
                     }
                     R.id.wishList ->{
                         supportFragmentManager.beginTransaction().replace(
@@ -108,12 +100,11 @@ class HomePageActivity : AppCompatActivity() {
                         supportActionBar?.title = "Wishlist"
                     }
                     R.id.sell ->{
-                        supportFragmentManager.beginTransaction().replace(
-                            R.id.frame,
-                            SellItemsFragment()
-                        ).commit()
-                        drawerLayout.closeDrawers()
-                        supportActionBar?.title = "Post Item"
+                       val intent = Intent(this@HomePageActivity,SellActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                       // drawerLayout.closeDrawers()
+                        //supportActionBar?.title = "Post Item"
                     }
 
                     R.id.profile ->{
@@ -134,6 +125,14 @@ class HomePageActivity : AppCompatActivity() {
                         supportActionBar?.title = "My Listings"
                     }
 
+//                R.id.drawer_logout ->{
+//                    supportFragmentManager.beginTransaction().replace(
+//                        R.id.frame,
+//                        LogoutFragment()
+//                    ).commit()
+//                    drawerLayout.closeDrawers()
+//                    supportActionBar?.title = "Logout"
+//                }
                 }
 
                 return@setNavigationItemSelectedListener true
@@ -141,7 +140,7 @@ class HomePageActivity : AppCompatActivity() {
 
             btnLogout.setOnClickListener {
                 sharedPreferences.edit().clear().commit()
-                val intent = Intent(this@HomePageActivity,HomePageActivity::class.java)
+                val intent = Intent(this@HomePageActivity, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -215,12 +214,14 @@ class HomePageActivity : AppCompatActivity() {
     }
 
     private fun openHome(){
+        val pinCode = sharedPreferences.getString("userPinCode", "517619").toString()
+
         supportFragmentManager.beginTransaction().replace(
             R.id.frame,
-            AllItemsFragment()
+            AllItemsFragment(pinCode, "ewaste")
         ).addToBackStack("Home").commit()
         drawerLayout.closeDrawers()
-        supportActionBar?.title = "All Items"
+        supportActionBar?.title = "ReuseNation"
         navigationView.setCheckedItem(R.id.home)
     }
 
