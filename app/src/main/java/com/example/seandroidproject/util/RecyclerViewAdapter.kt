@@ -3,6 +3,8 @@ package com.example.seandroidproject.util
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.icu.number.NumberFormatter.with
+import android.icu.number.NumberRangeFormatter.with
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +54,15 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
         holder.price.text = item.price.toString()
         holder.usedFor.text = item.used_for
 
-        Picasso.with(context).load("$baseUrl/${item.thumbnail}").into(holder.imageview)
+       // Picasso.with(context).load("$baseUrl/${item.thumbnail}").into(holder.imageview)
+
+
+        Picasso.get()
+            .load("$baseUrl/${item.thumbnail}")
+            .fit()
+            .centerInside()
+            .placeholder(R.drawable.loading)
+            .into(holder.imageview)
 
         holder.itemView.btnFavorite.setOnClickListener {
             val url = "https://se-course-app.herokuapp.com/users/add/wishlist"

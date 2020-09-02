@@ -155,7 +155,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
-                val resBody = response?.body()?.toString()
+                val resBody = response?.body?.string()
                 println(resBody)
 
                 val gson = GsonBuilder().create()
