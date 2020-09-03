@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
 import com.example.seandroidproject.util.ItemModel
 import com.example.seandroidproject.util.RecyclerViewAdapter
+import com.example.seandroidproject.util.RecyclerViewAdapterWishlist
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 
 class WishlistFragment : Fragment() {
 
-    lateinit var recyclerAllItems : RecyclerView
+    lateinit var recyclerWishlistItems : RecyclerView
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -28,8 +29,8 @@ class WishlistFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_wishlist, container, false)
 
-        recyclerAllItems = view.findViewById(R.id.recycler_allitems)
-        recyclerAllItems.layoutManager = LinearLayoutManager(activity)
+        recyclerWishlistItems = view.findViewById(R.id.recycler_wishlist)
+        recyclerWishlistItems.layoutManager = LinearLayoutManager(activity)
         fetchJson()
         // Inflate the layout for this fragment
         // just some basic data to display
@@ -59,10 +60,10 @@ class WishlistFragment : Fragment() {
                 val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
 //                println(itemListData)
 
-                val itemsListAdapter = RecyclerViewAdapter(itemListData, activity as Context)
+                val itemsListAdapter = RecyclerViewAdapterWishlist(itemListData, activity as Context)
 
                 activity!!.runOnUiThread{
-                    recyclerAllItems.adapter = itemsListAdapter
+                    recyclerWishlistItems.adapter = itemsListAdapter
                 }
             }
             override fun onFailure(call: Call, e: IOException) {

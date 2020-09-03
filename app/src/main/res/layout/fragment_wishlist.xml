@@ -12,10 +12,9 @@
 <!--        android:text="@string/hello_blank_fragment" />-->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_allitems"
+        android:id="@+id/recycler_wishlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         />
 
 </FrameLayout>
