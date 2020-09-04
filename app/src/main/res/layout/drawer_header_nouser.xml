@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="240dp"
+    android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
     <ImageView
@@ -42,5 +42,17 @@
 
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Login to access full features"
+        android:textColor="#ffffff"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:textSize="15dp"
+        >
+    </TextView>
+
 
 </LinearLayout>
