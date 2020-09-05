@@ -166,7 +166,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                     val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
 //                println(itemListData)
 
-                    val itemsListAdapter = RecyclerViewAdapter(itemListData, activity as Context)
+                    val itemsListAdapter = RecyclerViewAdapter(itemListData, activity as Context,category)
 
                     activity!!.runOnUiThread{
                         if(itemListData.isEmpty()){

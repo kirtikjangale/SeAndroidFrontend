@@ -91,14 +91,14 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         btnViewProfile.visibility = View.GONE
 
 
-//        if(intent != null){
-//            id = intent.getStringExtra("_id")
-//
-//        }
-//        else {
-//            Toast.makeText(this@DetailViewEwasteActivity, "Intent is null", Toast.LENGTH_SHORT).show()
-//            finish()
-//        }
+        if(intent != null){
+            id = intent.getStringExtra("_id")
+
+        }
+        else {
+            Toast.makeText(this@DetailViewEwasteActivity, "Intent is null", Toast.LENGTH_SHORT).show()
+            finish()
+        }
 
 
 
@@ -106,7 +106,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
         if(ConnectionManager().checkConnectivity(this@DetailViewEwasteActivity)){
             val queue = Volley.newRequestQueue(this@DetailViewEwasteActivity)
-            val url = "https://se-course-app.herokuapp.com/ewaste/view/5f4be479d7c47000176de328"
+            val url = "https://se-course-app.herokuapp.com/ewaste/view/$id"
 
 
             val jsonRequest = @SuppressLint("SetTextI18n")

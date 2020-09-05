@@ -2,6 +2,7 @@ package com.example.seandroidproject.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.number.NumberFormatter.with
 import android.icu.number.NumberRangeFormatter.with
@@ -9,10 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
+import com.example.seandroidproject.activity.DetailViewEwasteActivity
+import com.example.seandroidproject.activity.DetailViewNotewasteActivity
+import com.example.seandroidproject.activity.DetailViewTextWasteActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
@@ -25,7 +31,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context,val category : String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     lateinit var sharedPreferences: SharedPreferences
     lateinit var userWishlist: Array<String>
@@ -36,6 +42,7 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
         val usedFor : TextView = view.findViewById(R.id.txtUsedFor)
         val price : TextView = view.findViewById(R.id.txtPrice)
         val imageview: ImageView = view.findViewById(R.id.itemImage)
+        val llContent : LinearLayout = view.findViewById(R.id.llContent)
 
     }
 
@@ -115,6 +122,27 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
                     }
                 })
                 Toast.makeText(context, "added to wishlist", Toast.LENGTH_SHORT).show()
+            }
+
+            holder.llContent.setOnClickListener{
+                //Toast.makeText(context, "$category", Toast.LENGTH_SHORT).show()
+
+                if(category=="ewaste"){
+                    val intent = Intent(context,DetailViewEwasteActivity::class.java)
+                    intent.putExtra("_id",item._id)
+                    startActivity(context,intent,null)
+
+                }
+                else if(category=="textwaste"){
+                    val intent = Intent(context,DetailViewTextWasteActivity::class.java)
+                    intent.putExtra("_id",item._id)
+                    startActivity(context,intent,null)
+                }
+                else if(category=="notewaste"){
+                    val intent = Intent(context,DetailViewNotewasteActivity::class.java)
+                    intent.putExtra("_id",item._id)
+                    startActivity(context,intent,null)
+                }
             }
 
 //            if(token != "-1"){
