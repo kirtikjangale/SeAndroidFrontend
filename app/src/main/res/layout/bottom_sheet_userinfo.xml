@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:weightSum="10"
+        android:background="@color/colorLtGreen"
 
         >
 
@@ -49,7 +50,7 @@
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:drawableLeft="@drawable/ic_phone"
-                android:textColor="#0C78D8"
+                android:textColor="#34638C"
                 android:contextClickable="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"

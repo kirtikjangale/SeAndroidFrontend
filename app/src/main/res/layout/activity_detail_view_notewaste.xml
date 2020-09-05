@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize"
-        android:background="#1DB954"
+        android:background="@color/colorLtGreen"
         android:theme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <ScrollView
@@ -125,7 +125,7 @@
                     android:layout_height="match_parent"
                     android:text="View Seller Info"
                     android:textColor="#000000"
-                    android:background="#1DB954"
+                    android:background="@color/colorLtGreen"
                     />
 
 

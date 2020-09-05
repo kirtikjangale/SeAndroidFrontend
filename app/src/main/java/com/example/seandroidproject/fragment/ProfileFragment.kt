@@ -22,6 +22,7 @@ import com.example.seandroidproject.util.ItemModel
 import com.example.seandroidproject.util.ProfileModel
 import com.example.seandroidproject.util.RecyclerViewAdapterWishlist
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.navigation.NavigationView
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -36,6 +37,7 @@ import java.lang.Override as Override
 class ProfileFragment : Fragment() {
 
     lateinit var sharedPreferences: SharedPreferences
+    lateinit var navigationView : NavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +59,12 @@ class ProfileFragment : Fragment() {
         val btn_location: Button = view.findViewById(R.id.btn_location_edit)
 
         val btn_done: Button = view.findViewById(R.id.btn_profile_done)
+
+        val navigationView = activity?.findViewById<NavigationView>(R.id.navigationView)
+        val headerView = navigationView?.getHeaderView(0)
+
+        val navUsername = headerView?.findViewById<View>(R.id.txtName) as TextView
+        val navMobileNumber = headerView?.findViewById<View>(R.id.txtNumber) as TextView
 
         btn_name.setOnClickListener {
             activity!!.runOnUiThread{
@@ -138,6 +146,10 @@ class ProfileFragment : Fragment() {
                                 dialog_view.findViewById(R.id.btn_change_pincode)
                             changeProfileNameBtn.setOnClickListener {
                                 profile_name.text = editProfileName.text.toString()
+
+                                sharedPreferences.edit().putString("userName",editProfileName.text.toString()).apply()
+                                navUsername.text = editProfileName.text.toString()
+
                                 dialog.dismiss()
                             }
 
@@ -163,6 +175,8 @@ class ProfileFragment : Fragment() {
                                 dialog_view.findViewById(R.id.btn_change_pincode)
                             changeProfileEmailBtn.setOnClickListener {
                                 profile_email.text = editProfileEmail.text.toString()
+
+                                sharedPreferences.edit().putString("userEmail",editProfileEmail.text.toString()).apply()
                                 dialog.dismiss()
                             }
 
@@ -189,6 +203,7 @@ class ProfileFragment : Fragment() {
                                 dialog_view.findViewById(R.id.btn_change_pincode)
                             changeProfilePincodeBtn.setOnClickListener {
                                 profile_pincode.text = editProfilePincode.text.toString()
+                                sharedPreferences.edit().putString("userPinCode",editProfilePincode.text.toString()).apply()
                                 dialog.dismiss()
                             }
 
@@ -214,6 +229,8 @@ class ProfileFragment : Fragment() {
                                 dialog_view.findViewById(R.id.btn_change_pincode)
                             changeProfilePhoneBtn.setOnClickListener {
                                 profile_phone.text = editProfilePhone.text.toString()
+                                sharedPreferences.edit().putString("userPhone",editProfilePhone.text.toString()).apply()
+                                navMobileNumber.text = editProfilePhone.text.toString()
                                 dialog.dismiss()
                             }
 
@@ -240,6 +257,7 @@ class ProfileFragment : Fragment() {
                                 dialog_view.findViewById(R.id.btn_change_pincode)
                             changeProfileLocationBtn.setOnClickListener {
                                 profile_location.text = editProfileLocation.text.toString()
+                                sharedPreferences.edit().putString("userLocation",editProfileLocation.text.toString()).apply()
                                 dialog.dismiss()
                             }
 
