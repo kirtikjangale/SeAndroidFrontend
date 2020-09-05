@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/profile_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -290,7 +291,7 @@
             android:id="@+id/btn_profile_done"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="DONE"
+            android:text="Update Changes"
             android:background="#5cb85c"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="30dp"
@@ -299,5 +300,29 @@
             ></Button>
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/no_item_modal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        >
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/seapp"
+            ></ImageView>
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="20dp"
+            android:text="No Item Listings in the selected region and category"
+            >
+        </TextView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

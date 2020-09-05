@@ -1,17 +1,19 @@
 package com.example.seandroidproject.fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
 import com.example.seandroidproject.util.ItemModel
@@ -39,11 +41,11 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
         // initial fetch
         recyclerAllItems = view.findViewById(R.id.recycler_allitems)
-        recyclerAllItems.layoutManager = LinearLayoutManager(activity)
+        recyclerAllItems.layoutManager = GridLayoutManager(activity, 2)
         fetchJson(pincode_root, category_root)
 
         // add event listener to pin_code
-        val btn_pin_code: TextView = view.findViewById(R.id.btn_pin_code)
+        val btn_pin_code: Button = view.findViewById(R.id.btn_pin_code)
         btn_pin_code.text = pincode_root.toString()
 
         btn_pin_code.setOnClickListener {
@@ -76,7 +78,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
         val btn_filter: TextView = view.findViewById(R.id.btn_filter)
         when (category_root) {
             "ewaste" -> {
-                btn_filter.text = "E-Waste"
+                btn_filter.text = "Electronics"
             }
             "textwaste" -> {
                 btn_filter.text = "Text Books"
@@ -153,25 +155,65 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val resBody = response?.body?.string()
-                println(resBody)
 
-                val gson = GsonBuilder().create()
-                val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
+        try {
+            client.newCall(request).enqueue(object: Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val resBody = response?.body?.string()
+                    println(resBody)
+
+                    val gson = GsonBuilder().create()
+                    val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
 //                println(itemListData)
 
-                val itemsListAdapter = RecyclerViewAdapter(itemListData, activity as Context)
+                    val itemsListAdapter = RecyclerViewAdapter(itemListData, activity as Context)
 
-                activity!!.runOnUiThread{
-                    recyclerAllItems.adapter = itemsListAdapter
+                    activity!!.runOnUiThread{
+                        if(itemListData.isEmpty()){
+                            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+                            view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
+                        }
+                        else{
+                            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.INVISIBLE
+                            view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.VISIBLE
+                        }
+                        recyclerAllItems.adapter = itemsListAdapter
+                    }
                 }
-            }
-            override fun onFailure(call: Call, e: IOException) {
-                println("Req. failed")
-            }
-        })
+                override fun onFailure(call: Call, e: IOException) {
+                    println("Req. failed")
+                    activity!!.runOnUiThread{
+                        view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+                        view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility = View.INVISIBLE
+                        view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"
+
+                        val dialog = AlertDialog.Builder(activity as Context)
+                        dialog.setTitle("Main Page Error")
+                        dialog.setMessage("Internet Connection Not Found")
+                        dialog.setPositiveButton("Open Settings"){ _, _->
+                            val settingsIntent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                            startActivity(settingsIntent)
+                            activity!!.finish()
+                        }
+                        dialog.setNegativeButton("Cancel"){ _, _->
+                            ActivityCompat.finishAffinity(activity!!)
+                        }
+                        dialog.create()
+                        dialog.show()
+                    }
+                }
+            })
+        }
+        catch (err: Exception) {
+            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+            view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility = View.INVISIBLE
+            view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"
+        }
+
     }
 
 }
+
+data class WishList(
+  var wishlist: Array<String>
+){}

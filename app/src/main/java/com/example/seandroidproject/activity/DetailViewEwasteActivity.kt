@@ -5,11 +5,13 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,9 +24,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.seandroidproject.R
 import com.example.seandroidproject.adapter.ViewPagerAdapter
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kirtik.foodrunner.util.ConnectionManager
-import org.json.JSONObject
-
 
 
 class DetailViewEwasteActivity : AppCompatActivity() {
@@ -40,6 +41,17 @@ class DetailViewEwasteActivity : AppCompatActivity() {
     lateinit var txtPincode : TextView
     lateinit var btnViewProfile : Button
 
+    lateinit var sellerName : TextView
+    lateinit var sellerPhone : TextView
+    lateinit var sellerEmail : TextView
+    lateinit var sellerPic : ImageView
+
+    //id
+        var id : String? = null
+
+    //
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_view_ewaste)
@@ -49,8 +61,20 @@ class DetailViewEwasteActivity : AppCompatActivity() {
             Context.MODE_PRIVATE
         )
 
+        //BottomSheet view
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_userinfo, null)
+        val bottomSheetDialog = BottomSheetDialog(this@DetailViewEwasteActivity)
+        bottomSheetDialog.setContentView(view)
+
+        sellerName = view.findViewById(R.id.txtSellerName)
+        sellerPhone = view.findViewById(R.id.txtSellerPhone)
+        sellerEmail = view.findViewById(R.id.txtSellerEmail)
+
+        var sellerId : String? = null
+        //
+
         toolbar = findViewById(R.id.toolbar)
-        setUpToolbar()
+
 
         txthead = findViewById(R.id.txthead)
         txtPrice = findViewById(R.id.txtPrice)
@@ -67,16 +91,22 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         btnViewProfile.visibility = View.GONE
 
 
+//        if(intent != null){
+//            id = intent.getStringExtra("_id")
+//
+//        }
+//        else {
+//            Toast.makeText(this@DetailViewEwasteActivity, "Intent is null", Toast.LENGTH_SHORT).show()
+//            finish()
+//        }
+
+
 
         //viewpager = findViewById(R.id.viewPager)
 
         if(ConnectionManager().checkConnectivity(this@DetailViewEwasteActivity)){
             val queue = Volley.newRequestQueue(this@DetailViewEwasteActivity)
             val url = "https://se-course-app.herokuapp.com/ewaste/view/5f4be479d7c47000176de328"
-
-            val jsonParams = JSONObject()
-
-
 
 
             val jsonRequest = @SuppressLint("SetTextI18n")
@@ -87,8 +117,12 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         println(it)
                         val images = it.getJSONArray("photos")
                         val imageUrls = arrayListOf<String>()
-                        for(i in 0 until images.length()){
-                            imageUrls.add("https://se-course-app.herokuapp.com/images/"+images.getString(i))
+                        for (i in 0 until images.length()) {
+                            imageUrls.add(
+                                "https://se-course-app.herokuapp.com/images/" + images.getString(
+                                    i
+                                )
+                            )
 
                         }
                         println("urls $imageUrls")
@@ -96,6 +130,8 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         val viewPager: ViewPager = findViewById(R.id.viewPager)
                         val adapter = ViewPagerAdapter(this@DetailViewEwasteActivity, imageUrls)
                         viewPager.adapter = adapter
+
+                        setUpToolbar(it.getString("name"))
 
                         txtPrice.visibility = View.VISIBLE
                         txthead.visibility = View.VISIBLE
@@ -110,10 +146,54 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         txtPincode.text = it.getString("pincode")
 
 
+                        sellerId = it.getString("owner")
+
+                        val url2 = "https://se-course-app.herokuapp.com/users/other/$sellerId"
+                        val accRequest = @SuppressLint("SetTextI18n")
+                        object : JsonObjectRequest(Request.Method.GET, url2, null,
+                            Response.Listener {
+
+                                try {
+                                    sellerName.text = it.getString("name")
+                                    sellerPhone.text = it.getString("phone")
+                                    sellerEmail.text = it.getString("email")
+
+                                } catch (e: Exception) {
+                                    println(e)
+                                    Toast.makeText(
+                                        this@DetailViewEwasteActivity,
+                                        "Exception",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+
+                            }, Response.ErrorListener {
+                                Toast.makeText(this@DetailViewEwasteActivity, "$it", Toast.LENGTH_SHORT).show()
+                            }){
+
+                            override fun getHeaders(): MutableMap<String, String> {
+                                val headers = HashMap<String, String>()
+                                headers["content-type"] = "application/json"
+                                headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
+                                    "userToken",
+                                    "-1"
+                                ).toString()
+                                return  headers
+                            }
+                        }
+
+                        queue.add(accRequest)
+
+
 
                     } catch (e: Exception) {
                         println(e)
-                        Toast.makeText(this@DetailViewEwasteActivity, "Exception", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@DetailViewEwasteActivity,
+                            "Exception",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
 
@@ -132,8 +212,13 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                 }
             }
 
-
             queue.add(jsonRequest)
+
+
+
+
+
+
         }
         else{
             val dialog = AlertDialog.Builder(this@DetailViewEwasteActivity)
@@ -151,6 +236,17 @@ class DetailViewEwasteActivity : AppCompatActivity() {
             dialog.show()
         }
 
+        btnViewProfile.setOnClickListener {
+            bottomSheetDialog.show()
+
+            sellerPhone.setOnClickListener {
+                val callIntent = Intent(Intent.ACTION_DIAL)
+                callIntent.data = Uri.parse("tel:"+sellerPhone.text.toString())
+                startActivity(callIntent)
+            }
+
+        }
+
 
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -162,12 +258,13 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    private fun setUpToolbar(){
+    private fun setUpToolbar(name:String){
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "Item Name"
+        supportActionBar?.title = name
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
+
+
 }
