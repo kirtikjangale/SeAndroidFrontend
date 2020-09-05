@@ -291,7 +291,7 @@
             android:id="@+id/btn_profile_done"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="DONE"
+            android:text="Update Changes"
             android:background="#5cb85c"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="30dp"

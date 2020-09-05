@@ -24,7 +24,10 @@ import com.example.seandroidproject.util.RecyclerViewAdapterWishlist
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.GsonBuilder
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
 import java.lang.Override as Override
@@ -246,14 +249,16 @@ class ProfileFragment : Fragment() {
                         }
 
                         btn_done.setOnClickListener {
-                            val requestBody: RequestBody = MultipartBody.Builder()
-                                .setType(MultipartBody.FORM)
-                                .addFormDataPart("name", profile_name.text.toString())
-                                .addFormDataPart("email", profile_email.text.toString())
-                                .addFormDataPart("phone", profile_phone.text.toString())
-                                .addFormDataPart("pincode", profile_pincode.text.toString())
-                                .addFormDataPart("location", profile_location.text.toString())
-                                .build()
+
+                            val jsonObject: JSONObject = JSONObject()
+                            jsonObject.put("name", profile_name.text.toString())
+                            jsonObject.put("email", profile_email.text.toString())
+                            jsonObject.put("phone", profile_phone.text.toString().toLong())
+                            jsonObject.put("pincode", profile_pincode.text.toString().toInt())
+                            jsonObject.put("location", profile_location.text.toString())
+
+                            val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+                            val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
 
                             // authentication is hardcoded
                             val update_request = okhttp3.Request.Builder()
