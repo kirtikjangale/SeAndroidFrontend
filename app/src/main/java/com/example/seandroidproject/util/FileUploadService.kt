@@ -1,4 +1,4 @@
-package com.example.seandroidproject.activity
+package com.example.seandroidproject.util
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize"
-        android:background="#ffffff"
+        android:background="#1DB954"
         android:theme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <ScrollView
@@ -118,18 +118,29 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="#000000"/>
 
-            <Button
-                android:id="@+id/btnViewProfile"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:text="View Seller Info"
-                android:textColor="#ffffff"
                 android:layout_below="@id/txtPincode"
                 android:layout_marginTop="30dp"
-                android:background="#1B9F93"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                app:cardCornerRadius="100dp"
+                app:cardElevation="10dp"
+                >
+
+                <Button
+                    android:id="@+id/btnViewProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="View Seller Info"
+                    android:textColor="#000000"
+                    android:background="#1DB954"
+                    />
+
+
+            </androidx.cardview.widget.CardView>
 
 
 
