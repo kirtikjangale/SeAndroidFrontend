@@ -102,44 +102,44 @@ class SellActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-        spinner.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+            spinner.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
 
-                itemName.text.clear()
-                itemPrice.text.clear()
-                itemAge.text.clear()
-                itemSpecs.text.clear()
-                itemAuthor.text.clear()
-                itemEdition.text.clear()
-                txtImgSelected.text = "0 Images Selected"
-                uri.clear()
-                imgDp.setImageResource(R.drawable.defphoto)
-                proceed=false
+                    itemName.text.clear()
+                    itemPrice.text.clear()
+                    itemAge.text.clear()
+                    itemSpecs.text.clear()
+                    itemAuthor.text.clear()
+                    itemEdition.text.clear()
+                    txtImgSelected.text = "0 Images Selected"
+                    uri.clear()
+                    imgDp.setImageResource(R.drawable.defphoto)
+                    proceed=false
 
-                val item = parent.getItemAtPosition(pos)
-                Toast.makeText(this@SellActivity,"$item",Toast.LENGTH_SHORT).show()
-                waste = item.toString()
-                if(item.toString() != "Textbook"){
-                    itemAuthor.visibility = View.GONE
-                    itemEdition.visibility = View.GONE
+                    val item = parent.getItemAtPosition(pos)
+                    Toast.makeText(this@SellActivity,"$item",Toast.LENGTH_SHORT).show()
+                    waste = item.toString()
+                    if(item.toString() != "Textbook"){
+                        itemAuthor.visibility = View.GONE
+                        itemEdition.visibility = View.GONE
 
+                    }
+                    else{
+                        itemAuthor.visibility = View.VISIBLE
+                        itemEdition.visibility = View.VISIBLE
+
+                    }
+
+                    if(item.toString()=="Notebook"){
+                        itemAge.visibility = View.GONE
+                    }
+                    else{
+                        itemAge.visibility = View.VISIBLE
+                    }
                 }
-                else{
-                    itemAuthor.visibility = View.VISIBLE
-                    itemEdition.visibility = View.VISIBLE
 
-                }
-
-                if(item.toString()=="Notebook"){
-                    itemAge.visibility = View.GONE
-                }
-                else{
-                    itemAge.visibility = View.VISIBLE
-                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
 
         setUpToolbar()
 

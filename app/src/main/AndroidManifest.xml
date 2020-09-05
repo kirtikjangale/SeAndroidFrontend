@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.DetailViewTextWasteActivity"></activity>
+        <activity android:name=".activity.activity_item_sold"></activity>
+        <activity android:name=".activity.DetailViewTextWasteActivity" />
         <activity android:name=".activity.DetailViewEwasteActivity" />
         <activity android:name=".activity.DetailViewNotewasteActivity" />
         <activity android:name=".activity.SellActivity" />
