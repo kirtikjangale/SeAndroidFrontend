@@ -1,12 +1,18 @@
 package com.example.seandroidproject.fragment
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +23,7 @@ import com.example.seandroidproject.util.RecyclerViewAdapterWishlist
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
+import java.lang.Exception
 
 class WishlistFragment : Fragment() {
 
@@ -52,24 +59,51 @@ class WishlistFragment : Fragment() {
         // authentication is hardcoded
         val request = Request.Builder().url(url).addHeader("Authorization", "Bearer $token").build()
 
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                val resBody = response?.body?.string()
+        try {
+            client.newCall(request).enqueue(object: Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val resBody = response?.body?.string()
 //                println(resBody)
 
-                val gson = GsonBuilder().create()
-                val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toMutableList()
+                    val gson = GsonBuilder().create()
+                    val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toMutableList()
 //                println(itemListData)
 
-                val itemsListAdapter = RecyclerViewAdapterWishlist(itemListData, activity as Context)
+                    val itemsListAdapter = RecyclerViewAdapterWishlist(itemListData, activity as Context)
 
-                activity!!.runOnUiThread{
-                    recyclerWishlistItems.adapter = itemsListAdapter
+                    activity!!.runOnUiThread{
+                        recyclerWishlistItems.adapter = itemsListAdapter
+                    }
                 }
-            }
-            override fun onFailure(call: Call, e: IOException) {
-                println("Req. failed")
-            }
-        })
+                override fun onFailure(call: Call, e: IOException) {
+                    println("Req. failed")
+                    activity!!.runOnUiThread{
+                        view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+                        view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
+                        view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"
+
+                        val dialog = AlertDialog.Builder(activity as Context)
+                        dialog.setTitle("Wishlist Error")
+                        dialog.setMessage("Internet Connection Not Found")
+                        dialog.setPositiveButton("Open Settings"){ _, _->
+                            val settingsIntent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                            startActivity(settingsIntent)
+                            activity!!.finish()
+                        }
+                        dialog.setNegativeButton("Cancel"){ _, _->
+                            ActivityCompat.finishAffinity(activity!!)
+                        }
+                        dialog.create()
+                        dialog.show()
+                    }
+                }
+            })
+        }
+        catch (err: Exception){
+            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+            view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
+            view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"
+        }
+
     }
 }

@@ -17,4 +17,29 @@
         android:layout_height="match_parent"
         />
 
+    <LinearLayout
+        android:id="@+id/no_item_modal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/filter_nav"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        >
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/seapp"
+            ></ImageView>
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="20dp"
+            android:text="Wish list is empty, add from main page to view here"
+            >
+        </TextView>
+    </LinearLayout>
+
 </FrameLayout>

@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -104,6 +101,8 @@ class MyListingsFragment : Fragment() {
             val queue = Volley.newRequestQueue(activity as Context)
             val url = "https://se-course-app.herokuapp.com/$category/all/me"
 
+            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.INVISIBLE
+            view?.findViewById<RecyclerView>(R.id.recyclerMyListings)?.visibility = View.VISIBLE
 
 
             itemList.clear()
@@ -136,7 +135,11 @@ class MyListingsFragment : Fragment() {
                             recyclerMyListings.adapter = recyclerAdapter
                             recyclerMyListings.layoutManager = layoutManager
 
+                        }
 
+                        if (itemList.isEmpty()){
+                            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+                            view?.findViewById<RecyclerView>(R.id.recyclerMyListings)?.visibility = View.INVISIBLE
                         }
 
 
@@ -167,8 +170,12 @@ class MyListingsFragment : Fragment() {
             queue.add(jsonRequest)
         }
         else{
+            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+            view?.findViewById<Spinner>(R.id.spinner)?.visibility = View.INVISIBLE
+            view?.findViewById<TextView>(R.id.error_text)?.text = "Failed to load your listings"
+
             val dialog = AlertDialog.Builder(activity as Context)
-            dialog.setTitle("Error")
+            dialog.setTitle("My Listings Error")
             dialog.setMessage("Internet Connection Not Found")
             dialog.setPositiveButton("Open Settings"){ _, _->
                 val settingsIntent = Intent(Settings.ACTION_WIRELESS_SETTINGS)

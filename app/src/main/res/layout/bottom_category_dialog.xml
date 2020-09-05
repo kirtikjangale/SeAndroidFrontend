@@ -8,8 +8,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorLtGreen"
         >
         <TextView
+            android:textColor="#ffffff"
             android:id="@+id/txtChangeCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtChangeCategory"
-            android:layout_centerInParent="true"
             >
 
             <RadioGroup
@@ -36,6 +37,7 @@
                 android:layout_marginTop="10dp"
                 >
                 <RadioButton
+                    android:textColor="#ffffff"
                     android:id="@+id/category_ewaste"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,6 +47,7 @@
                     />
 
                 <RadioButton
+                    android:textColor="#ffffff"
                     android:id="@+id/category_textwaste"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,6 +57,7 @@
                     />
 
                 <RadioButton
+                    android:textColor="#ffffff"
                     android:id="@+id/category_notewaste"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

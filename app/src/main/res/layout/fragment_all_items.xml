@@ -82,6 +82,7 @@
                 android:src="@drawable/seapp"
                 ></ImageView>
             <TextView
+                android:id="@+id/error_text"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center_vertical|center_horizontal"
