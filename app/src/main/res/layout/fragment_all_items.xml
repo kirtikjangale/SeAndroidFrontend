@@ -67,6 +67,30 @@
             android:layout_margin="2dp"
             />
 
+        <LinearLayout
+            android:id="@+id/no_item_modal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/filter_nav"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            >
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/seapp"
+                ></ImageView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp"
+                android:text="No Item Listings in the selected region and category"
+                >
+            </TextView>
+        </LinearLayout>
+
     </RelativeLayout>
 
 

@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -166,6 +163,14 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                 val itemsListAdapter = RecyclerViewAdapter(itemListData, activity as Context)
 
                 activity!!.runOnUiThread{
+                    if(itemListData.isEmpty()){
+                        view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+                        view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
+                    }
+                    else{
+                        view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.INVISIBLE
+                        view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.VISIBLE
+                    }
                     recyclerAllItems.adapter = itemsListAdapter
                 }
             }
