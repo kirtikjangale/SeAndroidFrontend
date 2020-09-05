@@ -16,7 +16,10 @@ import com.example.seandroidproject.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recycler_allitems_row.view.*
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.io.IOException
 
 
@@ -64,9 +67,13 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
             .placeholder(R.drawable.loading)
             .into(holder.imageview)
 
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        if(!isLoggedIn){
+            holder.itemView.btnFavorite.text = "login to use wishlist"
+        }
+
         holder.itemView.btnFavorite.setOnClickListener {
             val url = "https://se-course-app.herokuapp.com/users/add/wishlist"
-            val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
 
             if(!isLoggedIn){
                 Toast.makeText(context, "Login to add to wishlist", Toast.LENGTH_SHORT).show()
@@ -77,14 +84,15 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
 
             val client = OkHttpClient()
 
-            val requestBody: RequestBody = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("item_id", "${item._id}")
-                .build()
+            val jsonObject: JSONObject = JSONObject()
+            jsonObject.put("item_id", item._id)
+
+            val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+            val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
 
             // authentication is hardcoded
             val request = Request.Builder()
-                .url("$url/${item._id}")
+                .url(url)
                 .addHeader("Authorization", "Bearer $token")
                 .post(requestBody)
                 .build()
@@ -94,13 +102,12 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
                 override fun onResponse(call: Call, response: Response) {
                     val resBody = response?.body?.string()
 //                    println(resBody)
-                    Toast.makeText(context, "added to wishlist", Toast.LENGTH_SHORT).show()
                 }
                 override fun onFailure(call: Call, e: IOException) {
                     println("Req. failed")
                 }
             })
-
+            Toast.makeText(context, "added to wishlist", Toast.LENGTH_SHORT).show()
         }
 
     }

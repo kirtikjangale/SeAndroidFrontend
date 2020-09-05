@@ -2,6 +2,7 @@ package com.example.seandroidproject.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,7 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
 import com.example.seandroidproject.util.ItemModel
@@ -39,11 +40,11 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
         // initial fetch
         recyclerAllItems = view.findViewById(R.id.recycler_allitems)
-        recyclerAllItems.layoutManager = LinearLayoutManager(activity)
+        recyclerAllItems.layoutManager = GridLayoutManager(activity, 2)
         fetchJson(pincode_root, category_root)
 
         // add event listener to pin_code
-        val btn_pin_code: TextView = view.findViewById(R.id.btn_pin_code)
+        val btn_pin_code: Button = view.findViewById(R.id.btn_pin_code)
         btn_pin_code.text = pincode_root.toString()
 
         btn_pin_code.setOnClickListener {
@@ -76,7 +77,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
         val btn_filter: TextView = view.findViewById(R.id.btn_filter)
         when (category_root) {
             "ewaste" -> {
-                btn_filter.text = "E-Waste"
+                btn_filter.text = "Electronics"
             }
             "textwaste" -> {
                 btn_filter.text = "Text Books"
@@ -175,3 +176,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
     }
 
 }
+
+data class WishList(
+  var wishlist: Array<String>
+){}

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
@@ -30,7 +31,7 @@ class WishlistFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_wishlist, container, false)
 
         recyclerWishlistItems = view.findViewById(R.id.recycler_wishlist)
-        recyclerWishlistItems.layoutManager = LinearLayoutManager(activity)
+        recyclerWishlistItems.layoutManager = GridLayoutManager(activity, 2)
         fetchJson()
         // Inflate the layout for this fragment
         // just some basic data to display
@@ -57,7 +58,7 @@ class WishlistFragment : Fragment() {
 //                println(resBody)
 
                 val gson = GsonBuilder().create()
-                val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
+                val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toMutableList()
 //                println(itemListData)
 
                 val itemsListAdapter = RecyclerViewAdapterWishlist(itemListData, activity as Context)

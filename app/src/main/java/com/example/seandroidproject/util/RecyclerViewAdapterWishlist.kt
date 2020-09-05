@@ -1,6 +1,5 @@
 package com.example.seandroidproject.util
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
@@ -12,14 +11,16 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.recycler_allitems_row.view.*
 import kotlinx.android.synthetic.main.recycler_wishlist_row.view.*
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.io.IOException
 
 
-class RecyclerViewAdapterWishlist(val items: List<ItemModel>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapterWishlist.ViewHolder>() {
+class RecyclerViewAdapterWishlist(val items: MutableList<ItemModel>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapterWishlist.ViewHolder>() {
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -64,38 +65,43 @@ class RecyclerViewAdapterWishlist(val items: List<ItemModel>, val context: Conte
             .placeholder(R.drawable.loading)
             .into(holder.imageview)
 
-//        holder.itemView.btnRemoveFav.setOnClickListener {
-//            val url = "https://se-course-app.herokuapp.com/users/remove/wishlist"
-//
-//            val token = sharedPreferences.getString("userToken", "-1").toString()
-//
-//            val client = OkHttpClient()
-//
-//            val requestBody: RequestBody = MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("item_id", "${item._id}")
-//                .build()
-//
-//            // authentication is hardcoded
-//            val request = Request.Builder()
-//                .url("$url")
-//                .addHeader("Authorization", "Bearer $token")
-//                .delete(requestBody)
-//                .build()
-//
-//
-//            client.newCall(request).enqueue(object: Callback {
-//                override fun onResponse(call: Call, response: Response) {
-//                    val resBody = response?.body?.string()
-////                    println(resBody)
-////                    Toast.makeText(context, "removed to wishlist", Toast.LENGTH_SHORT).show()
-//                }
-//                override fun onFailure(call: Call, e: IOException) {
-//                    println("Req. failed")
-//                }
-//            })
-//
-//        }
+        holder.itemView.btnRemoveFav.setOnClickListener {
+            println("removing")
+            println(item._id)
+            val url = "https://se-course-app.herokuapp.com/users/remove/wishlist"
+
+            val token = sharedPreferences.getString("userToken", "-1").toString()
+
+            val client = OkHttpClient()
+
+            val jsonObject: JSONObject = JSONObject()
+            jsonObject.put("item_id", item._id)
+
+            val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+
+            val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
+
+            // authentication is hardcoded
+            val request = Request.Builder()
+                .url("$url")
+                .addHeader("Authorization", "Bearer $token")
+                .delete(requestBody)
+                .build()
+
+            client.newCall(request).enqueue(object: Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val resBody = response?.body?.string()
+                    println(resBody)
+                }
+                override fun onFailure(call: Call, e: IOException) {
+                    println("Req. failed")
+                }
+            })
+            items.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, itemCount)
+            Toast.makeText(context, "removed from wishlist", Toast.LENGTH_SHORT).show()
+        }
 
     }
 }
