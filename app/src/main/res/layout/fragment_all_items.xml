@@ -15,41 +15,83 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:id="@+id/filter_nav"
-            android:background="@color/colorAccent"
+            android:background="@color/colorLtGreen"
             >
-            <TextView
+            <Button
                 android:id="@+id/btn_pin_code"
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_width="0dp"
                 android:text="Default PinCode"
-                android:textSize="20dp"
-                android:gravity="left|center_vertical"
-                android:layout_marginLeft="10dp"
+                android:textSize="16dp"
+                android:background="#ffffff"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
-                android:clickable="true"
+                android:paddingLeft="10dp"
+                android:drawableLeft="@drawable/pincode"
                 />
 
-            <TextView
-                android:id="@+id/btn_filter"
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="2dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:gravity="right|center_vertical"
+                android:background="#000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                >
+
+            </View>
+
+            <Button
+                android:id="@+id/btn_filter"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="#ffffff"
                 android:text="Default Category"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:layout_weight="1"
-                android:clickable="true"
+                android:paddingLeft="10dp"
+                android:drawableLeft="@drawable/category"
                 />
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_allitems"
+            android:layout_below="@id/filter_nav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/filter_nav"
+            android:layout_margin="2dp"
             />
+
+        <LinearLayout
+            android:id="@+id/no_item_modal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/filter_nav"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            >
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/seapp"
+                ></ImageView>
+            <TextView
+                android:id="@+id/error_text"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp"
+                android:text="No Item Listings in the selected region and category"
+                >
+            </TextView>
+        </LinearLayout>
+
     </RelativeLayout>
 
 
