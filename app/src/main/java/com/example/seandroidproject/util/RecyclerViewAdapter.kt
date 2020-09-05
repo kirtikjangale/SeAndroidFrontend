@@ -13,6 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recycler_allitems_row.view.*
 import okhttp3.*
@@ -26,6 +28,37 @@ import java.io.IOException
 class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     lateinit var sharedPreferences: SharedPreferences
+    lateinit var userWishlist: Array<String>
+
+//    init {
+//        val token = sharedPreferences.getString("token", "-1")
+//        println("token")
+//        println(token)
+//
+//        if(token != "-1"){
+//            val client = OkHttpClient()
+//            val request = Request.Builder()
+//                .url("https://se-course-app.herokuapp.com/users/me")
+//                .addHeader("Authorization", "Bearer $token")
+//                .build()
+//
+//            client.newCall(request).enqueue(object: Callback {
+//                override fun onResponse(call: Call, response: Response) {
+//                    val resBody = response?.body?.string()
+//
+//                    val gson = GsonBuilder().create()
+//                    val wishListData =  gson.fromJson(resBody, WishList::class.java)
+//                    println("wish list data")
+//                    println(wishListData)
+//
+//                    userWishlist = wishListData.wishlist
+//                }
+//                override fun onFailure(call: Call, e: IOException) {
+//                    println("Req. failed")
+//                }
+//            })
+//        }
+//    }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -48,8 +81,8 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val item = items[position]
+
         val baseUrl = "https://se-course-app.herokuapp.com/images/"
 
         holder.name.text = item.name
@@ -102,6 +135,7 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
                 override fun onResponse(call: Call, response: Response) {
                     val resBody = response?.body?.string()
 //                    println(resBody)
+                    holder.itemView.btnFavorite.text = "Wishlisted"
                 }
                 override fun onFailure(call: Call, e: IOException) {
                     println("Req. failed")
@@ -111,4 +145,9 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
         }
 
     }
+
 }
+
+data class WishList(
+    var wishlist: Array<String>
+){}
