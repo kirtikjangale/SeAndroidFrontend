@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
 import com.google.gson.Gson
@@ -25,10 +26,9 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<String>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     lateinit var sharedPreferences: SharedPreferences
-    lateinit var userWishlist: Array<String>
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -77,11 +77,20 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context):Recy
                 holder.itemView.btnFavorite.text = "login to use wishlist"
             }
 
+            if(item._id in wishlist){
+                println("yes")
+                holder.itemView.btnFavorite.text = "Wish Listed"
+                holder.itemView.btnFavorite.setBackgroundColor(getColor(context, R.color.colorLtGreen))
+            }
+
             holder.itemView.btnFavorite.setOnClickListener {
                 val url = "https://se-course-app.herokuapp.com/users/add/wishlist"
 
                 if(!isLoggedIn){
                     Toast.makeText(context, "Login to add to wishlist", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                if(item._id in wishlist){
                     return@setOnClickListener
                 }
 

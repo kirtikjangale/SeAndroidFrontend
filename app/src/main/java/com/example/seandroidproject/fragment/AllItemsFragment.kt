@@ -27,6 +27,7 @@ import java.io.IOException
 class AllItemsFragment(default_pincode: String, default_category: String) : Fragment() {
 
     lateinit var recyclerAllItems : RecyclerView
+    lateinit var sharedPreferences: SharedPreferences
 
     var pincode_root = default_pincode
     var category_root = default_category
@@ -38,6 +39,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_all_items, container, false)
+        sharedPreferences = activity!!.getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
 
         // initial fetch
         recyclerAllItems = view.findViewById(R.id.recycler_allitems)
@@ -155,6 +157,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
+        val token = sharedPreferences.getString("userToken", "-1")
 
         try {
             client.newCall(request).enqueue(object: Callback {
@@ -164,21 +167,86 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
                     val gson = GsonBuilder().create()
                     val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
-//                println(itemListData)
+                    var wishlist: MutableList<String> = arrayListOf()
+                    var itemsListAdapter = RecyclerViewAdapter(itemListData, wishlist, activity as Context)
+                    println("token")
+                    println(token)
 
-                    val itemsListAdapter = RecyclerViewAdapter(itemListData, activity as Context)
+                    if(token != "-1") {
+                        val wishlist_req = okhttp3.Request.Builder()
+                            .url("https://se-course-app.herokuapp.com/users/me")
+                            .addHeader("Authorization", "Bearer $token")
+                            .build()
 
-                    activity!!.runOnUiThread{
-                        if(itemListData.isEmpty()){
-                            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
-                            view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
-                        }
-                        else{
-                            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.INVISIBLE
-                            view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.VISIBLE
-                        }
-                        recyclerAllItems.adapter = itemsListAdapter
+                        client.newCall(wishlist_req).enqueue(object : Callback {
+                            override fun onFailure(call: Call, e: IOException) {
+                                println("Req. failed")
+                                activity!!.runOnUiThread {
+                                    view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility =
+                                        View.VISIBLE
+                                    view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility =
+                                        View.INVISIBLE
+                                    view?.findViewById<TextView>(R.id.error_text)?.text =
+                                        "Something went wrong please try again later"
+
+                                    val dialog = AlertDialog.Builder(activity as Context)
+                                    dialog.setTitle("Main Page Error")
+                                    dialog.setMessage("Internet Connection Not Found")
+                                    dialog.setPositiveButton("Open Settings") { _, _ ->
+                                        val settingsIntent =
+                                            Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                                        startActivity(settingsIntent)
+                                        activity!!.finish()
+                                    }
+                                    dialog.setNegativeButton("Cancel") { _, _ ->
+                                        ActivityCompat.finishAffinity(activity!!)
+                                    }
+                                    dialog.create()
+                                    dialog.show()
+                                }
+                            }
+
+                            override fun onResponse(call: Call, response: Response) {
+                                val resBody = response?.body?.string()
+                                val gson = GsonBuilder().create()
+                                val wishListData = gson.fromJson(resBody, WishList::class.java)
+                                wishlist = wishListData.wishlist.toMutableList()
+
+                                itemsListAdapter =
+                                    RecyclerViewAdapter(itemListData, wishlist, activity as Context)
+
+                                activity!!.runOnUiThread {
+                                    if (itemListData.isEmpty()) {
+                                        view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility =
+                                            View.VISIBLE
+                                        view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility =
+                                            View.INVISIBLE
+                                    } else {
+                                        view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility =
+                                            View.INVISIBLE
+                                        view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility =
+                                            View.VISIBLE
+                                    }
+                                    recyclerAllItems.adapter = itemsListAdapter
+                                }
+                            }
+
+                        })
                     }
+                    else{
+                        activity!!.runOnUiThread{
+                            if(itemListData.isEmpty()){
+                                view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
+                                view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
+                            }
+                            else{
+                                view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.INVISIBLE
+                                view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.VISIBLE
+                            }
+                            recyclerAllItems.adapter = itemsListAdapter
+                        }
+                    }
+
                 }
                 override fun onFailure(call: Call, e: IOException) {
                     println("Req. failed")
