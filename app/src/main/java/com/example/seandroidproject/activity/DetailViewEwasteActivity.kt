@@ -45,7 +45,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
     lateinit var sellerPhone : TextView
     lateinit var sellerEmail : TextView
     lateinit var sellerPic : ImageView
-
+    lateinit var imgNavigate : ImageView
     lateinit var loader : RelativeLayout
     //id
         var id : String? = null
@@ -93,7 +93,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         txtLocation = findViewById(R.id.txtLocation)
         txtPincode = findViewById(R.id.txtPincode)
         btnViewProfile = findViewById(R.id.btnViewProfile)
-
+        imgNavigate = findViewById(R.id.imgNavigate)
         txtPrice.visibility = View.GONE
         txthead.visibility = View.GONE
         txtLocation.visibility = View.GONE
@@ -114,7 +114,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
         //viewpager = findViewById(R.id.viewPager)
 
-        txtLocation.setOnClickListener {
+        imgNavigate.setOnClickListener {
 
             var query = "${txtLocation.text}+${txtPincode.text}"
 //            var gmmIntentUri = Uri.parse("geo:0,0?q=$query")

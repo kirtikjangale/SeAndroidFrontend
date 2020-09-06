@@ -41,6 +41,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
     lateinit var btnViewProfile : Button
     lateinit var txtAuthor : TextView
     lateinit var txtEdition : TextView
+    lateinit var imgNavigate : ImageView
 
     //id
     var id : String? = null
@@ -98,6 +99,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
         btnViewProfile = findViewById(R.id.btnViewProfile)
         txtAuthor = findViewById(R.id.txtAuthor)
         txtEdition = findViewById(R.id.txtEdition)
+        imgNavigate = findViewById(R.id.imgNavigate)
 
         txtPrice.visibility = View.GONE
         txthead.visibility = View.GONE
@@ -117,6 +119,23 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
             finish()
         }
 
+        imgNavigate.setOnClickListener {
+
+            var query = "${txtLocation.text}+${txtPincode.text}"
+//            var gmmIntentUri = Uri.parse("geo:0,0?q=$query")
+//            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+//            mapIntent.setPackage("com.google.android.apps.maps")
+//            startActivity(mapIntent)
+
+            val gmmIntentUri =
+                Uri.parse("google.navigation:q=$query")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+
+
+
+        }
         if(ConnectionManager().checkConnectivity(this@DetailViewTextWasteActivity)){
             val queue = Volley.newRequestQueue(this@DetailViewTextWasteActivity)
             var url : String = ""
