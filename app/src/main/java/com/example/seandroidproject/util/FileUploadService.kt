@@ -59,4 +59,11 @@ interface FileUploadService {
 
 
     ): Call<ResponseBody?>?
+
+    @Multipart
+    @PATCH("users/update")
+    open fun uploadprofpic(
+        @Header("Authorization") token : String,
+        @Part prof_pic : MultipartBody.Part?
+    ): Call<ResponseBody?>?
 }

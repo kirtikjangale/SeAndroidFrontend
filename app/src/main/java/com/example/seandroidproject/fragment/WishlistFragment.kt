@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,6 +29,7 @@ import java.lang.Exception
 class WishlistFragment : Fragment() {
 
     lateinit var recyclerWishlistItems : RecyclerView
+    lateinit var loader : RelativeLayout
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -36,6 +38,8 @@ class WishlistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_wishlist, container, false)
+
+        loader = view.findViewById(R.id.progressBar)
 
         recyclerWishlistItems = view.findViewById(R.id.recycler_wishlist)
         recyclerWishlistItems.layoutManager = GridLayoutManager(activity, 2)
@@ -72,12 +76,14 @@ class WishlistFragment : Fragment() {
                     val itemsListAdapter = RecyclerViewAdapterWishlist(itemListData, activity as Context)
 
                     activity!!.runOnUiThread{
+                        loader.visibility = View.GONE
                         recyclerWishlistItems.adapter = itemsListAdapter
                     }
                 }
                 override fun onFailure(call: Call, e: IOException) {
                     println("Req. failed")
                     activity!!.runOnUiThread{
+                        loader.visibility = View.GONE
                         view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
                         view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
                         view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"
@@ -100,6 +106,7 @@ class WishlistFragment : Fragment() {
             })
         }
         catch (err: Exception){
+            loader.visibility = View.GONE
             view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
             view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
             view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"

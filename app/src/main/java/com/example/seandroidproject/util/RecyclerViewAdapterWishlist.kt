@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ class RecyclerViewAdapterWishlist(val items: MutableList<ItemModel>, val context
         val price : TextView = view.findViewById(R.id.txtPrice)
         val imageview: ImageView = view.findViewById(R.id.itemImage)
         val pincode: TextView = view.findViewById(R.id.txtPinCode)
+        val llContent : LinearLayout = view.findViewById(R.id.llContent)
 
     }
 

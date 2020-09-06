@@ -10,10 +10,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -26,6 +23,7 @@ import com.example.seandroidproject.R
 import com.example.seandroidproject.adapter.ViewPagerAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kirtik.foodrunner.util.ConnectionManager
+import com.squareup.picasso.Picasso
 
 
 class DetailViewEwasteActivity : AppCompatActivity() {
@@ -46,11 +44,13 @@ class DetailViewEwasteActivity : AppCompatActivity() {
     lateinit var sellerEmail : TextView
     lateinit var sellerPic : ImageView
 
+    lateinit var loader : RelativeLayout
     //id
         var id : String? = null
 
     //
 
+    var sellerDpUrl : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +61,8 @@ class DetailViewEwasteActivity : AppCompatActivity() {
             Context.MODE_PRIVATE
         )
 
+        loader = findViewById(R.id.progressBar)
+
         //BottomSheet view
         val view = layoutInflater.inflate(R.layout.bottom_sheet_userinfo, null)
         val bottomSheetDialog = BottomSheetDialog(this@DetailViewEwasteActivity)
@@ -69,6 +71,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         sellerName = view.findViewById(R.id.txtSellerName)
         sellerPhone = view.findViewById(R.id.txtSellerPhone)
         sellerEmail = view.findViewById(R.id.txtSellerEmail)
+        sellerPic = view.findViewById(R.id.imgSellerPic)
 
         var sellerId : String? = null
         //
@@ -138,6 +141,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         txtLocation.visibility = View.VISIBLE
                         txtPincode.visibility = View.VISIBLE
                         btnViewProfile.visibility = View.VISIBLE
+                        loader.visibility = View.GONE
 
                         txtPrice.text = it.getInt("price").toString()
                         txtAge.text = "Used for: ${it.getString("used_for")}"
@@ -157,6 +161,12 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                                     sellerName.text = it.getString("name")
                                     sellerPhone.text = it.getString("phone")
                                     sellerEmail.text = it.getString("email")
+                                    try {
+                                        sellerDpUrl = it.getString("dp_url")
+                                    }
+                                    catch (e: Exception){
+
+                                    }
 
                                 } catch (e: Exception) {
                                     println(e)
@@ -198,6 +208,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                     }
 
                 }, Response.ErrorListener {
+                    loader.visibility = View.GONE
                     Toast.makeText(this@DetailViewEwasteActivity, "$it", Toast.LENGTH_SHORT).show()
                 }){
 
@@ -221,6 +232,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
         }
         else{
+            loader.visibility = View.GONE
             val dialog = AlertDialog.Builder(this@DetailViewEwasteActivity)
             dialog.setTitle("Error")
             dialog.setMessage("Internet Connection Not Found")
@@ -238,6 +250,12 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
         btnViewProfile.setOnClickListener {
             bottomSheetDialog.show()
+
+            Picasso.get().load("https://se-course-app.herokuapp.com/images/${sellerDpUrl}").fit()
+                .centerCrop()
+                .error(R.drawable.addphotodark)
+                .placeholder(R.drawable.loading)
+                .into(sellerPic)
 
             sellerPhone.setOnClickListener {
                 val callIntent = Intent(Intent.ACTION_DIAL)

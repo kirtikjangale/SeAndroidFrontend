@@ -84,12 +84,20 @@ class LoginActivity : AppCompatActivity() {
                                 val userLocation = it.getJSONObject("user").getString("location")
                                 val userPinCode = it.getJSONObject("user").getString("pincode")
 
+
                                 val userToken = it.getString("token")
+                                var dp_url:String=""
+                                try{
+                                    dp_url = it.getJSONObject("user").getString("dp_url")
+                                }
+                                catch (e : Exception){
+
+                                }
 
                                 //println("$userId \n $userName \n $userEmail \n $userPhone \n $userLocation \n $userPinCode \n $userToken")
 
 
-                                savePreferences(userId,userName,userEmail,userPhone,userLocation,userPinCode,userToken)
+                                savePreferences(userId,userName,userEmail,userPhone,userLocation,userPinCode,userToken,dp_url)
 
                                 val intent = Intent(this@LoginActivity,HomePageActivity::class.java)
                                 startActivity(intent)
@@ -155,7 +163,7 @@ class LoginActivity : AppCompatActivity() {
         return true
     }
 
-    fun savePreferences(userId:String,userName:String,userEmail:String,userPhone:String,userLocation:String,userPinCode : String,userToken:String){
+    fun savePreferences(userId:String,userName:String,userEmail:String,userPhone:String,userLocation:String,userPinCode : String,userToken:String,dp_url:String){
         sharedPreferences.edit().putBoolean("isLoggedIn",true).apply()
         sharedPreferences.edit().putString("userName",userName).apply()
         sharedPreferences.edit().putString("userEmail",userEmail).apply()
@@ -163,5 +171,6 @@ class LoginActivity : AppCompatActivity() {
         sharedPreferences.edit().putString("userLocation",userLocation).apply()
         sharedPreferences.edit().putString("userPinCode",userPinCode).apply()
         sharedPreferences.edit().putString("userToken",userToken).apply()
+        sharedPreferences.edit().putString("dp_url",dp_url).apply()
     }
 }

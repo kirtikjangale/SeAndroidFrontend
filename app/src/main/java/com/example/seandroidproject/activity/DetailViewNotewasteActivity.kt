@@ -11,10 +11,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
@@ -26,6 +23,7 @@ import com.example.seandroidproject.R
 import com.example.seandroidproject.adapter.ViewPagerAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kirtik.foodrunner.util.ConnectionManager
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_view_notewaste.*
 import org.json.JSONObject
 
@@ -44,9 +42,12 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
         lateinit var txtPincode : TextView
         lateinit var btnViewProfile : Button
 
+        lateinit var loader : RelativeLayout
+
         //id
         var id : String? = null
         //
+        var sellerDpUrl : String? = null
 
         lateinit var sellerName : TextView
         lateinit var sellerPhone : TextView
@@ -58,6 +59,8 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
             Context.MODE_PRIVATE
         )
 
+        loader = findViewById(R.id.progressBar)
+
         //BottomSheet view
         val view = layoutInflater.inflate(R.layout.bottom_sheet_userinfo, null)
         val bottomSheetDialog = BottomSheetDialog(this@DetailViewNotewasteActivity)
@@ -66,6 +69,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
         sellerName = view.findViewById(R.id.txtSellerName)
         sellerPhone = view.findViewById(R.id.txtSellerPhone)
         sellerEmail = view.findViewById(R.id.txtSellerEmail)
+        sellerPic = view.findViewById(R.id.imgSellerPic)
 
         var sellerId : String? = null
         //
@@ -85,6 +89,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
         txtLocation.visibility = View.GONE
         txtPincode.visibility = View.GONE
         btnViewProfile.visibility = View.GONE
+
 
         if(intent != null){
             id = intent.getStringExtra("_id")
@@ -127,6 +132,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
                         txtLocation.visibility = View.VISIBLE
                         txtPincode.visibility = View.VISIBLE
                         btnViewProfile.visibility = View.VISIBLE
+                        loader.visibility = View.GONE
 
                         txtPrice.text = it.getInt("price").toString()
                         txtSpecs.text = it.getString("description")
@@ -144,6 +150,13 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
                                     sellerName.text = it.getString("name")
                                     sellerPhone.text = it.getString("phone")
                                     sellerEmail.text = it.getString("email")
+
+                                    try {
+                                        sellerDpUrl = it.getString("dp_url")
+                                    }
+                                    catch (e: Exception){
+
+                                    }
 
                                 } catch (e: Exception) {
                                     println(e)
@@ -182,6 +195,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
                     }
 
                 }, Response.ErrorListener {
+                    loader.visibility = View.GONE
                     Toast.makeText(this@DetailViewNotewasteActivity, "$it", Toast.LENGTH_SHORT).show()
                 }){
 
@@ -200,6 +214,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
             queue.add(jsonRequest)
         }
         else{
+            loader.visibility = View.GONE
             val dialog = AlertDialog.Builder(this@DetailViewNotewasteActivity)
             dialog.setTitle("Error")
             dialog.setMessage("Internet Connection Not Found")
@@ -217,6 +232,12 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
 
         btnViewProfile.setOnClickListener {
             bottomSheetDialog.show()
+
+            Picasso.get().load("https://se-course-app.herokuapp.com/images/${sellerDpUrl}").fit()
+                .centerCrop()
+                .error(R.drawable.addphotodark)
+                .placeholder(R.drawable.loading)
+                .into(sellerPic)
 
             sellerPhone.setOnClickListener {
                 val callIntent = Intent(Intent.ACTION_DIAL)

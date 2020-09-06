@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.seandroidproject.R
 import com.example.seandroidproject.fragment.*
 import com.google.android.material.navigation.NavigationView
+import com.squareup.picasso.Picasso
 
 
 class HomePageActivity : AppCompatActivity() {
@@ -58,9 +60,16 @@ class HomePageActivity : AppCompatActivity() {
 
             val navUsername = headerView.findViewById<View>(R.id.txtName) as TextView
             val navMobileNumber = headerView.findViewById<View>(R.id.txtNumber) as TextView
+            val navPhoto  = headerView.findViewById<View>(R.id.imgDp) as ImageView
 
             navUsername.text = sharedPreferences.getString("userName","Name")
             navMobileNumber.text = sharedPreferences.getString("userPhone","Mobile Number")
+
+            Picasso.get().load("https://se-course-app.herokuapp.com/images/${sharedPreferences.getString("dp_url","-1")}").fit()
+                .centerCrop()
+                .error(R.drawable.addphotodark)
+                .placeholder(R.drawable.loading)
+                .into(navPhoto)
 
             btnLogout = headerView.findViewById<View>(R.id.drawer_logout) as Button
 

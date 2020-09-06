@@ -1,11 +1,8 @@
 package com.example.seandroidproject.util
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.icu.number.NumberFormatter.with
-import android.icu.number.NumberRangeFormatter.with
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,25 +10,23 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
 import com.example.seandroidproject.activity.DetailViewEwasteActivity
 import com.example.seandroidproject.activity.DetailViewNotewasteActivity
 import com.example.seandroidproject.activity.DetailViewTextWasteActivity
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recycler_allitems_row.view.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 
 
-class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context,val category : String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context, val category: String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     lateinit var sharedPreferences: SharedPreferences
     lateinit var userWishlist: Array<String>
@@ -43,13 +38,21 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context,val c
         val price : TextView = view.findViewById(R.id.txtPrice)
         val imageview: ImageView = view.findViewById(R.id.itemImage)
         val llContent : LinearLayout = view.findViewById(R.id.llContent)
+        val card : CardView = view.findViewById(R.id.card)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        sharedPreferences = this.context.getSharedPreferences("ReuseNation Preferences", Context.MODE_PRIVATE)
+        sharedPreferences = this.context.getSharedPreferences(
+            "ReuseNation Preferences",
+            Context.MODE_PRIVATE
+        )
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_allitems_row, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.recycler_allitems_row,
+            parent,
+            false
+        )
         return ViewHolder(view)
     }
 
@@ -69,6 +72,10 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context,val c
             holder.price.text = item.price.toString()
             holder.usedFor.text = item.used_for
 
+//            if(category == "notewaste"){
+//                holder.usedFor.visibility = View.GONE
+//                holder.card.getLayoutParams().height = 250
+//            }
             // Picasso.with(context).load("$baseUrl/${item.thumbnail}").into(holder.imageview)
 
 
@@ -111,12 +118,13 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context,val c
                     .build()
 
 
-                client.newCall(request).enqueue(object: Callback {
+                client.newCall(request).enqueue(object : Callback {
                     override fun onResponse(call: Call, response: Response) {
                         val resBody = response?.body?.string()
 //                    println(resBody)
                         holder.itemView.btnFavorite.text = "Wishlisted"
                     }
+
                     override fun onFailure(call: Call, e: IOException) {
                         println("Req. failed")
                     }
@@ -128,20 +136,20 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context,val c
                 //Toast.makeText(context, "$category", Toast.LENGTH_SHORT).show()
 
                 if(category=="ewaste"){
-                    val intent = Intent(context,DetailViewEwasteActivity::class.java)
-                    intent.putExtra("_id",item._id)
-                    startActivity(context,intent,null)
+                    val intent = Intent(context, DetailViewEwasteActivity::class.java)
+                    intent.putExtra("_id", item._id)
+                    startActivity(context, intent, null)
 
                 }
                 else if(category=="textwaste"){
-                    val intent = Intent(context,DetailViewTextWasteActivity::class.java)
-                    intent.putExtra("_id",item._id)
-                    startActivity(context,intent,null)
+                    val intent = Intent(context, DetailViewTextWasteActivity::class.java)
+                    intent.putExtra("_id", item._id)
+                    startActivity(context, intent, null)
                 }
                 else if(category=="notewaste"){
-                    val intent = Intent(context,DetailViewNotewasteActivity::class.java)
-                    intent.putExtra("_id",item._id)
-                    startActivity(context,intent,null)
+                    val intent = Intent(context, DetailViewNotewasteActivity::class.java)
+                    intent.putExtra("_id", item._id)
+                    startActivity(context, intent, null)
                 }
             }
 

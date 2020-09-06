@@ -27,9 +27,12 @@ import java.io.IOException
 class AllItemsFragment(default_pincode: String, default_category: String) : Fragment() {
 
     lateinit var recyclerAllItems : RecyclerView
+    lateinit var loader : RelativeLayout
+    lateinit var sharedPreferences: SharedPreferences
 
     var pincode_root = default_pincode
     var category_root = default_category
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -39,9 +42,17 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
         val view = inflater.inflate(R.layout.fragment_all_items, container, false)
 
+        loader = view.findViewById(R.id.progressBar)
+
+        sharedPreferences = activity!!.getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
+
         // initial fetch
         recyclerAllItems = view.findViewById(R.id.recycler_allitems)
         recyclerAllItems.layoutManager = GridLayoutManager(activity, 2)
+
+        pincode_root = sharedPreferences.getString("pincodeFilter","517619").toString()
+        category_root = sharedPreferences.getString("categoryFilter","ewaste").toString()
+
         fetchJson(pincode_root, category_root)
 
         // add event listener to pin_code
@@ -64,8 +75,10 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
             val changePinCodeBtn: Button = dialog_view.findViewById(R.id.btn_change_pincode)
             changePinCodeBtn.setOnClickListener{
                 pincode_root = editPinCodeView.text.toString()
+                sharedPreferences.edit().putString("pincodeFilter",editPinCodeView.text.toString()).apply()
                 dialog.dismiss()
                 btn_pin_code.text = pincode_root
+                loader.visibility = View.VISIBLE
                 fetchJson(pincode_root, category_root)
             }
 
@@ -120,21 +133,26 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                         editCategoryView.check(R.id.category_ewaste)
                         btn_filter.text = "E-Waste"
                         category_root = "ewaste"
+                        sharedPreferences.edit().putString("categoryFilter",category_root).apply()
                     }
                     R.id.category_textwaste -> {
                         editCategoryView.check(R.id.category_textwaste)
                         btn_filter.text = "Text Books"
                         category_root = "textwaste"
+                        sharedPreferences.edit().putString("categoryFilter",category_root).apply()
                     }
                     R.id.category_notewaste -> {
                         editCategoryView.check(R.id.category_notewaste)
                         btn_filter.text = "Note Books"
                         category_root = "notewaste"
+                        sharedPreferences.edit().putString("categoryFilter",category_root).apply()
                     }
                 }
 
                 dialog.dismiss()
+
                 fetchJson(pincode_root, category_root)
+                loader.visibility = View.VISIBLE
             }
 
             dialog.setContentView(dialog_view)
@@ -177,12 +195,17 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                             view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.INVISIBLE
                             view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.VISIBLE
                         }
+                        loader.visibility = View.GONE
                         recyclerAllItems.adapter = itemsListAdapter
+
                     }
+
+
                 }
                 override fun onFailure(call: Call, e: IOException) {
                     println("Req. failed")
                     activity!!.runOnUiThread{
+                        loader.visibility = View.GONE
                         view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
                         view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility = View.INVISIBLE
                         view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"
@@ -205,6 +228,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
             })
         }
         catch (err: Exception) {
+            loader.visibility = View.GONE
             view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
             view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility = View.INVISIBLE
             view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"

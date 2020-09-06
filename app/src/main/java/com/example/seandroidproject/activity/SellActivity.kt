@@ -56,10 +56,10 @@ class SellActivity : AppCompatActivity() {
     var proceed  = false
 
 
-    var waste = "ewaste"
+    var waste = "ELECTRONICS"
 
     companion object {
-        private const val IMAGE_PICK_CODE = 999
+        const val IMAGE_PICK_CODE = 999
     }
 
 
@@ -92,7 +92,7 @@ class SellActivity : AppCompatActivity() {
 
         progressBar.visibility = View.GONE
 
-        val category = arrayOf("ewaste", "Notebook", "Textbook")
+        val category = arrayOf("ELECTRONICS", "NOTEBOOKS", "TEXTBOOKS")
 
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
             this@SellActivity,
@@ -119,7 +119,7 @@ class SellActivity : AppCompatActivity() {
                     val item = parent.getItemAtPosition(pos)
                     Toast.makeText(this@SellActivity,"$item",Toast.LENGTH_SHORT).show()
                     waste = item.toString()
-                    if(item.toString() != "Textbook"){
+                    if(item.toString() != "TEXTBOOKS"){
                         itemAuthor.visibility = View.GONE
                         itemEdition.visibility = View.GONE
 
@@ -130,7 +130,7 @@ class SellActivity : AppCompatActivity() {
 
                     }
 
-                    if(item.toString()=="Notebook"){
+                    if(item.toString()=="NOTEBOOKS"){
                         itemAge.visibility = View.GONE
                     }
                     else{
@@ -169,7 +169,7 @@ class SellActivity : AppCompatActivity() {
                     && checkSpecs(itemSpecs.text.toString()) && checkImages(uri))
             if(flag) {
                 println(waste)
-                if(waste == "Textbook"){
+                if(waste == "TEXTBOOKS"){
                     if(itemAuthor.text.toString().isEmpty() || itemEdition.text.toString().isEmpty()){
                         Toast.makeText(this@SellActivity,"Please fill all details",Toast.LENGTH_SHORT).show()
                     }
@@ -177,7 +177,7 @@ class SellActivity : AppCompatActivity() {
                         uploadFile(uri)
                 }
 
-                else if(waste != "Notebook"){
+                else if(waste != "NOTEBOOKS"){
                     if(itemAge.text.toString().isEmpty())
                         Toast.makeText(this@SellActivity,"Please fill all details",Toast.LENGTH_SHORT).show()
                     else
@@ -195,11 +195,20 @@ class SellActivity : AppCompatActivity() {
     }
 
     private fun launchGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        //intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        if(dpfilter){
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+            //intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent, IMAGE_PICK_CODE)
+        }
+        else {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            //intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent, IMAGE_PICK_CODE)
+        }
     }
 
     @Throws(IOException::class)
@@ -341,7 +350,7 @@ class SellActivity : AppCompatActivity() {
 
         // finally, execute the request
         var call : Call<ResponseBody?>? = null
-        if(waste =="ewaste") {
+        if(waste =="ELECTRONICS") {
             call = service.uploadewaste(
                 "Bearer " + sharedPreferences.getString("userToken", "-1").toString(),
                 name,
@@ -355,7 +364,7 @@ class SellActivity : AppCompatActivity() {
             )
             //Toast.makeText(this@SellActivity,"${waste} ewaste",Toast.LENGTH_SHORT).show()
         }
-        else if(waste =="Textbook"){
+        else if(waste =="TEXTBOOKS"){
             val author = RequestBody.create(MultipartBody.FORM, itemAuthor.text.toString())
             val edition = RequestBody.create(MultipartBody.FORM, itemEdition.text.toString())
 
@@ -374,7 +383,7 @@ class SellActivity : AppCompatActivity() {
             )
             //Toast.makeText(this@SellActivity,"${waste} Textbook",Toast.LENGTH_SHORT).show()
         }
-        else{
+        else if(waste == "NOTEBOOKS"){
             call = service.uploadnotewaste(
                 "Bearer " + sharedPreferences.getString("userToken", "-1").toString(),
                 name,

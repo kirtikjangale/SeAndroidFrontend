@@ -11,10 +11,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
@@ -26,6 +23,7 @@ import com.example.seandroidproject.R
 import com.example.seandroidproject.adapter.ViewPagerAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kirtik.foodrunner.util.ConnectionManager
+import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 class DetailViewTextWasteActivity : AppCompatActivity() {
@@ -47,6 +45,10 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
     var id : String? = null
     //
 
+    var sellerDpUrl : String? = null
+
+    lateinit var loader : RelativeLayout
+
     lateinit var sellerName : TextView
     lateinit var sellerPhone : TextView
     lateinit var sellerEmail : TextView
@@ -62,6 +64,8 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
             Context.MODE_PRIVATE
         )
 
+        loader = findViewById(R.id.progressBar)
+
         //BottomSheet view
         val view = layoutInflater.inflate(R.layout.bottom_sheet_userinfo, null)
         val bottomSheetDialog = BottomSheetDialog(this@DetailViewTextWasteActivity)
@@ -70,7 +74,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
         sellerName = view.findViewById(R.id.txtSellerName)
         sellerPhone = view.findViewById(R.id.txtSellerPhone)
         sellerEmail = view.findViewById(R.id.txtSellerEmail)
-
+        sellerPic = view.findViewById(R.id.imgSellerPic)
 
 
         var sellerId : String? = null
@@ -97,6 +101,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
         txtEdition.visibility = View.GONE
         txtAuthor.visibility = View.GONE
 
+
         if(intent != null){
             id = intent.getStringExtra("_id")
 
@@ -108,7 +113,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
 
         if(ConnectionManager().checkConnectivity(this@DetailViewTextWasteActivity)){
             val queue = Volley.newRequestQueue(this@DetailViewTextWasteActivity)
-            val url = "https://se-course-app.herokuapp.com/textwaste/view/5f4bf9a4d7c47000176de337"
+            val url = "https://se-course-app.herokuapp.com/textwaste/view/$id"
 
             val jsonParams = JSONObject()
 
@@ -142,6 +147,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
                         btnViewProfile.visibility = View.VISIBLE
                         txtAuthor.visibility = View.VISIBLE
                         txtEdition.visibility = View.VISIBLE
+                        loader.visibility = View.GONE
 
                         txtPrice.text = it.getInt("price").toString()
                         txtAge.text = "Used for: ${it.getString("used_for")}"
@@ -162,6 +168,12 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
                                     sellerName.text = it.getString("name")
                                     sellerPhone.text = it.getString("phone")
                                     sellerEmail.text = it.getString("email")
+                                    try {
+                                        sellerDpUrl = it.getString("dp_url")
+                                    }
+                                    catch (e: Exception){
+
+                                    }
 
                                 } catch (e: Exception) {
                                     println(e)
@@ -194,6 +206,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
 
 
                     } catch (e: Exception) {
+                        loader.visibility = View.GONE
                         println(e)
                         Toast.makeText(this@DetailViewTextWasteActivity, "Exception", Toast.LENGTH_SHORT)
                             .show()
@@ -218,6 +231,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
             queue.add(jsonRequest)
         }
         else{
+            loader.visibility = View.GONE
             val dialog = AlertDialog.Builder(this@DetailViewTextWasteActivity)
             dialog.setTitle("Error")
             dialog.setMessage("Internet Connection Not Found")
@@ -235,6 +249,12 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
 
         btnViewProfile.setOnClickListener {
             bottomSheetDialog.show()
+
+            Picasso.get().load("https://se-course-app.herokuapp.com/images/${sellerDpUrl}").fit()
+                .centerCrop()
+                .error(R.drawable.addphotodark)
+                .placeholder(R.drawable.loading)
+                .into(sellerPic)
 
             sellerPhone.setOnClickListener {
                 val callIntent = Intent(Intent.ACTION_DIAL)

@@ -39,7 +39,7 @@ class MyListingsFragment : Fragment() {
     lateinit var recyclerMyListings : RecyclerView
     lateinit var layoutManager : RecyclerView.LayoutManager
     lateinit var recyclerAdapter : MyListingsAdapter
-
+    lateinit var loader : RelativeLayout
     lateinit var sharedPreferences: SharedPreferences
     lateinit var spinner: Spinner
     var wasteCategory = "Ewaste"
@@ -54,6 +54,7 @@ class MyListingsFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_my_listings, container, false)
 
         sharedPreferences = activity!!.getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
+        loader = view.findViewById(R.id.progressBar)
 
         //
         recyclerMyListings = view.findViewById(R.id.recyclerMyListings)
@@ -61,7 +62,7 @@ class MyListingsFragment : Fragment() {
 
 
         spinner = view.findViewById(R.id.spinner)
-        val category = arrayOf("Ewaste", "Notebooks", "Textbooks")
+        val category = arrayOf("ELECTRONICS", "NOTEBOOKS", "TEXTBOOKS")
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
             activity as Context,
             android.R.layout.simple_spinner_item,
@@ -72,18 +73,19 @@ class MyListingsFragment : Fragment() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+                loader.visibility = View.VISIBLE
 
                 val item = parent.getItemAtPosition(pos)
                 wasteCategory = item.toString()
 
-                if(wasteCategory=="Ewaste"){
+                if(wasteCategory=="ELECTRONICS"){
                     fetchJson("ewaste")
                 }
-                else if(wasteCategory == "Notebooks"){
+                else if(wasteCategory == "NOTEBOOKS"){
                     fetchJson("notewaste")
 
                 }
-                else if(wasteCategory == "Textbooks"){
+                else if(wasteCategory == "TEXTBOOKS"){
                     fetchJson("textwaste")
                 }
 
@@ -131,6 +133,8 @@ class MyListingsFragment : Fragment() {
 
                             itemList.add(item)
 
+                            loader.visibility = View.GONE
+
                             recyclerAdapter = MyListingsAdapter(activity as Context,itemList,"Bearer "+ sharedPreferences.getString("userToken", "-1"))
                             recyclerMyListings.adapter = recyclerAdapter
                             recyclerMyListings.layoutManager = layoutManager
@@ -146,6 +150,7 @@ class MyListingsFragment : Fragment() {
                         //println("itemlist:$itemList")
 
                     } catch (e: Exception) {
+                        loader.visibility = View.GONE
                         println(e)
                         Toast.makeText(activity as Context, "Exception", Toast.LENGTH_SHORT)
                             .show()
@@ -170,6 +175,7 @@ class MyListingsFragment : Fragment() {
             queue.add(jsonRequest)
         }
         else{
+            loader.visibility = View.GONE
             view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
             view?.findViewById<Spinner>(R.id.spinner)?.visibility = View.INVISIBLE
             view?.findViewById<TextView>(R.id.error_text)?.text = "Failed to load your listings"

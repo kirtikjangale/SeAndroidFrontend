@@ -5,6 +5,7 @@
     android:background="@color/colorLtGreen">
 
     <ImageView
+        android:id="@+id/imgDp"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_margin="20dp"

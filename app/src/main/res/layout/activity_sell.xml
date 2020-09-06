@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorLtGreen"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
 
@@ -127,7 +127,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_below="@id/itemEdition"
                 android:layout_marginTop="20dp"
-                android:text="Choose Images"/>
+                android:text="Choose Images"
+                android:background="@color/colorLtGreen"/>
 
             <TextView
                 android:id="@+id/txtImgSelected"
@@ -147,7 +148,8 @@
                 android:layout_marginTop="30dp"
                 android:layout_below="@id/imageButton"
                 android:text="Sell"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="30dp"
+                android:background="@color/colorLtGreen"/>
         </RelativeLayout>
 
 
