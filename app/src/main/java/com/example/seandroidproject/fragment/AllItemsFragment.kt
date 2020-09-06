@@ -168,7 +168,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                     val gson = GsonBuilder().create()
                     val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
                     var wishlist: MutableList<String> = arrayListOf()
-                    var itemsListAdapter = RecyclerViewAdapter(itemListData, wishlist, activity as Context)
+                    var itemsListAdapter = RecyclerViewAdapter(itemListData, wishlist, activity as Context, category_root)
                     println("token")
                     println(token)
 
@@ -213,7 +213,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                                 wishlist = wishListData.wishlist.toMutableList()
 
                                 itemsListAdapter =
-                                    RecyclerViewAdapter(itemListData, wishlist, activity as Context)
+                                    RecyclerViewAdapter(itemListData, wishlist, activity as Context, category_root)
 
                                 activity!!.runOnUiThread {
                                     if (itemListData.isEmpty()) {

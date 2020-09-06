@@ -32,7 +32,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<String>, val context: Context):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<String>, val context: Context, val category: String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     lateinit var sharedPreferences: SharedPreferences
 
