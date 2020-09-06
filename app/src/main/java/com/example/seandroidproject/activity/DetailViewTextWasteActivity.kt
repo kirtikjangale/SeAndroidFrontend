@@ -208,8 +208,18 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         loader.visibility = View.GONE
                         println(e)
-                        Toast.makeText(this@DetailViewTextWasteActivity, "Exception", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@DetailViewTextWasteActivity, "Login", Toast.LENGTH_SHORT)
                             .show()
+
+                        if(!sharedPreferences.getBoolean("isLoggedIn",false)) {
+                            val intent =
+                                Intent(this@DetailViewTextWasteActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        else{
+                            onBackPressed()
+                        }
                     }
 
                 }, Response.ErrorListener {

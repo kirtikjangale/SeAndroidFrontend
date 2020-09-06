@@ -190,8 +190,18 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
 
                     } catch (e: Exception) {
                         println(e)
-                        Toast.makeText(this@DetailViewNotewasteActivity, "Exception", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@DetailViewNotewasteActivity, "Login", Toast.LENGTH_SHORT)
                             .show()
+
+                        if(!sharedPreferences.getBoolean("isLoggedIn",false)) {
+                            val intent =
+                                Intent(this@DetailViewNotewasteActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        else{
+                            onBackPressed()
+                        }
                     }
 
                 }, Response.ErrorListener {

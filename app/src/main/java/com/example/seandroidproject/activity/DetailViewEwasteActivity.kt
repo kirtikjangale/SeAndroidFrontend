@@ -185,10 +185,10 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                             override fun getHeaders(): MutableMap<String, String> {
                                 val headers = HashMap<String, String>()
                                 headers["content-type"] = "application/json"
-                                headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
-                                    "userToken",
-                                    "-1"
-                                ).toString()
+//                                headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
+//                                    "userToken",
+//                                    "-1"
+//                                ).toString()
                                 return  headers
                             }
                         }
@@ -199,12 +199,17 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
                     } catch (e: Exception) {
                         println(e)
-                        Toast.makeText(
-                            this@DetailViewEwasteActivity,
-                            "Exception",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
+
+
+                        if(!sharedPreferences.getBoolean("isLoggedIn",false)) {
+                            val intent =
+                                Intent(this@DetailViewEwasteActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        else{
+                            onBackPressed()
+                        }
                     }
 
                 }, Response.ErrorListener {
@@ -215,10 +220,10 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>()
                     headers["content-type"] = "application/json"
-                    headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
-                        "userToken",
-                        "-1"
-                    ).toString()
+//                    headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
+//                        "userToken",
+//                        "-1"
+//                    ).toString()
                     return  headers
                 }
             }
