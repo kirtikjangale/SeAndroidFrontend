@@ -6,10 +6,7 @@ import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getColor
@@ -42,6 +39,7 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
         val imageview: ImageView = view.findViewById(R.id.itemImage)
         val llContent : LinearLayout = view.findViewById(R.id.llContent)
         val card : CardView = view.findViewById(R.id.card)
+        val btnFav: Button = view.findViewById(R.id.btnFavorite)
 
     }
 
@@ -65,7 +63,9 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        val item_id = item._id
         val token = sharedPreferences.getString("userToken", "-1").toString()
+
         val client = OkHttpClient()
 
             val baseUrl = "https://se-course-app.herokuapp.com/images/"
@@ -87,33 +87,27 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
 
             val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
             if(!isLoggedIn){
-                holder.itemView.btnFavorite.text = "login to use wishlist"
+                holder.btnFav.text = "login to use wishlist"
             }
 
-            if(item._id in wishlist){
-                println("yes")
-                holder.itemView.btnFavorite.text = "Wish Listed"
-                holder.itemView.btnFavorite.setBackgroundColor(getColor(context, R.color.colorLtGreen))
-            }
-
-            holder.itemView.btnFavorite.setOnClickListener {
+            holder.btnFav.setOnClickListener {
                 val url = "https://se-course-app.herokuapp.com/users/add/wishlist"
 
                 if(!isLoggedIn){
                     Toast.makeText(context, "Login to add to wishlist", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                if(item._id in wishlist){
+                if(item_id in wishlist){
                     return@setOnClickListener
                 }
 
                 println("item id")
-                println(item._id)
+                println(item_id)
 
                 val client = OkHttpClient()
 
                 val jsonObject: JSONObject = JSONObject()
-                jsonObject.put("item_id", item._id)
+                jsonObject.put("item_id", item_id)
 
                 val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
                 val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
@@ -128,11 +122,13 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
 
                 client.newCall(request).enqueue(object : Callback {
                     override fun onResponse(call: Call, response: Response) {
+                        println("wihlisting ${item_id} in callback")
                         val resBody = response?.body?.string()
                         println(resBody)
-                        holder.itemView.btnFavorite.text = "Wish Listed"
-                        holder.itemView.btnFavorite.setBackgroundColor(getColor(context, R.color.colorLtGreen))
-                        holder.itemView.btnFavorite.setOnClickListener {
+                        wishlist.add(item_id)
+                        holder.btnFav.text = "Wish Listed"
+                        holder.btnFav.setBackgroundColor(getColor(context, R.color.colorLtGreen))
+                        holder.btnFav.setOnClickListener {
                             return@setOnClickListener
                         }
                     }
@@ -141,7 +137,6 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                         println("Req. failed")
                     }
                 })
-                wishlist.add(item._id)
                 Toast.makeText(context, "adding to wishlist", Toast.LENGTH_SHORT).show()
             }
 
@@ -152,21 +147,32 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
 
                 if(category=="ewaste"){
                     val intent = Intent(context, DetailViewEwasteActivity::class.java)
-                    intent.putExtra("_id", item._id)
+                    intent.putExtra("_id", item_id)
                     startActivity(context, intent, null)
 
                 }
                 else if(category=="textwaste"){
                     val intent = Intent(context, DetailViewTextWasteActivity::class.java)
-                    intent.putExtra("_id", item._id)
+                    intent.putExtra("_id", item_id)
                     startActivity(context, intent, null)
                 }
                 else if(category=="notewaste"){
                     val intent = Intent(context, DetailViewNotewasteActivity::class.java)
-                    intent.putExtra("_id", item._id)
+                    intent.putExtra("_id", item_id)
                     startActivity(context, intent, null)
                 }
             }
+
+        println(wishlist)
+        if(item_id in wishlist){
+            println("wishlisting ${item_id} in if")
+            holder.btnFav.text = "Wish Listed"
+            holder.btnFav.setBackgroundColor(getColor(context, R.color.colorLtGreen))
+        }
+        else{
+            holder.btnFav.text = "Add to Wishlist"
+            holder.btnFav.setBackgroundColor(getColor(context, R.color.colorPrimaryDark))
+        }
 
 //            if(token != "-1"){
 //                val wishlist_req = Request.Builder()
@@ -190,10 +196,10 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
 //                    }
 //                })
 //                for (w in wishlist!!){
-//                    if (w == item._id){
-//                        holder.itemView.btnFavorite.text = "Wishlisted"
-//                        holder.itemView.btnFavorite.setBackgroundColor(R.color.colorLtGreen)
-//                        holder.itemView.btnFavorite.setOnClickListener {
+//                    if (w == item_id){
+//                        holder.btnFav.text = "Wishlisted"
+//                        holder.btnFav.setBackgroundColor(R.color.colorLtGreen)
+//                        holder.btnFav.setOnClickListener {
 //                            Toast.makeText(context, "already in wishlist", Toast.LENGTH_SHORT).show()
 //                        }
 //                    }
