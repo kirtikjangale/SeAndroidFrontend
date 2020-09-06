@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:id="@+id/faq_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        >
+        <LinearLayout
+            android:layout_weight="1.7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/faq_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Q: Waiting for question"
+                android:textStyle="bold"
+                >
+            </TextView>
+            <TextView
+                android:id="@+id/faq_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="A: Waiting for seller to answer."
+                >
+            </TextView>
+            <TextView
+                android:id="@+id/faq_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="User"
+                >
+            </TextView>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnFaqAns"
+            android:visibility="invisible"
+            android:layout_weight="0.3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorLtGreen"
+            android:text="A"
+            android:textSize="28dp"
+            android:textColor="#ffffff"
+            ></Button>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
