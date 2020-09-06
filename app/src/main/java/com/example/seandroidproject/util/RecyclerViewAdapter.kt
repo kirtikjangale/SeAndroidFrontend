@@ -10,7 +10,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+<<<<<<< HEAD
 import androidx.cardview.widget.CardView
+=======
+import androidx.core.content.ContextCompat.getColor
+>>>>>>> list_view
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
@@ -26,10 +30,13 @@ import org.json.JSONObject
 import java.io.IOException
 
 
+<<<<<<< HEAD
 class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context, val category: String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+=======
+class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<String>, val context: Context, val category: String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+>>>>>>> list_view
 
     lateinit var sharedPreferences: SharedPreferences
-    lateinit var userWishlist: Array<String>
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -91,6 +98,12 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context, val 
                 holder.itemView.btnFavorite.text = "login to use wishlist"
             }
 
+            if(item._id in wishlist){
+                println("yes")
+                holder.itemView.btnFavorite.text = "Wish Listed"
+                holder.itemView.btnFavorite.setBackgroundColor(getColor(context, R.color.colorLtGreen))
+            }
+
             holder.itemView.btnFavorite.setOnClickListener {
                 val url = "https://se-course-app.herokuapp.com/users/add/wishlist"
 
@@ -98,9 +111,12 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context, val 
                     Toast.makeText(context, "Login to add to wishlist", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+                if(item._id in wishlist){
+                    return@setOnClickListener
+                }
 
-                println("token")
-                println(token)
+                println("item id")
+                println(item._id)
 
                 val client = OkHttpClient()
 
@@ -121,15 +137,20 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context, val 
                 client.newCall(request).enqueue(object : Callback {
                     override fun onResponse(call: Call, response: Response) {
                         val resBody = response?.body?.string()
-//                    println(resBody)
-                        holder.itemView.btnFavorite.text = "Wishlisted"
+                        println(resBody)
+                        holder.itemView.btnFavorite.text = "Wish Listed"
+                        holder.itemView.btnFavorite.setBackgroundColor(getColor(context, R.color.colorLtGreen))
+                        holder.itemView.btnFavorite.setOnClickListener {
+                            return@setOnClickListener
+                        }
                     }
 
                     override fun onFailure(call: Call, e: IOException) {
                         println("Req. failed")
                     }
                 })
-                Toast.makeText(context, "added to wishlist", Toast.LENGTH_SHORT).show()
+                wishlist.add(item._id)
+                Toast.makeText(context, "adding to wishlist", Toast.LENGTH_SHORT).show()
             }
 
             holder.llContent.setOnClickListener{
