@@ -27,10 +27,9 @@ import java.io.IOException
 class AllItemsFragment(default_pincode: String, default_category: String) : Fragment() {
 
     lateinit var recyclerAllItems : RecyclerView
-<<<<<<< HEAD
+
     lateinit var loader : RelativeLayout
-=======
->>>>>>> list_view
+
     lateinit var sharedPreferences: SharedPreferences
 
     var pincode_root = default_pincode
@@ -202,6 +201,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                             override fun onFailure(call: Call, e: IOException) {
                                 println("Req. failed")
                                 activity!!.runOnUiThread {
+                                    loader.visibility = View.GONE
                                     view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility =
                                         View.VISIBLE
                                     view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility =
@@ -247,6 +247,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                                         view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility =
                                             View.VISIBLE
                                     }
+                                    loader.visibility = View.GONE
                                     recyclerAllItems.adapter = itemsListAdapter
                                 }
                             }
@@ -265,18 +266,17 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                             }
                             recyclerAllItems.adapter = itemsListAdapter
                         }
-<<<<<<< HEAD
                         loader.visibility = View.GONE
                         recyclerAllItems.adapter = itemsListAdapter
 
                     }
 
 
-=======
+
                     }
 
->>>>>>> list_view
-                }
+
+
                 override fun onFailure(call: Call, e: IOException) {
                     println("Req. failed")
                     activity!!.runOnUiThread{

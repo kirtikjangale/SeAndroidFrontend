@@ -10,11 +10,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-<<<<<<< HEAD
+
 import androidx.cardview.widget.CardView
-=======
 import androidx.core.content.ContextCompat.getColor
->>>>>>> list_view
+
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
@@ -30,11 +29,8 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-<<<<<<< HEAD
-class RecyclerViewAdapter(val items: List<ItemModel>, val context: Context, val category: String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
-=======
+
 class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<String>, val context: Context, val category: String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
->>>>>>> list_view
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -79,11 +75,6 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
             holder.price.text = item.price.toString()
             holder.usedFor.text = item.used_for
 
-//            if(category == "notewaste"){
-//                holder.usedFor.visibility = View.GONE
-//                holder.card.getLayoutParams().height = 250
-//            }
-            // Picasso.with(context).load("$baseUrl/${item.thumbnail}").into(holder.imageview)
 
 
             Picasso.get()
