@@ -120,7 +120,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                 when (new_category_id) {
                     R.id.category_ewaste -> {
                         editCategoryView.check(R.id.category_ewaste)
-                        btn_filter.text = "E-Waste"
+                        btn_filter.text = "Electronics"
                         category_root = "ewaste"
                     }
                     R.id.category_textwaste -> {

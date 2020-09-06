@@ -94,8 +94,8 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                     return@setOnClickListener
                 }
 
-                println("token")
-                println(token)
+                println("item id")
+                println(item._id)
 
                 val client = OkHttpClient()
 
@@ -116,14 +116,19 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                 client.newCall(request).enqueue(object: Callback {
                     override fun onResponse(call: Call, response: Response) {
                         val resBody = response?.body?.string()
-//                    println(resBody)
-                        holder.itemView.btnFavorite.text = "Wishlisted"
+                        println(resBody)
+                        holder.itemView.btnFavorite.text = "Wish Listed"
+                        holder.itemView.btnFavorite.setBackgroundColor(getColor(context, R.color.colorLtGreen))
+                        holder.itemView.btnFavorite.setOnClickListener {
+                            return@setOnClickListener
+                        }
                     }
                     override fun onFailure(call: Call, e: IOException) {
                         println("Req. failed")
                     }
                 })
-                Toast.makeText(context, "added to wishlist", Toast.LENGTH_SHORT).show()
+                wishlist.add(item._id)
+                Toast.makeText(context, "adding to wishlist", Toast.LENGTH_SHORT).show()
             }
 
 //            if(token != "-1"){
