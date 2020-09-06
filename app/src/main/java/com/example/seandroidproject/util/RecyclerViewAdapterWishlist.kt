@@ -56,7 +56,7 @@ class RecyclerViewAdapterWishlist(val items: MutableList<ItemModel>, val context
         holder.usedFor.text = item.used_for
         holder.pincode.text = item.pincode.toString()
 
-       // Picasso.with(context).load("$baseUrl/${item.thumbnail}").into(holder.imageview)
+        //Picasso.with(context).load("$baseUrl/${item.thumbnail}").into(holder.imageview)
 
         Picasso.get()
             .load("$baseUrl/${item.thumbnail}")

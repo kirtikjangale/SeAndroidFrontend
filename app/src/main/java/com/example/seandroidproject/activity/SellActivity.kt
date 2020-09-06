@@ -14,8 +14,8 @@ import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
 import com.example.seandroidproject.R
+import com.example.seandroidproject.util.FileUploadService
 import com.example.seandroidproject.util.FileUtils
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

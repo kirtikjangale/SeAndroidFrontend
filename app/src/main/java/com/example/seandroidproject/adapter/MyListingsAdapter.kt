@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.seandroidproject.R
 import com.example.seandroidproject.activity.HomePageActivity
+import com.example.seandroidproject.activity.ItemSoldSplashActivity
 import com.example.seandroidproject.model.ItemMyListing
 import com.kirtik.foodrunner.util.ConnectionManager
 import com.squareup.picasso.Picasso
@@ -70,8 +71,8 @@ class MyListingsAdapter(val context: Context,val itemList : ArrayList<ItemMyList
             object : JsonObjectRequest(Request.Method.POST, url, null,
                 Response.Listener {
                     try {
-                        Toast.makeText(context,"Item removed from app",Toast.LENGTH_SHORT).show()
-                        val intent = Intent(context,HomePageActivity::class.java)
+                        //Toast.makeText(context,"Item removed from app",Toast.LENGTH_SHORT).show()
+                        val intent = Intent(context,ItemSoldSplashActivity::class.java)
                         startActivity(context,intent,null)
 
 
