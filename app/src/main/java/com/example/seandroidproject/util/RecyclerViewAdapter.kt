@@ -75,7 +75,8 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
             holder.price.text = item.price.toString()
             holder.usedFor.text = item.used_for
 
-
+            if(category == "notewaste")
+                holder.usedFor.visibility = View.GONE
 
             Picasso.get()
                 .load("$baseUrl/${item.thumbnail}")
@@ -143,6 +144,8 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                 wishlist.add(item._id)
                 Toast.makeText(context, "adding to wishlist", Toast.LENGTH_SHORT).show()
             }
+
+
 
             holder.llContent.setOnClickListener{
                 //Toast.makeText(context, "$category", Toast.LENGTH_SHORT).show()

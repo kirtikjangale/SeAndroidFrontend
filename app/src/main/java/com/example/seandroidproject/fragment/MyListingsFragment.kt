@@ -132,16 +132,20 @@ class MyListingsFragment : Fragment() {
                             )
 
                             itemList.add(item)
-
                             loader.visibility = View.GONE
-
-                            recyclerAdapter = MyListingsAdapter(activity as Context,itemList,"Bearer "+ sharedPreferences.getString("userToken", "-1"))
-                            recyclerMyListings.adapter = recyclerAdapter
-                            recyclerMyListings.layoutManager = layoutManager
-
+                            if(!itemList.isEmpty()) {
+                                recyclerAdapter = MyListingsAdapter(
+                                    activity as Context,
+                                    itemList,
+                                    "Bearer " + sharedPreferences.getString("userToken", "-1")
+                                )
+                                recyclerMyListings.adapter = recyclerAdapter
+                                recyclerMyListings.layoutManager = layoutManager
+                            }
                         }
 
                         if (itemList.isEmpty()){
+                            loader.visibility = View.GONE
                             view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
                             view?.findViewById<RecyclerView>(R.id.recyclerMyListings)?.visibility = View.INVISIBLE
                         }

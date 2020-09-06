@@ -109,15 +109,22 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
         if(ConnectionManager().checkConnectivity(this@DetailViewEwasteActivity)){
             val queue = Volley.newRequestQueue(this@DetailViewEwasteActivity)
-            val url = "https://se-course-app.herokuapp.com/ewaste/view/$id"
+            var url : String = ""
 
+            if(!sharedPreferences.getBoolean("isLoggedIn",false))
+                url = "https://se-course-app.herokuapp.com/ewaste/view_noauth/$id"
+            else
+                url = "https://se-course-app.herokuapp.com/ewaste/view/$id"
+
+            println("Url:$url")
 
             val jsonRequest = @SuppressLint("SetTextI18n")
             object : JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener {
-
+                    println("Url:$url")
                     try {
                         println(it)
+
                         val images = it.getJSONArray("photos")
                         val imageUrls = arrayListOf<String>()
                         for (i in 0 until images.length()) {
@@ -146,54 +153,66 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         txtPrice.text = it.getInt("price").toString()
                         txtAge.text = "Used for: ${it.getString("used_for")}"
                         txtSpecs.text = it.getString("specifications")
+
+
                         txtLocation.text = it.getString("location")
+
+
                         txtPincode.text = it.getString("pincode")
 
 
-                        sellerId = it.getString("owner")
+                        ////////////////////////////////////////////////
 
-                        val url2 = "https://se-course-app.herokuapp.com/users/other/$sellerId"
-                        val accRequest = @SuppressLint("SetTextI18n")
-                        object : JsonObjectRequest(Request.Method.GET, url2, null,
-                            Response.Listener {
+                        if(sharedPreferences.getBoolean("isLoggedIn",false)) {
+                            sellerId = it.getString("owner")
 
-                                try {
-                                    sellerName.text = it.getString("name")
-                                    sellerPhone.text = it.getString("phone")
-                                    sellerEmail.text = it.getString("email")
+                            val url2 = "https://se-course-app.herokuapp.com/users/other/$sellerId"
+                            val accRequest = @SuppressLint("SetTextI18n")
+                            object : JsonObjectRequest(Request.Method.GET, url2, null,
+                                Response.Listener {
+
                                     try {
-                                        sellerDpUrl = it.getString("dp_url")
-                                    }
-                                    catch (e: Exception){
+                                        sellerName.text = it.getString("name")
+                                        sellerPhone.text = it.getString("phone")
+                                        sellerEmail.text = it.getString("email")
+                                        try {
+                                            sellerDpUrl = it.getString("dp_url")
+                                        } catch (e: Exception) {
 
+                                        }
+
+                                    } catch (e: Exception) {
+                                        println(e)
+                                        Toast.makeText(
+                                            this@DetailViewEwasteActivity,
+                                            "Exception",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
                                     }
 
-                                } catch (e: Exception) {
-                                    println(e)
+                                }, Response.ErrorListener {
                                     Toast.makeText(
                                         this@DetailViewEwasteActivity,
-                                        "Exception",
+                                        "$it",
                                         Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                                    ).show()
+                                }) {
+
+                                override fun getHeaders(): MutableMap<String, String> {
+                                    val headers = HashMap<String, String>()
+                                    headers["content-type"] = "application/json"
+                                headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
+                                    "userToken",
+                                    "-1"
+                                ).toString()
+                                    return headers
                                 }
-
-                            }, Response.ErrorListener {
-                                Toast.makeText(this@DetailViewEwasteActivity, "$it", Toast.LENGTH_SHORT).show()
-                            }){
-
-                            override fun getHeaders(): MutableMap<String, String> {
-                                val headers = HashMap<String, String>()
-                                headers["content-type"] = "application/json"
-//                                headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
-//                                    "userToken",
-//                                    "-1"
-//                                ).toString()
-                                return  headers
                             }
-                        }
 
-                        queue.add(accRequest)
+                            queue.add(accRequest)
+                        }
+                        ///////////////////////////////////////////////////////////////
 
 
 
@@ -201,15 +220,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         println(e)
 
 
-                        if(!sharedPreferences.getBoolean("isLoggedIn",false)) {
-                            val intent =
-                                Intent(this@DetailViewEwasteActivity, LoginActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                        else{
-                            onBackPressed()
-                        }
+
                     }
 
                 }, Response.ErrorListener {
@@ -220,10 +231,10 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>()
                     headers["content-type"] = "application/json"
-//                    headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
-//                        "userToken",
-//                        "-1"
-//                    ).toString()
+                    headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
+                        "userToken",
+                        "-1"
+                    ).toString()
                     return  headers
                 }
             }
@@ -254,19 +265,26 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         }
 
         btnViewProfile.setOnClickListener {
-            bottomSheetDialog.show()
 
-            Picasso.get().load("https://se-course-app.herokuapp.com/images/${sellerDpUrl}").fit()
-                .centerCrop()
-                .error(R.drawable.addphotodark)
-                .placeholder(R.drawable.loading)
-                .into(sellerPic)
+            if(sharedPreferences.getBoolean("isLoggedIn",false)){
+                bottomSheetDialog.show()
 
-            sellerPhone.setOnClickListener {
-                val callIntent = Intent(Intent.ACTION_DIAL)
-                callIntent.data = Uri.parse("tel:"+sellerPhone.text.toString())
-                startActivity(callIntent)
+                Picasso.get().load("https://se-course-app.herokuapp.com/images/${sellerDpUrl}").fit()
+                    .centerCrop()
+                    .error(R.drawable.addphotodark)
+                    .placeholder(R.drawable.loading)
+                    .into(sellerPic)
+
+                sellerPhone.setOnClickListener {
+                    val callIntent = Intent(Intent.ACTION_DIAL)
+                    callIntent.data = Uri.parse("tel:"+sellerPhone.text.toString())
+                    startActivity(callIntent)
+                }
             }
+            else{
+                Toast.makeText(this@DetailViewEwasteActivity,"Login to know owner",Toast.LENGTH_SHORT).show()
+            }
+
 
         }
 

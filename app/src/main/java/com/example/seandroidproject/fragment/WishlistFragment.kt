@@ -71,7 +71,7 @@ class WishlistFragment : Fragment() {
 
                     val gson = GsonBuilder().create()
                     val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toMutableList()
-//                println(itemListData)
+                    println("ItemList:$itemListData")
 
                     val itemsListAdapter = RecyclerViewAdapterWishlist(itemListData, activity as Context)
 

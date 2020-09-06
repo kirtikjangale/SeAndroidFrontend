@@ -7,5 +7,6 @@ data class ItemModel (
     var used_for: String = "1 day",
     var pincode: Int = 0,
     var photos: Array<String>,
-    var thumbnail: String = ""
+    var thumbnail: String = "",
+    var category : String = ""
 ) {}

@@ -1,6 +1,7 @@
 package com.example.seandroidproject.util
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
+import com.example.seandroidproject.activity.DetailViewEwasteActivity
+import com.example.seandroidproject.activity.DetailViewNotewasteActivity
+import com.example.seandroidproject.activity.DetailViewTextWasteActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recycler_wishlist_row.view.*
 import okhttp3.*
@@ -28,7 +33,7 @@ class RecyclerViewAdapterWishlist(val items: MutableList<ItemModel>, val context
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         val name : TextView = view.findViewById(R.id.txtProductName)
-        val usedFor : TextView = view.findViewById(R.id.txtUsedFor)
+
         val price : TextView = view.findViewById(R.id.txtPrice)
         val imageview: ImageView = view.findViewById(R.id.itemImage)
         val pincode: TextView = view.findViewById(R.id.txtPinCode)
@@ -55,7 +60,7 @@ class RecyclerViewAdapterWishlist(val items: MutableList<ItemModel>, val context
         holder.name.text = item.name
 //        holder.sellerName.text = item.sellerName
         holder.price.text = item.price.toString()
-        holder.usedFor.text = item.used_for
+
         holder.pincode.text = item.pincode.toString()
 
         //Picasso.with(context).load("$baseUrl/${item.thumbnail}").into(holder.imageview)
@@ -103,6 +108,28 @@ class RecyclerViewAdapterWishlist(val items: MutableList<ItemModel>, val context
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, itemCount)
             Toast.makeText(context, "removed from wishlist", Toast.LENGTH_SHORT).show()
+        }
+
+
+        holder.llContent.setOnClickListener{
+            //Toast.makeText(context, "$category", Toast.LENGTH_SHORT).show()
+
+            if(item.category=="ewaste"){
+                val intent = Intent(context, DetailViewEwasteActivity::class.java)
+                intent.putExtra("_id", item._id)
+                ContextCompat.startActivity(context, intent, null)
+
+            }
+            else if(item.category=="twaste"){
+                val intent = Intent(context, DetailViewTextWasteActivity::class.java)
+                intent.putExtra("_id", item._id)
+                ContextCompat.startActivity(context, intent, null)
+            }
+            else if(item.category=="nwaste"){
+                val intent = Intent(context, DetailViewNotewasteActivity::class.java)
+                intent.putExtra("_id", item._id)
+                ContextCompat.startActivity(context, intent, null)
+            }
         }
 
     }

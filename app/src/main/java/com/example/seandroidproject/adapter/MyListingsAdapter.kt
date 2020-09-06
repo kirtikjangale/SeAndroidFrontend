@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -19,8 +20,7 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.seandroidproject.R
-import com.example.seandroidproject.activity.HomePageActivity
-import com.example.seandroidproject.activity.ItemSoldSplashActivity
+import com.example.seandroidproject.activity.*
 import com.example.seandroidproject.model.ItemMyListing
 import com.kirtik.foodrunner.util.ConnectionManager
 import com.squareup.picasso.Picasso
@@ -55,6 +55,26 @@ class MyListingsAdapter(val context: Context,val itemList : ArrayList<ItemMyList
 
         holder.btnSold.setOnClickListener {
             deleteItem(item._id,item.category)
+        }
+
+
+        holder.llContent.setOnClickListener {
+            if(item.category=="ewaste"){
+                val intent = Intent(context, DetailViewEwasteActivity::class.java)
+                intent.putExtra("_id", item._id)
+                ContextCompat.startActivity(context, intent, null)
+
+            }
+            else if(item.category=="textwaste"){
+                val intent = Intent(context, DetailViewTextWasteActivity::class.java)
+                intent.putExtra("_id", item._id)
+                ContextCompat.startActivity(context, intent, null)
+            }
+            else if(item.category=="notewaste"){
+                val intent = Intent(context, DetailViewNotewasteActivity::class.java)
+                intent.putExtra("_id", item._id)
+                ContextCompat.startActivity(context, intent, null)
+            }
         }
     }
 
