@@ -86,15 +86,12 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                 .into(holder.imageview)
 
             val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-            if(!isLoggedIn){
-                holder.btnFav.text = "login to use wishlist"
-            }
 
             holder.btnFav.setOnClickListener {
                 val url = "https://se-course-app.herokuapp.com/users/add/wishlist"
 
                 if(!isLoggedIn){
-                    Toast.makeText(context, "Login to add to wishlist", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Login to use wishlist", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 if(item_id in wishlist){
@@ -170,8 +167,13 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
             holder.btnFav.setBackgroundColor(getColor(context, R.color.colorLtGreen))
         }
         else{
-            holder.btnFav.text = "Add to Wishlist"
             holder.btnFav.setBackgroundColor(getColor(context, R.color.colorPrimaryDark))
+            if(!isLoggedIn){
+                holder.btnFav.text = "Login to use wishlist"
+            }
+            else{
+                holder.btnFav.text = "Add to Wishlist"
+            }
         }
 
 //            if(token != "-1"){
