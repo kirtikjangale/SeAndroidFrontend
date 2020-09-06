@@ -14,7 +14,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -52,6 +54,10 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
     var sellerDpUrl : String? = null
 
+    var sliderDotspanel: LinearLayout? = null
+    private var dotscount = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_view_ewaste)
@@ -77,6 +83,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         //
 
         toolbar = findViewById(R.id.toolbar)
+        sliderDotspanel = findViewById(R.id.SliderDots)
 
 
         txthead = findViewById(R.id.txthead)
@@ -107,11 +114,29 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
         //viewpager = findViewById(R.id.viewPager)
 
+        txtLocation.setOnClickListener {
+
+            var query = "${txtLocation.text}+${txtPincode.text}"
+//            var gmmIntentUri = Uri.parse("geo:0,0?q=$query")
+//            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+//            mapIntent.setPackage("com.google.android.apps.maps")
+//            startActivity(mapIntent)
+
+            val gmmIntentUri =
+                Uri.parse("google.navigation:q=$query")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+
+
+
+        }
+
         if(ConnectionManager().checkConnectivity(this@DetailViewEwasteActivity)){
             val queue = Volley.newRequestQueue(this@DetailViewEwasteActivity)
             var url : String = ""
 
-            if(!sharedPreferences.getBoolean("isLoggedIn",false))
+            if(!sharedPreferences.getBoolean("isLoggedIn", false))
                 url = "https://se-course-app.herokuapp.com/ewaste/view_noauth/$id"
             else
                 url = "https://se-course-app.herokuapp.com/ewaste/view/$id"
@@ -141,6 +166,65 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         val adapter = ViewPagerAdapter(this@DetailViewEwasteActivity, imageUrls)
                         viewPager.adapter = adapter
 
+                        //////////////////////////////////////////////////////////////////////////////////////
+                        dotscount = adapter.getCount()
+
+
+                        val dots = arrayOfNulls<ImageView>(dotscount)
+
+                        for (i in 0 until dotscount) {
+                            dots[i] = ImageView(this@DetailViewEwasteActivity)
+                            dots[i]?.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    applicationContext,
+                                    R.drawable.non_active_dot
+                                )
+                            )
+                            val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            params.setMargins(8, 0, 8, 0)
+                            sliderDotspanel!!.addView(dots[i], params)
+                        }
+
+                        dots[0]?.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                applicationContext,
+                                R.drawable.active_dot
+                            )
+                        )
+                        viewPager.addOnPageChangeListener(object : OnPageChangeListener {
+                            override fun onPageScrolled(
+                                position: Int,
+                                positionOffset: Float,
+                                positionOffsetPixels: Int
+                            ) {
+                            }
+
+                            override fun onPageSelected(position: Int) {
+                                for (i in 0 until dotscount) {
+                                    dots[i]?.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                            applicationContext,
+                                            R.drawable.non_active_dot
+                                        )
+                                    )
+                                }
+                                dots[position]?.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        applicationContext,
+                                        R.drawable.active_dot
+                                    )
+                                )
+                            }
+
+                            override fun onPageScrollStateChanged(state: Int) {}
+                        })
+
+
+                        ////////////////////////////////////////////////////////////////////////////////////////
+
                         setUpToolbar(it.getString("name"))
 
                         txtPrice.visibility = View.VISIBLE
@@ -158,12 +242,14 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         txtLocation.text = it.getString("location")
 
 
+
+
                         txtPincode.text = it.getString("pincode")
 
 
                         ////////////////////////////////////////////////
 
-                        if(sharedPreferences.getBoolean("isLoggedIn",false)) {
+                        if (sharedPreferences.getBoolean("isLoggedIn", false)) {
                             sellerId = it.getString("owner")
 
                             val url2 = "https://se-course-app.herokuapp.com/users/other/$sellerId"
@@ -202,10 +288,11 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                                 override fun getHeaders(): MutableMap<String, String> {
                                     val headers = HashMap<String, String>()
                                     headers["content-type"] = "application/json"
-                                headers["Authorization"] = "Bearer "+ sharedPreferences.getString(
-                                    "userToken",
-                                    "-1"
-                                ).toString()
+                                    headers["Authorization"] =
+                                        "Bearer " + sharedPreferences.getString(
+                                            "userToken",
+                                            "-1"
+                                        ).toString()
                                     return headers
                                 }
                             }
@@ -215,10 +302,8 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                         ///////////////////////////////////////////////////////////////
 
 
-
                     } catch (e: Exception) {
                         println(e)
-
 
 
                     }
@@ -266,7 +351,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
         btnViewProfile.setOnClickListener {
 
-            if(sharedPreferences.getBoolean("isLoggedIn",false)){
+            if(sharedPreferences.getBoolean("isLoggedIn", false)){
                 bottomSheetDialog.show()
 
                 Picasso.get().load("https://se-course-app.herokuapp.com/images/${sellerDpUrl}").fit()
@@ -277,12 +362,16 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
                 sellerPhone.setOnClickListener {
                     val callIntent = Intent(Intent.ACTION_DIAL)
-                    callIntent.data = Uri.parse("tel:"+sellerPhone.text.toString())
+                    callIntent.data = Uri.parse("tel:" + sellerPhone.text.toString())
                     startActivity(callIntent)
                 }
             }
             else{
-                Toast.makeText(this@DetailViewEwasteActivity,"Login to know owner",Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@DetailViewEwasteActivity,
+                    "Login to know owner",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
 
@@ -299,7 +388,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-    private fun setUpToolbar(name:String){
+    private fun setUpToolbar(name: String){
         setSupportActionBar(toolbar)
         supportActionBar?.title = name
         supportActionBar?.setHomeButtonEnabled(true)

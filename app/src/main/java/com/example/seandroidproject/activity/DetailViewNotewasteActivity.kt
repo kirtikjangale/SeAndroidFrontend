@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -28,31 +29,41 @@ import kotlinx.android.synthetic.main.activity_detail_view_notewaste.*
 import org.json.JSONObject
 
 class DetailViewNotewasteActivity : AppCompatActivity() {
+
+
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var viewpager : ViewPager
+    lateinit var toolbar : Toolbar
+    lateinit var txtPrice : TextView
+    lateinit var txtSpecs : TextView
+    lateinit var txthead : TextView
+    lateinit var txtLocation : TextView
+    lateinit var txtPincode : TextView
+    lateinit var btnViewProfile : Button
+
+    lateinit var loader : RelativeLayout
+
+    //id
+    var id : String? = null
+    //
+    var sellerDpUrl : String? = null
+
+    lateinit var sellerName : TextView
+    lateinit var sellerPhone : TextView
+    lateinit var sellerEmail : TextView
+    lateinit var sellerPic : ImageView
+
+    var sliderDotspanel: LinearLayout? = null
+    private var dotscount = 0
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_view_notewaste)
 
-        lateinit var sharedPreferences: SharedPreferences
-        lateinit var viewpager : ViewPager
-        lateinit var toolbar : Toolbar
-        lateinit var txtPrice : TextView
-        lateinit var txtSpecs : TextView
-        lateinit var txthead : TextView
-        lateinit var txtLocation : TextView
-        lateinit var txtPincode : TextView
-        lateinit var btnViewProfile : Button
 
-        lateinit var loader : RelativeLayout
-
-        //id
-        var id : String? = null
-        //
-        var sellerDpUrl : String? = null
-
-        lateinit var sellerName : TextView
-        lateinit var sellerPhone : TextView
-        lateinit var sellerEmail : TextView
-        lateinit var sellerPic : ImageView
 
         sharedPreferences = getSharedPreferences(
             getString(R.string.preference_file_name),
@@ -76,6 +87,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
 
 
         toolbar = findViewById(R.id.toolbar)
+        sliderDotspanel = findViewById(R.id.SliderDots)
 
         txthead = findViewById(R.id.txthead)
         txtPrice = findViewById(R.id.txtPrice)
@@ -128,6 +140,65 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
                         val viewPager: ViewPager = findViewById(R.id.viewPager)
                         val adapter = ViewPagerAdapter(this@DetailViewNotewasteActivity, imageUrls)
                         viewPager.adapter = adapter
+
+                        //////////////////////////////////////////////////////////////////////////////////////
+                        dotscount = adapter.getCount()
+
+
+                        val dots = arrayOfNulls<ImageView>(dotscount)
+
+                        for (i in 0 until dotscount) {
+                            dots[i] = ImageView(this@DetailViewNotewasteActivity)
+                            dots[i]?.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    applicationContext,
+                                    R.drawable.non_active_dot
+                                )
+                            )
+                            val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            params.setMargins(8, 0, 8, 0)
+                            sliderDotspanel!!.addView(dots[i], params)
+                        }
+
+                        dots[0]?.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                applicationContext,
+                                R.drawable.active_dot
+                            )
+                        )
+                        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                            override fun onPageScrolled(
+                                position: Int,
+                                positionOffset: Float,
+                                positionOffsetPixels: Int
+                            ) {
+                            }
+
+                            override fun onPageSelected(position: Int) {
+                                for (i in 0 until dotscount) {
+                                    dots[i]?.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                            applicationContext,
+                                            R.drawable.non_active_dot
+                                        )
+                                    )
+                                }
+                                dots[position]?.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        applicationContext,
+                                        R.drawable.active_dot
+                                    )
+                                )
+                            }
+
+                            override fun onPageScrollStateChanged(state: Int) {}
+                        })
+
+
+                        ////////////////////////////////////////////////////////////////////////////////////////
 
                         setUpToolbar(it.getString("name"))
 
