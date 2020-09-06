@@ -256,7 +256,6 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                     }
                     else{
                         activity!!.runOnUiThread{
-                            loader.visibility = View.GONE
                             if(itemListData.isEmpty()){
                                 view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
                                 view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
@@ -265,10 +264,11 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
                                 view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.INVISIBLE
                                 view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.VISIBLE
                             }
+                            loader.visibility = View.GONE
                             recyclerAllItems.adapter = itemsListAdapter
                         }
 
-                        recyclerAllItems.adapter = itemsListAdapter
+
 
                     }
 
@@ -279,9 +279,10 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
 
                 override fun onFailure(call: Call, e: IOException) {
+                    loader.visibility = View.GONE
                     println("Req. failed")
                     activity!!.runOnUiThread{
-                        loader.visibility = View.GONE
+
                         view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
                         view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility = View.INVISIBLE
                         view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"
