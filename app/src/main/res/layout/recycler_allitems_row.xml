@@ -61,8 +61,6 @@ android:orientation="vertical"
         android:textAlignment="center"
         android:textColor="#357a38"
         android:textSize="13sp"
-
-
         android:textStyle="bold" />
 
     <View
