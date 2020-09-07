@@ -39,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="User"
+                android:drawableLeft="@drawable/user"
                 >
             </TextView>
         </LinearLayout>

@@ -8,5 +8,6 @@ data class ItemModel (
     var pincode: Int = 0,
     var photos: Array<String>,
     var thumbnail: String = "",
-    var category : String = ""
+    var category : String = "",
+    var owner: String = ""
 ) {}

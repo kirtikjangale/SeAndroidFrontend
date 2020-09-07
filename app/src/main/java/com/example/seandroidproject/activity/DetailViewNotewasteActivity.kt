@@ -259,7 +259,13 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
                         txtPincode.text = it.getString("pincode")
 
                         val item_id = it.getString("_id")
-                        val item_owner = it.getString("owner")
+
+                        var item_owner: String = ""
+                        if(it.has("owner")){
+                            item_owner = it.getString("owner")
+                        }
+                        println("item_owner")
+                        println(item_owner)
 
                         for (i in 0 until faqs.length()) {
                             val faq = faqs.getJSONObject(i)
@@ -268,6 +274,9 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
                             faqViewHolder.findViewById<TextView>(R.id.faq_question).text ="Q: ${faq.getString("question")}"
                             if(faq.has("answer")){
                                 faqViewHolder.findViewById<TextView>(R.id.faq_answer).text = "A: ${faq.getString("answer")}"
+                            }
+                            if(faq.has("name")){
+                                faqViewHolder.findViewById<TextView>(R.id.faq_user).text = faq.getString("name")
                             }
 
                             // add answering functionality
@@ -392,6 +401,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
                                                 runOnUiThread {
                                                     val faqViewHolder = layoutInflater.inflate(R.layout.faqs_layout, null)
                                                     faqViewHolder.findViewById<TextView>(R.id.faq_question).text ="Q: ${editQuestion.text}"
+                                                    faqViewHolder.findViewById<TextView>(R.id.faq_user).text = sharedPreferences.getString("userName", "user")
                                                     faqView.addView(faqViewHolder)
                                                     dialog.dismiss()
                                                 }
