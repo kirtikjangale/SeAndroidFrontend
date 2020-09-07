@@ -18,7 +18,7 @@ import com.example.seandroidproject.R
 import com.example.seandroidproject.activity.SellActivity
 import com.example.seandroidproject.util.FileUploadService
 import com.example.seandroidproject.util.FileUtils
-import com.example.seandroidproject.util.ProfileModel
+import com.example.seandroidproject.model.ProfileModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.GsonBuilder

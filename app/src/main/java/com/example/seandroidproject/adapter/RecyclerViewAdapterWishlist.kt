@@ -1,4 +1,4 @@
-package com.example.seandroidproject.util
+package com.example.seandroidproject.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -16,11 +16,11 @@ import com.example.seandroidproject.R
 import com.example.seandroidproject.activity.DetailViewEwasteActivity
 import com.example.seandroidproject.activity.DetailViewNotewasteActivity
 import com.example.seandroidproject.activity.DetailViewTextWasteActivity
+import com.example.seandroidproject.model.ItemModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recycler_wishlist_row.view.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException

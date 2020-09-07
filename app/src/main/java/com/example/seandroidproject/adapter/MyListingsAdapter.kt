@@ -62,18 +62,18 @@ class MyListingsAdapter(val context: Context,val itemList : ArrayList<ItemMyList
             if(item.category=="ewaste"){
                 val intent = Intent(context, DetailViewEwasteActivity::class.java)
                 intent.putExtra("_id", item._id)
-                ContextCompat.startActivity(context, intent, null)
+                startActivity(context, intent, null)
 
             }
             else if(item.category=="textwaste"){
                 val intent = Intent(context, DetailViewTextWasteActivity::class.java)
                 intent.putExtra("_id", item._id)
-                ContextCompat.startActivity(context, intent, null)
+                startActivity(context, intent, null)
             }
             else if(item.category=="notewaste"){
                 val intent = Intent(context, DetailViewNotewasteActivity::class.java)
                 intent.putExtra("_id", item._id)
-                ContextCompat.startActivity(context, intent, null)
+                startActivity(context, intent, null)
             }
         }
     }
@@ -91,7 +91,7 @@ class MyListingsAdapter(val context: Context,val itemList : ArrayList<ItemMyList
             object : JsonObjectRequest(Request.Method.POST, url, null,
                 Response.Listener {
                     try {
-                        //Toast.makeText(context,"Item removed from app",Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(context,"Processing...",Toast.LENGTH_SHORT).show()
                         val intent = Intent(context,ItemSoldSplashActivity::class.java)
                         startActivity(context,intent,null)
 

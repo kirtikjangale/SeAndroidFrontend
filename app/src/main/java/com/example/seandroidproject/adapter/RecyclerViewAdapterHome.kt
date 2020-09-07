@@ -1,4 +1,4 @@
-package com.example.seandroidproject.util
+package com.example.seandroidproject.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -17,8 +17,8 @@ import com.example.seandroidproject.R
 import com.example.seandroidproject.activity.DetailViewEwasteActivity
 import com.example.seandroidproject.activity.DetailViewNotewasteActivity
 import com.example.seandroidproject.activity.DetailViewTextWasteActivity
+import com.example.seandroidproject.model.ItemModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.recycler_allitems_row.view.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -30,6 +30,8 @@ import java.io.IOException
 class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<String>, val context: Context, val category: String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     lateinit var sharedPreferences: SharedPreferences
+    var responseCode:Int = 0
+
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -97,48 +99,76 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                 if(item_id in wishlist){
                     return@setOnClickListener
                 }
-                if(item.owner == sharedPreferences.getString("userId", "id")){
-                    Toast.makeText(context, "Owner cannot add to wishlist", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
+//                if(item.owner == sharedPreferences.getString("userId", "id")){
+//                    Toast.makeText(context, "Owner cannot add to wishlist", Toast.LENGTH_SHORT).show()
+//                    return@setOnClickListener
+//                }
 
-                println("item id")
-                println(item_id)
+                println(item.owner)
+                println(sharedPreferences.getString("userId", "id"))
 
-                val client = OkHttpClient()
+                    val client = OkHttpClient()
 
-                val jsonObject: JSONObject = JSONObject()
-                jsonObject.put("item_id", item_id)
+                    val jsonObject: JSONObject = JSONObject()
+                    jsonObject.put("item_id", item_id)
 
-                val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
-                val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
+                    val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+                    val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
 
-                // authentication is hardcoded
-                val request = Request.Builder()
-                    .url(url)
-                    .addHeader("Authorization", "Bearer $token")
-                    .post(requestBody)
-                    .build()
+                    // authentication is hardcoded
+                    val request = Request.Builder()
+                        .url(url)
+                        .addHeader("Authorization", "Bearer $token")
+                        .post(requestBody)
+                        .build()
 
 
-                client.newCall(request).enqueue(object : Callback {
-                    override fun onResponse(call: Call, response: Response) {
-                        println("wihlisting ${item_id} in callback")
-                        val resBody = response?.body?.string()
-                        println(resBody)
-                        wishlist.add(item_id)
-                        holder.btnFav.text = "Wish Listed"
-                        holder.btnFav.setBackgroundColor(getColor(context, R.color.colorLtGreen))
-                        holder.btnFav.setOnClickListener {
-                            return@setOnClickListener
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onResponse(call: Call, response: Response) {
+                            println("wihlisting ${item_id} in callback")
+                            val resBody = response?.body?.string()
+                            println("response:$resBody")
+                            println(response.code)
+
+                            responseCode = response.code
+                            if(response.code == 200){
+
+                                wishlist.add(item_id)
+                                holder.btnFav.text = "Wish Listed"
+                                holder.btnFav.setBackgroundColor(
+                                    getColor(
+                                        context,
+                                        R.color.colorLtGreen
+                                    )
+                                )
+                                holder.btnFav.setOnClickListener {
+                                    return@setOnClickListener
+                                }
+                            }
+                            else{
+                                holder.btnFav.text = "Add to wishlist"
+                                holder.btnFav.setBackgroundColor(
+                                    getColor(
+                                        context,
+                                        R.color.colorPrimaryDark
+                                    )
+                                )
+//                                holder.btnFav.setOnClickListener {
+//                                    return@setOnClickListener
+//                                }
+
+                            }
+
+
                         }
-                    }
 
-                    override fun onFailure(call: Call, e: IOException) {
-                        println("Req. failed")
-                    }
-                })
-                Toast.makeText(context, "adding to wishlist", Toast.LENGTH_SHORT).show()
+                        override fun onFailure(call: Call, e: IOException) {
+                            println("Req. failed")
+                        }
+                    })
+
+                    checkCode()
+
             }
 
 
@@ -212,6 +242,14 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
 //                }
 //            }
 
+        }
+
+        private fun checkCode(){
+            println("fun$responseCode")
+            if(responseCode==400)
+                Toast.makeText(context, "Owner cannot add to wishlist", Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(context, "adding to wishlist", Toast.LENGTH_SHORT).show()
         }
 
 

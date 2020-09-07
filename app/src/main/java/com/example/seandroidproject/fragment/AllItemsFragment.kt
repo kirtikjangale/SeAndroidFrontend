@@ -16,8 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
-import com.example.seandroidproject.util.ItemModel
-import com.example.seandroidproject.util.RecyclerViewAdapter
+import com.example.seandroidproject.model.ItemModel
+import com.example.seandroidproject.adapter.RecyclerViewAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.GsonBuilder
 import okhttp3.*
@@ -186,10 +186,11 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
                     val gson = GsonBuilder().create()
                     val itemListData =  gson.fromJson(resBody, Array<ItemModel>::class.java).toList()
+                    println("itemlist$itemListData")
                     var wishlist: MutableList<String> = arrayListOf()
                     var itemsListAdapter = RecyclerViewAdapter(itemListData, wishlist, activity as Context, category_root)
-                    println("token")
-                    println(token)
+//                    println("token")
+//                    println(token)
 
                     if(token != "-1") {
                         val wishlist_req = okhttp3.Request.Builder()

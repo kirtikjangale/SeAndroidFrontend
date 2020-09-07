@@ -1,4 +1,4 @@
-package com.example.seandroidproject.activity
+package com.example.seandroidproject.util
 
 import android.Manifest
 import android.content.pm.PackageManager

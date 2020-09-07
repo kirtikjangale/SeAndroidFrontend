@@ -1,4 +1,4 @@
-package com.example.seandroidproject.util
+package com.example.seandroidproject.model
 
 data class ItemModel (
     var name: String = "Product Name",

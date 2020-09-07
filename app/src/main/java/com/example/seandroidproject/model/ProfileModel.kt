@@ -1,4 +1,4 @@
-package com.example.seandroidproject.util
+package com.example.seandroidproject.model
 
 data class ProfileModel (
     var name: String = "Chadwick Boseman",

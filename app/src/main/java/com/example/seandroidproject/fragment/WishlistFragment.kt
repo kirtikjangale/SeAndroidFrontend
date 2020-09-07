@@ -15,12 +15,10 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
-import com.example.seandroidproject.util.ItemModel
-import com.example.seandroidproject.util.RecyclerViewAdapter
-import com.example.seandroidproject.util.RecyclerViewAdapterWishlist
+import com.example.seandroidproject.model.ItemModel
+import com.example.seandroidproject.adapter.RecyclerViewAdapterWishlist
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException

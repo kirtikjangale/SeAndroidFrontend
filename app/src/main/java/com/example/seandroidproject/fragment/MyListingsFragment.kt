@@ -15,23 +15,14 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.seandroidproject.R
 import com.example.seandroidproject.adapter.MyListingsAdapter
-import com.example.seandroidproject.adapter.ViewPagerAdapter
 import com.example.seandroidproject.model.ItemMyListing
-import com.example.seandroidproject.util.ItemModel
-import com.example.seandroidproject.util.RecyclerViewAdapter
-import com.google.gson.GsonBuilder
 import com.kirtik.foodrunner.util.ConnectionManager
-import okhttp3.*
-import org.json.JSONObject
-import java.io.IOException
 
 
 class MyListingsFragment : Fragment() {
@@ -123,8 +114,7 @@ class MyListingsFragment : Fragment() {
 
                             val item = ItemMyListing(
                                 jsonObject.getString("name"),
-                                //jsonObject.getInt("price").toString(),
-                                "999",
+                                jsonObject.getInt("price").toString(),
                                 jsonObject.getString("_id"),
                                 jsonObject.getString("thumbnail"),
                                 category
