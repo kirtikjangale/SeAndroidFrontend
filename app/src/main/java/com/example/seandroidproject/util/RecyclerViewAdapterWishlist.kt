@@ -59,9 +59,9 @@ class RecyclerViewAdapterWishlist(val items: MutableList<ItemModel>, val context
 
         holder.name.text = item.name
 //        holder.sellerName.text = item.sellerName
-        holder.price.text = "Rs "+item.price.toString()
+        holder.price.text = item.price.toString()
 
-        holder.pincode.text = "PIN:"+item.pincode.toString()
+        holder.pincode.text = item.pincode.toString()
 
         //Picasso.with(context).load("$baseUrl/${item.thumbnail}").into(holder.imageview)
 

@@ -179,5 +179,6 @@ class LoginActivity : AppCompatActivity() {
         sharedPreferences.edit().putString("userPinCode",userPinCode).apply()
         sharedPreferences.edit().putString("userToken",userToken).apply()
         sharedPreferences.edit().putString("dp_url",dp_url).apply()
+        sharedPreferences.edit().putString("userId", userId).apply()
     }
 }

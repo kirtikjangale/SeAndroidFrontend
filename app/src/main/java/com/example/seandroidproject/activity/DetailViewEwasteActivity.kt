@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginBottom
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.android.volley.Request
@@ -26,6 +27,15 @@ import com.example.seandroidproject.adapter.ViewPagerAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kirtik.foodrunner.util.ConnectionManager
 import com.squareup.picasso.Picasso
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 
 class DetailViewEwasteActivity : AppCompatActivity() {
@@ -40,6 +50,8 @@ class DetailViewEwasteActivity : AppCompatActivity() {
     lateinit var txtLocation : TextView
     lateinit var txtPincode : TextView
     lateinit var btnViewProfile : Button
+    lateinit var faqView: LinearLayout
+    lateinit var faqAsk: Button
 
     lateinit var sellerName : TextView
     lateinit var sellerPhone : TextView
@@ -93,6 +105,9 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         txtLocation = findViewById(R.id.txtLocation)
         txtPincode = findViewById(R.id.txtPincode)
         btnViewProfile = findViewById(R.id.btnViewProfile)
+        faqView = findViewById(R.id.faq_section)
+        faqAsk = findViewById(R.id.btnFaqAsk)
+
         imgNavigate = findViewById(R.id.imgNavigate)
         txtPrice.visibility = View.GONE
         txthead.visibility = View.GONE
@@ -149,6 +164,9 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                     println("Url:$url")
                     try {
                         println(it)
+                        val faqs: JSONArray = it.getJSONArray("faqs")
+                        println("faqs")
+                        println(faqs)
 
                         val images = it.getJSONArray("photos")
                         val imageUrls = arrayListOf<String>()
@@ -245,16 +263,188 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
 
                         txtPincode.text = it.getString("pincode")
+                        val item_id = it.getString("_id")
+                        val item_owner = it.getString("owner")
+
+                        for (i in 0 until faqs.length()) {
+                            val faq = faqs.getJSONObject(i)
+
+                            val faqViewHolder = layoutInflater.inflate(R.layout.faqs_layout, null)
+                            faqViewHolder.findViewById<TextView>(R.id.faq_question).text ="Q: ${faq.getString("question")}"
+                            if(faq.has("answer")){
+                                faqViewHolder.findViewById<TextView>(R.id.faq_answer).text = "A: ${faq.getString("answer")}"
+                            }
+
+                            // add answering functionality
+                            if(sharedPreferences.getBoolean("isLoggedIn", false) and (sharedPreferences.getString("userId", "-1") == item_owner)){
+                                faqViewHolder.findViewById<Button>(R.id.btnFaqAns).visibility = View.VISIBLE
+
+                                faqViewHolder.findViewById<Button>(R.id.btnFaqAns).setOnClickListener {
+                                    val dialog = BottomSheetDialog(this)
+                                    val dialog_view = layoutInflater.inflate(R.layout.bottom_pincode_dialog, null)
+                                    dialog_view.findViewById<TextView>(R.id.txtChangePinCode).text = "Answer the Question"
+
+                                    val answerQuestion: Button = dialog_view.findViewById(R.id.btn_change_pincode)
+                                    answerQuestion.text = "Submit"
+
+                                    val editAnswer: EditText = dialog_view.findViewById(R.id.editPinCode)
+
+                                    val cancelPinCodeBtn: Button = dialog_view.findViewById(R.id.btn_cancel_pincode)
+                                    cancelPinCodeBtn.setOnClickListener{
+                                        dialog.dismiss()
+                                    }
+
+
+                                    answerQuestion.setOnClickListener{
+
+                                        val client = OkHttpClient()
+
+                                        val jsonObject: JSONObject = JSONObject()
+                                        jsonObject.put("answer", editAnswer.text)
+
+                                        val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+                                        val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
+
+                                        // authentication is hardcoded
+                                        val request = okhttp3.Request.Builder()
+                                            .url("https://se-course-app.herokuapp.com/ewaste/answer/${item_id}")
+                                            .addHeader("Authorization", "Bearer ${sharedPreferences.getString("userToken", "-1")}")
+                                            .post(requestBody)
+                                            .build()
+
+                                        try {
+                                            client.newCall(request).enqueue(object : Callback {
+                                                override fun onResponse(call: Call, response: okhttp3.Response) {
+                                                    runOnUiThread {
+                                                        faqViewHolder.findViewById<TextView>(R.id.faq_answer).text = "A: ${editAnswer.text}"
+                                                        dialog.dismiss()
+                                                    }
+                                                }
+
+                                                override fun onFailure(call: Call, e: IOException) {
+                                                    println("req. failed")
+                                                    dialog.dismiss()
+                                                    Toast.makeText(this@DetailViewEwasteActivity, "failed to submit answer, try again later", Toast.LENGTH_SHORT).show()
+                                                }
+                                            })
+                                        }
+                                        catch (err: Exception){
+                                            val dialog = AlertDialog.Builder(this)
+                                            dialog.setTitle("FAQ Error")
+                                            dialog.setMessage("Internet Connection Not Found")
+                                            dialog.setPositiveButton("Open Settings"){ _, _->
+                                                val settingsIntent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                                                startActivity(settingsIntent)
+                                                this.finish()
+                                            }
+                                            dialog.setNegativeButton("Cancel"){ _, _->
+                                                ActivityCompat.finishAffinity(this)
+                                            }
+                                            dialog.create()
+                                            dialog.show()
+                                        }
+
+                                    }
+
+                                    dialog.setContentView(dialog_view)
+                                    dialog.show()
+                                }
+
+                            }
+
+                            faqView.addView(faqViewHolder)
+                        }
 
 
                         ////////////////////////////////////////////////
+                        if(sharedPreferences.getBoolean("isLoggedIn",false)){
+                            faqAsk.setOnClickListener {
+                                val dialog = BottomSheetDialog(this)
+                                val dialog_view = layoutInflater.inflate(R.layout.bottom_pincode_dialog, null)
+                                dialog_view.findViewById<TextView>(R.id.txtChangePinCode).text = "Ask a Question"
+
+                                val askQuestion: Button = dialog_view.findViewById(R.id.btn_change_pincode)
+                                askQuestion.text = "Submit"
+
+                                val editQuestion: EditText = dialog_view.findViewById(R.id.editPinCode)
+
+                                val cancelPinCodeBtn: Button = dialog_view.findViewById(R.id.btn_cancel_pincode)
+                                cancelPinCodeBtn.setOnClickListener{
+                                    dialog.dismiss()
+                                }
+
+
+                                askQuestion.setOnClickListener{
+                                    println(editQuestion.text)
+
+                                    val client = OkHttpClient()
+
+                                    val jsonObject: JSONObject = JSONObject()
+                                    jsonObject.put("question", editQuestion.text)
+
+                                    val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
+                                    val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
+
+                                    // authentication is hardcoded
+                                    val request = okhttp3.Request.Builder()
+                                        .url("https://se-course-app.herokuapp.com/ewaste/ask/${item_id}")
+                                        .addHeader("Authorization", "Bearer ${sharedPreferences.getString("userToken", "-1")}")
+                                        .post(requestBody)
+                                        .build()
+
+                                    try {
+                                        client.newCall(request).enqueue(object : Callback {
+                                            override fun onResponse(call: Call, response: okhttp3.Response) {
+                                                runOnUiThread {
+                                                    val faqViewHolder = layoutInflater.inflate(R.layout.faqs_layout, null)
+                                                    faqViewHolder.findViewById<TextView>(R.id.faq_question).text ="Q: ${editQuestion.text}"
+                                                    faqView.addView(faqViewHolder)
+                                                    dialog.dismiss()
+                                                }
+                                            }
+
+                                            override fun onFailure(call: Call, e: IOException) {
+                                                println("req. failed")
+                                                dialog.dismiss()
+                                                Toast.makeText(this@DetailViewEwasteActivity, "failed to submit question, try again later", Toast.LENGTH_SHORT).show()
+                                            }
+                                        })
+                                    }
+                                    catch (err: Exception){
+                                        val dialog = AlertDialog.Builder(this)
+                                        dialog.setTitle("FAQ Error")
+                                        dialog.setMessage("Internet Connection Not Found")
+                                        dialog.setPositiveButton("Open Settings"){ _, _->
+                                            val settingsIntent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                                            startActivity(settingsIntent)
+                                            this.finish()
+                                        }
+                                        dialog.setNegativeButton("Cancel"){ _, _->
+                                            ActivityCompat.finishAffinity(this)
+                                        }
+                                        dialog.create()
+                                        dialog.show()
+                                    }
+
+                                }
+
+                                dialog.setContentView(dialog_view)
+                                dialog.show()
+                            }
+                        }
+                        else{
+                            faqAsk.setOnClickListener {
+                                Toast.makeText(this, "login to ask questions", Toast.LENGTH_SHORT).show()
+                            }
+                        }
 
                         if (sharedPreferences.getBoolean("isLoggedIn", false)) {
                             sellerId = it.getString("owner")
 
                             val url2 = "https://se-course-app.herokuapp.com/users/other/$sellerId"
                             val accRequest = @SuppressLint("SetTextI18n")
-                            object : JsonObjectRequest(Request.Method.GET, url2, null,
+                            object : JsonObjectRequest(
+                                Method.GET, url2, null,
                                 Response.Listener {
 
                                     try {
