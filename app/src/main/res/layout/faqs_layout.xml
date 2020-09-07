@@ -45,14 +45,13 @@
 
         <Button
             android:id="@+id/btnFaqAns"
-            android:visibility="invisible"
             android:layout_weight="0.3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@color/colorLtGreen"
-            android:text="A"
-            android:textSize="28dp"
+            android:text="Answer"
             android:textColor="#ffffff"
+            android:visibility="invisible"
             ></Button>
 
 
