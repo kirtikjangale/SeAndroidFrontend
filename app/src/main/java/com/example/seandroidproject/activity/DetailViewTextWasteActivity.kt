@@ -49,6 +49,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
     lateinit var btnViewProfile : Button
     lateinit var txtAuthor : TextView
     lateinit var txtEdition : TextView
+    lateinit var txtHelper : TextView
     lateinit var faqView: LinearLayout
     lateinit var faqAsk: Button
     lateinit var imgNavigate : ImageView
@@ -112,6 +113,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
         faqView = findViewById(R.id.faq_section)
         faqAsk = findViewById(R.id.btnFaqAsk)
         imgNavigate = findViewById(R.id.imgNavigate)
+        txtHelper = findViewById(R.id.txtHelper)
 
         txtPrice.visibility = View.GONE
         txthead.visibility = View.GONE
@@ -131,6 +133,15 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
             finish()
         }
 
+        if(!sharedPreferences.getBoolean("isLoggedIn",false)){
+            imgNavigate.visibility = View.GONE
+            txtHelper.visibility = View.GONE
+
+        }
+        else {
+            imgNavigate.visibility = View.VISIBLE
+            txtHelper.visibility = View.VISIBLE
+        }
         imgNavigate.setOnClickListener {
 
             var query = "${txtLocation.text}+${txtPincode.text}"

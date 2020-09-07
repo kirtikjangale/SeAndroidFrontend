@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley
 import com.example.seandroidproject.R
 import com.example.seandroidproject.adapter.ViewPagerAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.JsonArray
 import com.kirtik.foodrunner.util.ConnectionManager
 import com.squareup.picasso.Picasso
 import okhttp3.Call
@@ -50,6 +51,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
     lateinit var txtLocation : TextView
     lateinit var txtPincode : TextView
     lateinit var btnViewProfile : Button
+    lateinit var txtHelper : TextView
     lateinit var faqView: LinearLayout
     lateinit var faqAsk: Button
 
@@ -107,8 +109,9 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         btnViewProfile = findViewById(R.id.btnViewProfile)
         faqView = findViewById(R.id.faq_section)
         faqAsk = findViewById(R.id.btnFaqAsk)
-
         imgNavigate = findViewById(R.id.imgNavigate)
+        txtHelper = findViewById(R.id.txtHelper)
+
         txtPrice.visibility = View.GONE
         txthead.visibility = View.GONE
         txtLocation.visibility = View.GONE
@@ -129,6 +132,15 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
         //viewpager = findViewById(R.id.viewPager)
 
+        if(!sharedPreferences.getBoolean("isLoggedIn",false)){
+            imgNavigate.visibility = View.GONE
+            txtHelper.visibility = View.GONE
+
+        }
+        else {
+            imgNavigate.visibility = View.VISIBLE
+            txtHelper.visibility = View.VISIBLE
+        }
         imgNavigate.setOnClickListener {
 
             var query = "${txtLocation.text}+${txtPincode.text}"
@@ -164,6 +176,9 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                     println("Url:$url")
                     try {
                         println(it)
+
+
+
                         val faqs: JSONArray = it.getJSONArray("faqs")
                         println("faqs")
                         println(faqs)
@@ -329,6 +344,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                                             })
                                         }
                                         catch (err: Exception){
+
                                             val dialog = AlertDialog.Builder(this)
                                             dialog.setTitle("FAQ Error")
                                             dialog.setMessage("Internet Connection Not Found")
