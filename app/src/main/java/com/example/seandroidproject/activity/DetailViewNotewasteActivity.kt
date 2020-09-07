@@ -50,18 +50,8 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
         lateinit var btnViewProfile : Button
         lateinit var faqView: LinearLayout
         lateinit var faqAsk: Button
-    lateinit var sharedPreferences: SharedPreferences
-    lateinit var viewpager : ViewPager
-    lateinit var toolbar : Toolbar
-    lateinit var txtPrice : TextView
-    lateinit var txtSpecs : TextView
-    lateinit var txthead : TextView
-    lateinit var txtLocation : TextView
-    lateinit var txtPincode : TextView
-    lateinit var btnViewProfile : Button
-    lateinit var imgNavigate : ImageView
-
-    lateinit var loader : RelativeLayout
+        lateinit var imgNavigate : ImageView
+        lateinit var loader : RelativeLayout
 
     //id
     var id : String? = null
