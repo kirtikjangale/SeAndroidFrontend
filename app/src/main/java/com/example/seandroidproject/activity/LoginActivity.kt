@@ -7,10 +7,8 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.android.volley.Request
 import com.android.volley.Response
@@ -27,11 +25,11 @@ class LoginActivity : AppCompatActivity() {
     lateinit var etMobileNumber : EditText
     lateinit var etPasssword : EditText
     lateinit var btnLogin : Button
-    lateinit var txtforgotPassword : TextView
     lateinit var txtRegister : TextView
     lateinit var txtContinueNoLogin: TextView
 
     lateinit var sharedPreferences: SharedPreferences
+    lateinit var loader : RelativeLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,12 +40,13 @@ class LoginActivity : AppCompatActivity() {
         etMobileNumber = findViewById(R.id.etMobileNumber)
         etPasssword = findViewById(R.id.etPassword)
         btnLogin = findViewById(R.id.btnLogin)
-        txtforgotPassword = findViewById(R.id.txtForgotPassword)
         txtRegister = findViewById(R.id.txtRegister)
         txtContinueNoLogin = findViewById(R.id.txtContinueNoLogin)
 
         sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
 
+        loader = findViewById(R.id.progressBar)
+        loader.visibility = View.GONE
         txtRegister.setOnClickListener{
             val intent = Intent(this@LoginActivity,RegisterActivity::class.java)
             startActivity(intent)
@@ -65,6 +64,9 @@ class LoginActivity : AppCompatActivity() {
             if(checkMobile(etMobileNumber.text.toString()) && checkPassword(etPasssword.text.toString())){
 
                 if(ConnectionManager().checkConnectivity(this@LoginActivity)){
+
+                    loader.visibility = View.VISIBLE
+
                     val queue = Volley.newRequestQueue(this@LoginActivity)
                     val url = "https://se-course-app.herokuapp.com/users/login"
 
@@ -90,6 +92,7 @@ class LoginActivity : AppCompatActivity() {
                                 try{
                                     dp_url = it.getJSONObject("user").getString("dp_url")
                                 }
+
                                 catch (e : Exception){
 
                                 }
@@ -99,17 +102,20 @@ class LoginActivity : AppCompatActivity() {
 
                                 savePreferences(userId,userName,userEmail,userPhone,userLocation,userPinCode,userToken,dp_url)
 
+                                loader.visibility = View.GONE
                                 val intent = Intent(this@LoginActivity,HomePageActivity::class.java)
                                 startActivity(intent)
                                 finish()
 
                             }
                             catch (e : Exception){
+                                loader.visibility = View.GONE
                                 println(e)
                                 Toast.makeText(this@LoginActivity,"Exception",Toast.LENGTH_SHORT).show()
                             }
 
                         },Response.ErrorListener {
+                            loader.visibility = View.GONE
                             Toast.makeText(this@LoginActivity,"$it",Toast.LENGTH_SHORT).show()
                         }){
 
@@ -125,6 +131,7 @@ class LoginActivity : AppCompatActivity() {
                     queue.add(jsonRequest)
                 }
                 else{
+
                     val dialog = AlertDialog.Builder(this@LoginActivity)
                     dialog.setTitle("Error")
                     dialog.setMessage("Internet Connection Not Found")

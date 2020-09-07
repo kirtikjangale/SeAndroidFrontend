@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -36,9 +37,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 class DetailViewNotewasteActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_view_notewaste)
+
 
         lateinit var sharedPreferences: SharedPreferences
         lateinit var viewpager : ViewPager
@@ -51,18 +50,40 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
         lateinit var btnViewProfile : Button
         lateinit var faqView: LinearLayout
         lateinit var faqAsk: Button
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var viewpager : ViewPager
+    lateinit var toolbar : Toolbar
+    lateinit var txtPrice : TextView
+    lateinit var txtSpecs : TextView
+    lateinit var txthead : TextView
+    lateinit var txtLocation : TextView
+    lateinit var txtPincode : TextView
+    lateinit var btnViewProfile : Button
+    lateinit var imgNavigate : ImageView
 
-        lateinit var loader : RelativeLayout
+    lateinit var loader : RelativeLayout
 
-        //id
-        var id : String? = null
-        //
-        var sellerDpUrl : String? = null
+    //id
+    var id : String? = null
+    //
+    var sellerDpUrl : String? = null
 
-        lateinit var sellerName : TextView
-        lateinit var sellerPhone : TextView
-        lateinit var sellerEmail : TextView
-        lateinit var sellerPic : ImageView
+    lateinit var sellerName : TextView
+    lateinit var sellerPhone : TextView
+    lateinit var sellerEmail : TextView
+    lateinit var sellerPic : ImageView
+
+    var sliderDotspanel: LinearLayout? = null
+    private var dotscount = 0
+
+
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_detail_view_notewaste)
+
+
 
         sharedPreferences = getSharedPreferences(
             getString(R.string.preference_file_name),
@@ -86,6 +107,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
 
 
         toolbar = findViewById(R.id.toolbar)
+        sliderDotspanel = findViewById(R.id.SliderDots)
 
         txthead = findViewById(R.id.txthead)
         txtPrice = findViewById(R.id.txtPrice)
@@ -96,6 +118,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
         faqView = findViewById(R.id.faq_section)
         faqAsk = findViewById(R.id.btnFaqAsk)
 
+        imgNavigate = findViewById(R.id.imgNavigate)
         txtPrice.visibility = View.GONE
         txthead.visibility = View.GONE
         txtLocation.visibility = View.GONE
@@ -113,7 +136,23 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
         }
 
 
+        imgNavigate.setOnClickListener {
 
+            var query = "${txtLocation.text}+${txtPincode.text}"
+//            var gmmIntentUri = Uri.parse("geo:0,0?q=$query")
+//            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+//            mapIntent.setPackage("com.google.android.apps.maps")
+//            startActivity(mapIntent)
+
+            val gmmIntentUri =
+                Uri.parse("google.navigation:q=$query")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+
+
+
+        }
         if(ConnectionManager().checkConnectivity(this@DetailViewNotewasteActivity)){
             val queue = Volley.newRequestQueue(this@DetailViewNotewasteActivity)
             var url : String = ""
@@ -145,6 +184,65 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
                         val viewPager: ViewPager = findViewById(R.id.viewPager)
                         val adapter = ViewPagerAdapter(this@DetailViewNotewasteActivity, imageUrls)
                         viewPager.adapter = adapter
+
+                        //////////////////////////////////////////////////////////////////////////////////////
+                        dotscount = adapter.getCount()
+
+
+                        val dots = arrayOfNulls<ImageView>(dotscount)
+
+                        for (i in 0 until dotscount) {
+                            dots[i] = ImageView(this@DetailViewNotewasteActivity)
+                            dots[i]?.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    applicationContext,
+                                    R.drawable.non_active_dot
+                                )
+                            )
+                            val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            params.setMargins(8, 0, 8, 0)
+                            sliderDotspanel!!.addView(dots[i], params)
+                        }
+
+                        dots[0]?.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                applicationContext,
+                                R.drawable.active_dot
+                            )
+                        )
+                        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                            override fun onPageScrolled(
+                                position: Int,
+                                positionOffset: Float,
+                                positionOffsetPixels: Int
+                            ) {
+                            }
+
+                            override fun onPageSelected(position: Int) {
+                                for (i in 0 until dotscount) {
+                                    dots[i]?.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                            applicationContext,
+                                            R.drawable.non_active_dot
+                                        )
+                                    )
+                                }
+                                dots[position]?.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        applicationContext,
+                                        R.drawable.active_dot
+                                    )
+                                )
+                            }
+
+                            override fun onPageScrollStateChanged(state: Int) {}
+                        })
+
+
+                        ////////////////////////////////////////////////////////////////////////////////////////
 
                         setUpToolbar(it.getString("name"))
 

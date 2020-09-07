@@ -206,13 +206,13 @@ class HomePageActivity : AppCompatActivity() {
             btnLogin.setOnClickListener {
                 val intent = Intent(this@HomePageActivity,LoginActivity::class.java)
                 startActivity(intent)
-                finish()
+                
             }
 
             btnSignUp.setOnClickListener {
                 val intent = Intent(this@HomePageActivity,RegisterActivity::class.java)
                 startActivity(intent)
-                finish()
+
             }
 
 

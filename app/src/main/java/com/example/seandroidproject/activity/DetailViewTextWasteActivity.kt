@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -50,6 +51,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
     lateinit var txtEdition : TextView
     lateinit var faqView: LinearLayout
     lateinit var faqAsk: Button
+    lateinit var imgNavigate : ImageView
 
     //id
     var id : String? = null
@@ -64,6 +66,10 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
     lateinit var sellerEmail : TextView
     lateinit var sellerPic : ImageView
 
+
+    var sliderDotspanel: LinearLayout? = null
+    private var dotscount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_view_text_waste)
@@ -75,6 +81,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
         )
 
         loader = findViewById(R.id.progressBar)
+        sliderDotspanel = findViewById(R.id.SliderDots)
 
         //BottomSheet view
         val view = layoutInflater.inflate(R.layout.bottom_sheet_userinfo, null)
@@ -104,6 +111,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
         txtEdition = findViewById(R.id.txtEdition)
         faqView = findViewById(R.id.faq_section)
         faqAsk = findViewById(R.id.btnFaqAsk)
+        imgNavigate = findViewById(R.id.imgNavigate)
 
         txtPrice.visibility = View.GONE
         txthead.visibility = View.GONE
@@ -123,6 +131,23 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
             finish()
         }
 
+        imgNavigate.setOnClickListener {
+
+            var query = "${txtLocation.text}+${txtPincode.text}"
+//            var gmmIntentUri = Uri.parse("geo:0,0?q=$query")
+//            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+//            mapIntent.setPackage("com.google.android.apps.maps")
+//            startActivity(mapIntent)
+
+            val gmmIntentUri =
+                Uri.parse("google.navigation:q=$query")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+
+
+
+        }
         if(ConnectionManager().checkConnectivity(this@DetailViewTextWasteActivity)){
             val queue = Volley.newRequestQueue(this@DetailViewTextWasteActivity)
             var url : String = ""
@@ -158,6 +183,65 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
                         val viewPager: ViewPager = findViewById(R.id.viewPager)
                         val adapter = ViewPagerAdapter(this@DetailViewTextWasteActivity, imageUrls)
                         viewPager.adapter = adapter
+
+                        //////////////////////////////////////////////////////////////////////////////////////
+                        dotscount = adapter.getCount()
+
+
+                        val dots = arrayOfNulls<ImageView>(dotscount)
+
+                        for (i in 0 until dotscount) {
+                            dots[i] = ImageView(this@DetailViewTextWasteActivity)
+                            dots[i]?.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    applicationContext,
+                                    R.drawable.non_active_dot
+                                )
+                            )
+                            val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            params.setMargins(8, 0, 8, 0)
+                            sliderDotspanel!!.addView(dots[i], params)
+                        }
+
+                        dots[0]?.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                applicationContext,
+                                R.drawable.active_dot
+                            )
+                        )
+                        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                            override fun onPageScrolled(
+                                position: Int,
+                                positionOffset: Float,
+                                positionOffsetPixels: Int
+                            ) {
+                            }
+
+                            override fun onPageSelected(position: Int) {
+                                for (i in 0 until dotscount) {
+                                    dots[i]?.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                            applicationContext,
+                                            R.drawable.non_active_dot
+                                        )
+                                    )
+                                }
+                                dots[position]?.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        applicationContext,
+                                        R.drawable.active_dot
+                                    )
+                                )
+                            }
+
+                            override fun onPageScrollStateChanged(state: Int) {}
+                        })
+
+
+                        ////////////////////////////////////////////////////////////////////////////////////////
 
                         setUpToolbar(it.getString("name"))
 

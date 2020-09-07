@@ -72,8 +72,8 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
 
             holder.name.text = item.name
 //        holder.sellerName.text = item.sellerName
-            holder.price.text = item.price.toString()
-            holder.usedFor.text = item.used_for
+            holder.price.text = "Rs "+item.price.toString()
+            holder.usedFor.text = "Used For: "+item.used_for
 
             if(category == "notewaste")
                 holder.usedFor.visibility = View.GONE

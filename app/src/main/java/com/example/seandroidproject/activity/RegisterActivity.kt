@@ -10,10 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Patterns
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.android.volley.Request
 import com.android.volley.Response
@@ -39,7 +37,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
     lateinit var sharedPreferences: SharedPreferences
-
+    lateinit var loader : RelativeLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +56,8 @@ class RegisterActivity : AppCompatActivity() {
         etUserPasswordConfirm = findViewById(R.id.etUserPasswordConfirm)
         btnRegister = findViewById(R.id.btnRegister)
 
+        loader = findViewById(R.id.progressBar)
+        loader.visibility = View.GONE
         sharedPreferences = getSharedPreferences(getString(R.string.preference_file_name), Context.MODE_PRIVATE)
 
 
@@ -69,6 +69,9 @@ class RegisterActivity : AppCompatActivity() {
                 && confirmPassword(etUserPassword.text.toString(),etUserPasswordConfirm.text.toString())){
 
                 if(ConnectionManager().checkConnectivity(this@RegisterActivity)){
+
+                    loader.visibility = View.VISIBLE
+
                     val queue = Volley.newRequestQueue(this@RegisterActivity)
                     val url = "https://se-course-app.herokuapp.com/users/create"
 
@@ -101,6 +104,7 @@ class RegisterActivity : AppCompatActivity() {
 
                                 savePreferences(userId,userName,userEmail,userPhone,userLocation,userPinCode,userToken)
 
+                                loader.visibility = View.GONE
                                 val intent = Intent(this@RegisterActivity,HomePageActivity::class.java)
                                 startActivity(intent)
                                 finish()
@@ -108,10 +112,12 @@ class RegisterActivity : AppCompatActivity() {
                             }
                             catch (e : Exception){
                                 println(e)
-                                Toast.makeText(this@RegisterActivity,"Exception",Toast.LENGTH_SHORT).show()
+                                loader.visibility = View.GONE
+                                Toast.makeText(this@RegisterActivity,"$e",Toast.LENGTH_SHORT).show()
                             }
 
                         },Response.ErrorListener {
+                            loader.visibility = View.GONE
                             Toast.makeText(this@RegisterActivity,"$it",Toast.LENGTH_SHORT).show()
                         }){
 
@@ -127,6 +133,7 @@ class RegisterActivity : AppCompatActivity() {
                     queue.add(jsonRequest)
                 }
                 else{
+
                     val dialog = AlertDialog.Builder(this@RegisterActivity)
                     dialog.setTitle("Error")
                     dialog.setMessage("Internet Connection Not Found")
