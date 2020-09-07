@@ -97,6 +97,10 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                 if(item_id in wishlist){
                     return@setOnClickListener
                 }
+                if(item.owner == sharedPreferences.getString("userId", "id")){
+                    Toast.makeText(context, "Owner cannot add to wishlist", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
 
                 println("item id")
                 println(item_id)

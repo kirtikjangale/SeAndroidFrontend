@@ -273,6 +273,9 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
                             if(faq.has("answer")){
                                 faqViewHolder.findViewById<TextView>(R.id.faq_answer).text = "A: ${faq.getString("answer")}"
                             }
+                            if(faq.has("name")){
+                                faqViewHolder.findViewById<TextView>(R.id.faq_user).text = faq.getString("name")
+                            }
 
                             // add answering functionality
                             if(sharedPreferences.getBoolean("isLoggedIn", false) and (sharedPreferences.getString("userId", "-1") == item_owner)){
@@ -397,6 +400,7 @@ class DetailViewTextWasteActivity : AppCompatActivity() {
                                                 runOnUiThread {
                                                     val faqViewHolder = layoutInflater.inflate(R.layout.faqs_layout, null)
                                                     faqViewHolder.findViewById<TextView>(R.id.faq_question).text ="Q: ${editQuestion.text}"
+                                                    faqViewHolder.findViewById<TextView>(R.id.faq_user).text = sharedPreferences.getString("userName", "user")
                                                     faqView.addView(faqViewHolder)
                                                     dialog.dismiss()
                                                 }
