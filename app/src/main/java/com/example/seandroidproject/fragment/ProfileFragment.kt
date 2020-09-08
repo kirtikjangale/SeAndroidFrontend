@@ -466,7 +466,7 @@ class ProfileFragment : Fragment() {
                 null /*options*/,
                 object : PermissionHandler() {
                     override fun onGranted() {
-                        Toast.makeText(activity as Context, "Granted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity as Context, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
                         launchGallery()
                     }
 

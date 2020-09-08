@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,174 +9,193 @@
 
 <!-- -->
 
-    <TextView
-        android:id="@+id/txtSignUp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Sign up"
-        android:layout_marginLeft="30dp"
-        android:textStyle="bold"
-        android:textColor="#ffffff"
+        android:layout_height="match_parent">
 
-        android:textSize="40dp"
-        android:fontFamily="sans-serif-medium"/>
-
-    <EditText
-        android:id="@+id/etUserName"
-        android:layout_below="@id/txtSignUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginRight="30dp"
-        android:background="#ffffff"
-        android:gravity="center_horizontal"
-        android:hint="Name"
-        android:inputType="text"
-        android:padding="10dp"
-        android:fontFamily="sans-serif-condensed"/>
-
-    <EditText
-        android:id="@+id/etUserEmail"
-        android:layout_below="@id/etUserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:padding="10dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:gravity="center_horizontal"
-        android:fontFamily="sans-serif-condensed"
-        />
-
-    <EditText
-        android:id="@+id/etUserPhone"
-        android:layout_below="@id/etUserEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:padding="10dp"
-        android:hint="Mobile Number"
-        android:maxLength="10"
-        android:inputType="phone"
-        android:gravity="center_horizontal"
-        android:fontFamily="sans-serif-condensed"
-        />
-
-    <EditText
-        android:id="@+id/etUserAddress"
-        android:layout_below="@id/etUserPhone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:padding="10dp"
-        android:hint="Location"
-        android:inputType="text"
-        android:gravity="center_horizontal"
-        android:fontFamily="sans-serif-condensed"
-        />
-
-    <EditText
-        android:id="@+id/etUserPinCode"
-        android:layout_below="@id/etUserAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:padding="10dp"
-        android:hint="Pincode"
-        android:inputType="number"
-        android:gravity="center_horizontal"
-        android:fontFamily="sans-serif-condensed"
-        />
-
-    <EditText
-        android:id="@+id/etUserPassword"
-        android:layout_below="@id/etUserPinCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:padding="10dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:gravity="center_horizontal"
-        android:fontFamily="sans-serif-condensed"
-        />
-
-    <EditText
-        android:id="@+id/etUserPasswordConfirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etUserPassword"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:background="#ffffff"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center_horizontal"
-        android:hint="Confirm Password"
-        android:inputType="textPassword"
-        android:padding="10dp" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardBtnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="100dp"
-        android:layout_marginTop="50dp"
-        android:layout_below="@id/etUserPasswordConfirm"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:elevation="10dp">
-
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_height="match_parent"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:text="Register"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif"
-            android:background="@color/colorLtGreen"/>
+            android:layout_height="wrap_content">
 
 
-    </androidx.cardview.widget.CardView>
-
-    <RelativeLayout
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffff"
-
-        android:elevation="10dp"
-        >
-
-        <ProgressBar
-            android:id="@+id/bufferBar"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txtSignUp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="50dp"
+            android:text="Sign up"
+            android:layout_marginLeft="30dp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+
+            android:textSize="40dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <EditText
+            android:id="@+id/etUserName"
+            android:layout_below="@id/txtSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="30dp"
+            android:background="#ffffff"
+            android:gravity="center_horizontal"
+            android:hint="Name"
+            android:inputType="text"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-condensed"/>
+
+        <EditText
+            android:id="@+id/etUserEmail"
+            android:layout_below="@id/etUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:padding="10dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:gravity="center_horizontal"
+            android:fontFamily="sans-serif-condensed"
             />
 
+        <EditText
+            android:id="@+id/etUserPhone"
+            android:layout_below="@id/etUserEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:padding="10dp"
+            android:hint="Mobile Number"
+            android:maxLength="10"
+            android:inputType="phone"
+            android:gravity="center_horizontal"
+            android:fontFamily="sans-serif-condensed"
+            />
 
-    </RelativeLayout>
+        <EditText
+            android:id="@+id/etUserAddress"
+            android:layout_below="@id/etUserPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:padding="10dp"
+            android:hint="Location"
+            android:inputType="text"
+            android:gravity="center_horizontal"
+            android:fontFamily="sans-serif-condensed"
+            />
+
+        <EditText
+            android:id="@+id/etUserPinCode"
+            android:layout_below="@id/etUserAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:padding="10dp"
+            android:hint="Pincode"
+            android:inputType="number"
+            android:gravity="center_horizontal"
+            android:fontFamily="sans-serif-condensed"
+            />
+
+        <EditText
+            android:id="@+id/etUserPassword"
+            android:layout_below="@id/etUserPinCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:padding="10dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:gravity="center_horizontal"
+            android:fontFamily="sans-serif-condensed"
+            />
+
+        <EditText
+            android:id="@+id/etUserPasswordConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etUserPassword"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:background="#ffffff"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_horizontal"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBtnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_below="@id/etUserPasswordConfirm"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:elevation="10dp">
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="Register"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
+
+                android:background="@color/colorLtGreen"/>
+
+
+        </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+            <RelativeLayout
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+
+                android:elevation="10dp"
+                >
+
+                <ProgressBar
+                    android:id="@+id/bufferBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    />
+
+
+            </RelativeLayout>
 
 
 
-</RelativeLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

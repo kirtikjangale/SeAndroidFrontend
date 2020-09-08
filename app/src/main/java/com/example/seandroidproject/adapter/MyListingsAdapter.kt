@@ -50,7 +50,7 @@ class MyListingsAdapter(val context: Context,val itemList : ArrayList<ItemMyList
             .into(holder.imgItem)
 
         holder.txtItemTitle.text = item.name
-       holder.txtItemPrice.text = "Rs ${item.price}"
+       holder.txtItemPrice.text = "${item.price}"
 
 
         holder.btnSold.setOnClickListener {

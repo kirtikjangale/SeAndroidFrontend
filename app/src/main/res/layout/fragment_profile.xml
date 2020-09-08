@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
     <RelativeLayout
         android:id="@+id/profile_page"
         android:layout_width="match_parent"
@@ -45,6 +50,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
@@ -79,6 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="90dp"
                         android:text="loading..."
                         android:textColor="#404040"
                         android:textSize="20sp" />
@@ -125,9 +132,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="90dp"
                         android:text="loading..."
                         android:textColor="#404040"
-                        android:textSize="20sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -171,6 +179,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="90dp"
                         android:text="loading..."
                         android:textColor="#404040"
                         android:textSize="20sp" />
@@ -216,6 +225,7 @@
                         android:id="@+id/txt_profile_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="90dp"
                         android:layout_marginLeft="10dp"
                         android:text="*********"
                         android:textColor="#404040"
@@ -263,6 +273,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="90dp"
                         android:text="loading..."
                         android:textColor="#404040"
                         android:textSize="20sp" />
@@ -309,6 +320,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="90dp"
                         android:text="loading..."
                         android:textColor="#404040"
                         android:textSize="20sp" />
@@ -324,6 +336,8 @@
 
             </RelativeLayout>
 
+
+
         </LinearLayout>
 
         <Button
@@ -331,14 +345,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Update Changes"
+            android:layout_below="@id/llDetails"
             android:background="#5cb85c"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             ></Button>
 
+
+
     </RelativeLayout>
+
+    </ScrollView>
+
+
+
 
     <LinearLayout
         android:id="@+id/no_item_modal"

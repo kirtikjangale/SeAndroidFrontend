@@ -91,7 +91,7 @@ class SellActivity : AppCompatActivity() {
             null /*options*/,
             object : PermissionHandler() {
                 override fun onGranted() {
-                    Toast.makeText(this@SellActivity, "Granted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SellActivity, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onDenied(context: Context?, deniedPermissions: ArrayList<String?>?) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +7,13 @@
     tools:context=".activity.LoginActivity"
     android:background="#1DB954">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
     <TextView
@@ -62,7 +69,7 @@
         android:id="@+id/cardBtnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="100dp"
+        app:cardCornerRadius="25dp"
         android:layout_marginTop="30dp"
         android:layout_below="@id/etPassword"
         android:layout_marginLeft="30dp"
@@ -105,13 +112,22 @@
         android:id="@+id/txtRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/txtContinueNoLogin"
         android:text="Don't have an account? Sign Up now"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:textSize="16sp"
         android:padding="6dp"
         android:textColor="#ffffff"/>
+
+    </RelativeLayout>
+
+
+
+
+
+    </ScrollView>
+
     <RelativeLayout
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
@@ -132,4 +148,4 @@
         </RelativeLayout>
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
