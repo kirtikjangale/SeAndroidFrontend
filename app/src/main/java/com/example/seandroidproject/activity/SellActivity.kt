@@ -1,12 +1,14 @@
 package com.example.seandroidproject.activity
 
 //import androidx.appcompat.app.AppCompatActivity
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -17,14 +19,20 @@ import androidx.appcompat.widget.Toolbar
 import com.example.seandroidproject.R
 import com.example.seandroidproject.util.FileUploadService
 import com.example.seandroidproject.util.FileUtils
-import okhttp3.*
+import com.nabinbhandari.android.permissions.PermissionHandler
+import com.nabinbhandari.android.permissions.Permissions
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 
 class SellActivity : AppCompatActivity() {
@@ -67,8 +75,38 @@ class SellActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
 
+
+
         setContentView(R.layout.activity_sell)
 
+        val permissions =
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        Permissions.check(
+            this /*context*/,
+            permissions,
+            null /*rationale*/,
+            null /*options*/,
+            object : PermissionHandler() {
+                override fun onGranted() {
+                    Toast.makeText(this@SellActivity, "Granted", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onDenied(context: Context?, deniedPermissions: ArrayList<String?>?) {
+                    Toast.makeText(
+                        this@SellActivity,
+                        "Can't Sell until permission is granted",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Handler().postDelayed({
+                        val intent = Intent(this@SellActivity, HomePageActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }, 1000)
+                }
+            })
 
 
         sharedPreferences = getSharedPreferences(
@@ -117,7 +155,7 @@ class SellActivity : AppCompatActivity() {
                     proceed=false
 
                     val item = parent.getItemAtPosition(pos)
-                    Toast.makeText(this@SellActivity,"$item",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SellActivity, "$item", Toast.LENGTH_SHORT).show()
                     waste = item.toString()
                     if(item.toString() != "TEXTBOOKS"){
                         itemAuthor.visibility = View.GONE
@@ -171,7 +209,11 @@ class SellActivity : AppCompatActivity() {
                 println(waste)
                 if(waste == "TEXTBOOKS"){
                     if(itemAuthor.text.toString().isEmpty() || itemEdition.text.toString().isEmpty()){
-                        Toast.makeText(this@SellActivity,"Please fill all details",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@SellActivity,
+                            "Please fill all details",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     else
                         uploadFile(uri)
@@ -179,7 +221,11 @@ class SellActivity : AppCompatActivity() {
 
                 else if(waste != "NOTEBOOKS"){
                     if(itemAge.text.toString().isEmpty())
-                        Toast.makeText(this@SellActivity,"Please fill all details",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@SellActivity,
+                            "Please fill all details",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     else
                         uploadFile(uri)
                 }
@@ -245,7 +291,9 @@ class SellActivity : AppCompatActivity() {
                             uri.add(imageUri)
                         }
                     }
+                    println("URi:$imageUri")
                 }
+
 
             } else if (data?.getData() != null) {
                 // if single image is selected
@@ -265,6 +313,8 @@ class SellActivity : AppCompatActivity() {
                         uri.add(imageUri)
                     }
                 }
+
+                println("URi:$imageUri")
             }
         }
 
@@ -285,13 +335,17 @@ class SellActivity : AppCompatActivity() {
 
         val BASE_URL = "https://se-course-app.herokuapp.com/"
 
+        val client: OkHttpClient = OkHttpClient.Builder()
+            .connectTimeout(100, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS).build()
+
         val builder = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL).client(client)
             .addConverterFactory(GsonConverterFactory.create())
 
 
         val retrofit = builder.build()
-        val httpClient = OkHttpClient.Builder()
+
 
 
 
@@ -405,11 +459,11 @@ class SellActivity : AppCompatActivity() {
             ) {
 
                 progressBar.visibility = View.GONE
-                if(response.body()!=null) {
-                    Toast.makeText(this@SellActivity, "Item listed for selling", Toast.LENGTH_LONG).show()
+                if (response.body() != null) {
+                    Toast.makeText(this@SellActivity, "Item listed for selling", Toast.LENGTH_LONG)
+                        .show()
                     println(response.body()!!.byteStream())
-                }
-                else{
+                } else {
                     Toast.makeText(this@SellActivity, "Please try again", Toast.LENGTH_LONG).show()
                 }
                 println(response.body().toString())

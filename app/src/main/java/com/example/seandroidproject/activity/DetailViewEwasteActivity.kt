@@ -1,5 +1,6 @@
 package com.example.seandroidproject.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
@@ -27,6 +28,8 @@ import com.example.seandroidproject.adapter.ViewPagerAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonArray
 import com.kirtik.foodrunner.util.ConnectionManager
+import com.nabinbhandari.android.permissions.PermissionHandler
+import com.nabinbhandari.android.permissions.Permissions
 import com.squareup.picasso.Picasso
 import okhttp3.Call
 import okhttp3.Callback
@@ -143,17 +146,36 @@ class DetailViewEwasteActivity : AppCompatActivity() {
         }
         imgNavigate.setOnClickListener {
 
-            var query = "${txtLocation.text}+${txtPincode.text}"
-//            var gmmIntentUri = Uri.parse("geo:0,0?q=$query")
-//            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-//            mapIntent.setPackage("com.google.android.apps.maps")
-//            startActivity(mapIntent)
+            val permissions =
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
 
-            val gmmIntentUri =
-                Uri.parse("google.navigation:q=$query")
-            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-            mapIntent.setPackage("com.google.android.apps.maps")
-            startActivity(mapIntent)
+                )
+            Permissions.check(
+                this@DetailViewEwasteActivity /*context*/,
+                permissions,
+                null /*rationale*/,
+                null /*options*/,
+                object : PermissionHandler() {
+                    override fun onGranted() {
+                        Toast.makeText(this@DetailViewEwasteActivity, "PERMISSION_GRANTED", Toast.LENGTH_SHORT).show()
+                        var query = "${txtLocation.text}+${txtPincode.text}"
+
+                        val gmmIntentUri =
+                            Uri.parse("google.navigation:q=$query")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                        mapIntent.setPackage("com.google.android.apps.maps")
+                        startActivity(mapIntent)
+                    }
+
+                    override fun onDenied(context: Context?, deniedPermissions: ArrayList<String?>?) {
+                        Toast.makeText(this@DetailViewEwasteActivity, "Can't Call until permission is granted", Toast.LENGTH_SHORT).show()
+
+                    }
+                })
+
+
 
 
 
@@ -578,9 +600,31 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                     .into(sellerPic)
 
                 sellerPhone.setOnClickListener {
-                    val callIntent = Intent(Intent.ACTION_DIAL)
-                    callIntent.data = Uri.parse("tel:" + sellerPhone.text.toString())
-                    startActivity(callIntent)
+
+                    val permissions =
+                        arrayOf(
+                            Manifest.permission.CALL_PHONE
+                        )
+                    Permissions.check(
+                        this@DetailViewEwasteActivity /*context*/,
+                        permissions,
+                        null /*rationale*/,
+                        null /*options*/,
+                        object : PermissionHandler() {
+                            override fun onGranted() {
+                                Toast.makeText(this@DetailViewEwasteActivity, "PERMISSION_GRANTED", Toast.LENGTH_SHORT).show()
+                                val callIntent = Intent(Intent.ACTION_DIAL)
+                                callIntent.data = Uri.parse("tel:" + sellerPhone.text.toString())
+                                startActivity(callIntent)
+                            }
+
+                            override fun onDenied(context: Context?, deniedPermissions: ArrayList<String?>?) {
+                                Toast.makeText(this@DetailViewEwasteActivity, "Can't Call until permission is granted", Toast.LENGTH_SHORT).show()
+
+                            }
+                        })
+
+
                 }
             }
             else{
