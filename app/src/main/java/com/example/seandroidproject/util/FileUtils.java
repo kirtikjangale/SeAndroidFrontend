@@ -259,7 +259,9 @@ public class FileUtils {
                 final String type = split[0];
 
                 if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    System.out.println(Environment.getExternalStorageDirectory().getAbsolutePath() + '/' );
+                    System.out.println(Environment.getExternalStorageDirectory().getAbsolutePath() + '/' +split[1]);
+                    return Environment.getExternalStorageDirectory().getAbsolutePath() + '/' ;
                 }
 
                 // TODO handle non-primary volumes

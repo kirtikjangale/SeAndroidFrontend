@@ -280,6 +280,7 @@ class AllItemsFragment(default_pincode: String, default_category: String) : Frag
 
 
                 override fun onFailure(call: Call, e: IOException) {
+
                     loader.visibility = View.GONE
                     println("Req. failed")
                     activity!!.runOnUiThread{
