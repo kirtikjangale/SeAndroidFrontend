@@ -27,6 +27,8 @@ Install the apk file by building it and then run on your devices.
 
 ## Features of App
 
+<img src="https://user-images.githubusercontent.com/54976309/92630156-05ff2680-f2ed-11ea-8c7d-577305f9fbf9.png" height="500" width="300"/>  <img src="https://user-images.githubusercontent.com/54976309/92630302-43fc4a80-f2ed-11ea-96e1-e607ff4618c9.png" height="500" width="300"/>
+
 * The app allows users to register themselves on app and then login to view the all functionalities of app.
 * Then user can view the profile page and update the info if needed and upload a profile picture.
 
@@ -44,6 +46,8 @@ Install the apk file by building it and then run on your devices.
 <img src="https://user-images.githubusercontent.com/54976309/92612857-ead5ec00-f2d7-11ea-845e-5de35028475f.png" width="300" height="500"/> <img src="https://user-images.githubusercontent.com/54976309/92612801-da257600-f2d7-11ea-8c17-e664f826e65c.png" width="300" height="500"/>
 
 * The interested person can contact the seller and also seek the route to visit him by clicking on maps and also ask questions in bottom where seller will give the answer.
+
+<img src="https://user-images.githubusercontent.com/54976309/92630476-8e7dc700-f2ed-11ea-8726-b680fb5a4e43.png" height="500" width="300"/>
 
 ## Built With
 
