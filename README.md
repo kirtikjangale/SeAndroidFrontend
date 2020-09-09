@@ -44,7 +44,6 @@ Install the apk file by building it and then run on your devices.
 <img src="https://user-images.githubusercontent.com/54976309/92612857-ead5ec00-f2d7-11ea-845e-5de35028475f.png" width="300" height="500"/> <img src="https://user-images.githubusercontent.com/54976309/92612801-da257600-f2d7-11ea-8c17-e664f826e65c.png" width="300" height="500"/>
 
 * The interested person can contact the seller and also seek the route to visit him by clicking on maps and also ask questions in bottom where seller will give the answer.
-<img src="https://user-images.githubusercontent.com/54976309/92614349-929fe980-f2d9-11ea-92d6-2023fb856987.png" width="300" height="500"/>
 
 ## Built With
 
@@ -55,11 +54,10 @@ Install the apk file by building it and then run on your devices.
 * [Material](http://com.google.android.material:material:1.2.0) - 
 * [LegacySupport](http://androidx.legacy:legacy-support-v4:1.0.0) - 
 * [GmapsServices](http://com.google.android.gms:play-services-maps:17.0.0) - 
-* [RecyclerView](http://androidx.recyclerview:recyclerview:1.1.0) - 
-* [OkHttp](http://com.squareup.okhttp3:okhttp:4.8.1) - 
-* [Volley](http://com.android.volley:volley:1.1.1) - 
-* [Retorfit](http://com.squareup.retrofit2:retrofit:2.6.1) -
-* [Picasso](http://com.squareup.picasso:picasso:2.71828) -
+* [OkHttp](http://com.squareup.okhttp3:okhttp:4.8.1) - OkHttp is a third-party library developed by Square for sending and receive HTTP-based network requests.
+* [Volley](http://com.android.volley:volley:1.1.1) - Volley is an HTTP library that makes networking for Android apps easier and most importantly, faster.
+* [Retrofit](http://com.squareup.retrofit2:retrofit:2.6.1) - A type-safe HTTP client for Android and Java
+* [Picasso](http://com.squareup.picasso:picasso:2.71828) - A powerful image downloading and caching library for Android.
 
 ## Contributing
 
