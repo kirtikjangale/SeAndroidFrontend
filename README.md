@@ -48,12 +48,8 @@ Install the apk file by building it and then run on your devices.
 ## Built With
 
 * [Kotlin](http://org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version) -  Kotlin support 
-* [AppCompat](http://androidx.appcompat:appcompat:1.2.0) - Backwards compatibility of app
-* [ConstraintLayout](http://androidx.constraintlayout:constraintlayout:1.1.3) - Contraint Layout view for flexibility of layout on different devices
-* [CoordinatorLayout](http://androidx.coordinatorlayout:coordinatorlayout:1.1.0) - 
-* [Material](http://com.google.android.material:material:1.2.0) - 
-* [LegacySupport](http://androidx.legacy:legacy-support-v4:1.0.0) - 
-* [GmapsServices](http://com.google.android.gms:play-services-maps:17.0.0) - 
+* [Material](http://com.google.android.material:material:1.2.0) - Material Design is an Android-oriented design language created by Google, supporting onscreen touch experiences via cue-rich features and natural motions that mimic real-world objects.
+* [GmapsServices](http://com.google.android.gms:play-services-maps:17.0.0) - Google Play services APIs for handling map related operations.
 * [OkHttp](http://com.squareup.okhttp3:okhttp:4.8.1) - OkHttp is a third-party library developed by Square for sending and receive HTTP-based network requests.
 * [Volley](http://com.android.volley:volley:1.1.1) - Volley is an HTTP library that makes networking for Android apps easier and most importantly, faster.
 * [Retrofit](http://com.squareup.retrofit2:retrofit:2.6.1) - A type-safe HTTP client for Android and Java
