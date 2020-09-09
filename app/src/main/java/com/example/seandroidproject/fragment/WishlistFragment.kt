@@ -76,6 +76,17 @@ class WishlistFragment : Fragment() {
                     activity!!.runOnUiThread{
                         loader.visibility = View.GONE
                         recyclerWishlistItems.adapter = itemsListAdapter
+                        if (itemListData.isEmpty()) {
+                            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility =
+                                View.VISIBLE
+                            view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility =
+                                View.INVISIBLE
+                        } else {
+                            view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility =
+                                View.INVISIBLE
+                            view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility =
+                                View.VISIBLE
+                        }
                     }
                 }
                 override fun onFailure(call: Call, e: IOException) {
@@ -83,7 +94,7 @@ class WishlistFragment : Fragment() {
                     activity!!.runOnUiThread{
                         loader.visibility = View.GONE
                         view?.findViewById<LinearLayout>(R.id.no_item_modal)?.visibility = View.VISIBLE
-                        view?.findViewById<RecyclerView>(R.id.recycler_allitems)?.visibility = View.INVISIBLE
+                        view?.findViewById<RecyclerView>(R.id.recycler_wishlist)?.visibility = View.INVISIBLE
                         view?.findViewById<TextView>(R.id.error_text)?.text = "Something went wrong please try again later"
 
                         val dialog = AlertDialog.Builder(activity as Context)
