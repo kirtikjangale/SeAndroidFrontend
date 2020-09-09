@@ -44,6 +44,7 @@ Install the apk file by building it and then run on your devices.
 <img src="https://user-images.githubusercontent.com/54976309/92612857-ead5ec00-f2d7-11ea-845e-5de35028475f.png" width="300" height="500"/> <img src="https://user-images.githubusercontent.com/54976309/92612801-da257600-f2d7-11ea-8c17-e664f826e65c.png" width="300" height="500"/>
 
 * The interested person can contact the seller and also seek the route to visit him by clicking on maps and also ask questions in bottom where seller will give the answer.
+<img src="https://user-images.githubusercontent.com/54976309/92614349-929fe980-f2d9-11ea-92d6-2023fb856987.png" width="300" height="500"/>
 
 ## Built With
 
