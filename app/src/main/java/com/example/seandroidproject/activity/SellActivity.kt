@@ -460,7 +460,7 @@ class SellActivity : AppCompatActivity() {
 
                 progressBar.visibility = View.GONE
                 if (response.body() != null) {
-                    Toast.makeText(this@SellActivity, "Item listed for selling", Toast.LENGTH_LONG)
+                    Toast.makeText(this@SellActivity, "Item listed for selling. Go to Mylistings to check it", Toast.LENGTH_LONG)
                         .show()
                     println(response.body()!!.byteStream())
                 } else {

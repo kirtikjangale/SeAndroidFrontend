@@ -175,7 +175,7 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                         }
                     })
 
-                    checkCode()
+                    Toast.makeText(context, "adding to wishlist", Toast.LENGTH_SHORT).show()
 
             }
 
@@ -252,13 +252,7 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
 
         }
 
-        private fun checkCode(){
-            println("fun$responseCode")
-            if(responseCode==400)
-                Toast.makeText(context, "Owner cannot add to wishlist", Toast.LENGTH_SHORT).show()
-            else
-                Toast.makeText(context, "adding to wishlist", Toast.LENGTH_SHORT).show()
-        }
+
 
 
 }
