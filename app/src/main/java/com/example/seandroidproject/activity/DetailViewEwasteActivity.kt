@@ -348,6 +348,7 @@ class DetailViewEwasteActivity : AppCompatActivity() {
 
                                         val jsonObject: JSONObject = JSONObject()
                                         jsonObject.put("answer", editAnswer.text)
+                                        jsonObject.put("id",faq.getString("_id"))
 
                                         val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
                                         val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
@@ -363,6 +364,8 @@ class DetailViewEwasteActivity : AppCompatActivity() {
                                             client.newCall(request).enqueue(object : Callback {
                                                 override fun onResponse(call: Call, response: okhttp3.Response) {
                                                     runOnUiThread {
+
+                                                        println("Answer ")
                                                         faqViewHolder.findViewById<TextView>(R.id.faq_answer).text = "A: ${editAnswer.text}"
                                                         dialog.dismiss()
                                                     }

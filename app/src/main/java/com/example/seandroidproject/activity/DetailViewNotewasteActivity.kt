@@ -324,13 +324,14 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
 
                                         val jsonObject: JSONObject = JSONObject()
                                         jsonObject.put("answer", editAnswer.text)
+                                        jsonObject.put("id",faq.getString("_id"))
 
                                         val JSON = "application/json; charset=utf-8".toMediaTypeOrNull()
                                         val requestBody: RequestBody = jsonObject.toString().toRequestBody(JSON)
 
                                         // authentication is hardcoded
                                         val request = okhttp3.Request.Builder()
-                                            .url("https://se-course-app.herokuapp.com/ewaste/answer/${item_id}")
+                                            .url("https://se-course-app.herokuapp.com/notewaste/answer/${item_id}")
                                             .addHeader("Authorization", "Bearer ${sharedPreferences.getString("userToken", "-1")}")
                                             .post(requestBody)
                                             .build()
@@ -409,7 +410,7 @@ class DetailViewNotewasteActivity : AppCompatActivity() {
 
                                     // authentication is hardcoded
                                     val request = okhttp3.Request.Builder()
-                                        .url("https://se-course-app.herokuapp.com/ewaste/ask/${item_id}")
+                                        .url("https://se-course-app.herokuapp.com/notewaste/ask/${item_id}")
                                         .addHeader("Authorization", "Bearer ${sharedPreferences.getString("userToken", "-1")}")
                                         .post(requestBody)
                                         .build()
