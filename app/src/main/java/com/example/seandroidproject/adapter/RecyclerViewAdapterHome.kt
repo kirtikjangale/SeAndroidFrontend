@@ -3,14 +3,14 @@ package com.example.seandroidproject.adapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getColor
-
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seandroidproject.R
@@ -24,7 +24,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
-
 
 
 class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<String>, val context: Context, val category: String):RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
@@ -129,6 +128,15 @@ class RecyclerViewAdapter(val items: List<ItemModel>, val wishlist: MutableList<
                             val resBody = response?.body?.string()
                             println("response:$resBody")
                             println(response.code)
+
+                            if(response.code == 400){
+                                Handler(Looper.getMainLooper()).post(Runnable {
+                                    Toast.makeText(
+                                        context,
+                                        "owner cannot add to wishlist", Toast.LENGTH_SHORT
+                                    ).show()
+                                })
+                            }
 
                             responseCode = response.code
                             if(response.code == 200){
